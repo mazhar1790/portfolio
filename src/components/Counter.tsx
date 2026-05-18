@@ -12,7 +12,7 @@ interface Props {
 export default function Counter({
   value,
   suffix = "",
-  duration = 1600,
+  duration = 1800,
   className,
 }: Props) {
   const [display, setDisplay] = useState(0);
@@ -28,18 +28,22 @@ export default function Counter({
         entries.forEach((entry) => {
           if (entry.isIntersecting && !startedRef.current) {
             startedRef.current = true;
-            const start = performance.now();
-            const animate = (now: number) => {
-              const t = Math.min(1, (now - start) / duration);
-              const eased = 1 - Math.pow(1 - t, 3);
-              setDisplay(Math.round(value * eased));
-              if (t < 1) requestAnimationFrame(animate);
-            };
-            requestAnimationFrame(animate);
+
+            // Small delay so the element is fully visible before animating
+            setTimeout(() => {
+              const start = performance.now();
+              const animate = (now: number) => {
+                const t = Math.min(1, (now - start) / duration);
+                const eased = 1 - Math.pow(1 - t, 3);
+                setDisplay(Math.round(value * eased));
+                if (t < 1) requestAnimationFrame(animate);
+              };
+              requestAnimationFrame(animate);
+            }, 120);
           }
         });
       },
-      { threshold: 0.4 },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
     );
 
     observer.observe(el);
