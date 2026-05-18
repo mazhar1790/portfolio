@@ -7,9 +7,11 @@ import { PERSONAL } from "@/data/cv";
 
 const LINKS = [
   { href: "#services", label: "Services" },
-  { href: "#portfolio", label: "Portfolio" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact me" },
+  { href: "#portfolio", label: "Work" },
+  { href: "#skills", label: "Stack" },
+  { href: "#experience", label: "Experience" },
+  { href: "#writing", label: "Writing" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export default function V2Nav() {
