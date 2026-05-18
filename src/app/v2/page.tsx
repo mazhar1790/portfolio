@@ -7,6 +7,7 @@ import V2About from "@/components/v2/V2About";
 import V2Lesson from "@/components/v2/V2Lesson";
 import V2Services from "@/components/v2/V2Services";
 import V2Portfolio from "@/components/v2/V2Portfolio";
+import V2Pipelines from "@/components/v2/V2Pipelines";
 import V2Skills from "@/components/v2/V2Skills";
 import V2Experience from "@/components/v2/V2Experience";
 import V2Certifications from "@/components/v2/V2Certifications";
@@ -38,6 +39,7 @@ export default function V2Home() {
           number="Lesson · 02"
           text="The bottleneck is never the model — it's chunking, retrieval, and prompts."
         />
+        <V2Pipelines />
         <V2Skills />
         <V2Experience />
         <V2Certifications />

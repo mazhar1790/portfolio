@@ -8,6 +8,7 @@ import { PERSONAL } from "@/data/cv";
 const LINKS = [
   { href: "#services", label: "Services" },
   { href: "#portfolio", label: "Work" },
+  { href: "#pipelines", label: "Pipelines" },
   { href: "#skills", label: "Stack" },
   { href: "#experience", label: "Experience" },
   { href: "#writing", label: "Writing" },
