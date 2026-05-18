@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, Clock, Github, PenLine } from "lucide-react";
+import { ArrowUpRight, Clock, PenLine } from "lucide-react";
 import { ARTICLES } from "@/data/cv";
-import GitHubFeed from "./GitHubFeed";
 
 function formatDate(iso: string): string {
   const [year, month] = iso.split("-");
@@ -122,27 +121,6 @@ export default function Writing() {
           to be notified.
         </motion.p>
 
-        {/* GitHub Activity */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-20"
-        >
-          <div className="mb-6 flex items-center gap-3">
-            <Github className="h-4 w-4 text-signal" />
-            <h3 className="font-mono text-sm uppercase tracking-[0.18em] text-paper">
-              GitHub Activity
-            </h3>
-            <span className="font-mono text-[10px] text-paper-dim">
-              · live
-            </span>
-          </div>
-          <div className="rounded-xl border border-ink-line bg-ink-card p-4">
-            <GitHubFeed />
-          </div>
-        </motion.div>
       </div>
     </section>
   );
