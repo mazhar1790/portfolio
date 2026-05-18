@@ -162,13 +162,16 @@ export default function ChatWidget() {
             transition={{ type: "spring", stiffness: 380, damping: 24 }}
             onClick={() => openChat()}
             aria-label="Open AI chat"
-            className="group fixed bottom-5 right-5 z-50 flex h-12 items-center gap-2 rounded-full border border-signal/40 bg-ink-card/95 px-4 text-sm text-paper shadow-signal-sm backdrop-blur transition hover:border-signal hover:shadow-signal sm:bottom-8 sm:right-8"
+            className="group fixed bottom-5 right-5 z-50 flex h-12 items-center gap-2 rounded-full border border-[#b8e8ce] bg-white px-4 text-sm text-[#0e0e0d] shadow-[0_12px_28px_-12px_rgba(45,153,97,0.30)] backdrop-blur transition hover:border-[#6dcc99] hover:bg-[#f3fbf7] sm:bottom-8 sm:right-8"
           >
-            <span className="signal-dot" />
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3fb578] opacity-70" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#3fb578]" />
+            </span>
             <span className="font-mono text-xs uppercase tracking-[0.18em]">
               Ask AI
             </span>
-            <Sparkles className="h-3.5 w-3.5 text-signal transition group-hover:scale-110" />
+            <Sparkles className="h-3.5 w-3.5 text-[#3fb578] transition group-hover:scale-110" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -181,20 +184,20 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 26 }}
-            className="fixed inset-0 z-50 flex flex-col border border-ink-line bg-ink-card sm:bottom-6 sm:right-6 sm:left-auto sm:top-auto sm:inset-auto sm:h-[600px] sm:w-[420px] sm:rounded-2xl sm:shadow-signal-lg"
+            className="fixed inset-0 z-50 flex flex-col border border-[#e0dfd8] bg-white sm:bottom-6 sm:right-6 sm:left-auto sm:top-auto sm:inset-auto sm:h-[600px] sm:w-[420px] sm:rounded-3xl sm:shadow-[0_24px_60px_-20px_rgba(14,14,13,0.20)]"
           >
-            <header className="flex items-center justify-between border-b border-ink-line bg-ink-card px-4 py-3">
+            <header className="flex items-center justify-between border-b border-[#e0dfd8] bg-white px-4 py-3 sm:rounded-t-3xl">
               <div className="flex items-center gap-2.5">
-                <div className="relative flex h-8 w-8 items-center justify-center rounded-md bg-signal/15 text-signal">
+                <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-[#ebf8f1] text-[#2d9961]">
                   <Bot className="h-4 w-4" />
-                  <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-signal shadow-signal-sm" />
+                  <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#3fb578] ring-2 ring-white" />
                 </div>
                 <div className="leading-tight">
-                  <p className="font-display text-sm text-paper">
+                  <p className="font-jakarta text-sm font-bold text-[#0e0e0d]">
                     Mazhar&apos;s AI
                   </p>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-paper-dim">
-                    <span className="text-signal">●</span> Online · Groq Llama 3.3
+                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#9a9a96]">
+                    <span className="text-[#3fb578]">●</span> Online · Groq Llama 3.3
                   </p>
                 </div>
               </div>
@@ -202,33 +205,33 @@ export default function ChatWidget() {
                 type="button"
                 onClick={closeChat}
                 aria-label="Close chat"
-                className="rounded-md p-1.5 text-paper-dim transition hover:bg-ink-elev hover:text-paper"
+                className="rounded-md p-1.5 text-[#525251] transition hover:bg-[#fafaf7] hover:text-[#0e0e0d]"
               >
                 <X className="h-4 w-4" />
               </button>
             </header>
 
-            <div className="flex-1 overflow-y-auto bg-ink/70">
+            <div className="flex-1 overflow-y-auto bg-[#fafaf7]">
               {messages.length === 0 ? (
                 <div className="flex h-full flex-col gap-5 overflow-y-auto px-5 py-6">
                   <div className="flex items-start gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-signal/30 bg-signal/10 text-signal">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#b8e8ce] bg-[#ebf8f1] text-[#2d9961]">
                       <Sparkles className="h-4 w-4" />
                     </div>
-                    <div className="rounded-2xl rounded-tl-sm border border-ink-line bg-ink-card px-4 py-3 text-sm text-paper-muted">
+                    <div className="rounded-2xl rounded-tl-sm border border-[#e0dfd8] bg-white px-4 py-3 text-sm leading-relaxed text-[#0e0e0d] shadow-[0_4px_10px_-6px_rgba(14,14,13,0.06)]">
                       <p>
                         Hey — I&apos;m Mazhar&apos;s AI assistant. I know
                         everything in his CV: projects, stack, the systems he
                         shipped at SCAD, his availability, and his approach.
                       </p>
-                      <p className="mt-2">
+                      <p className="mt-2 text-[#525251]">
                         Ask me anything, or tap a suggestion below 👇
                       </p>
                     </div>
                   </div>
 
                   <div>
-                    <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-dim">
+                    <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#9a9a96]">
                       Try asking
                     </p>
                     <div className="flex flex-col gap-1.5">
@@ -237,10 +240,10 @@ export default function ChatWidget() {
                           key={chip}
                           type="button"
                           onClick={() => sendMessage(chip)}
-                          className="group flex items-center justify-between rounded-lg border border-ink-line bg-ink-card/60 px-3.5 py-2.5 text-left text-[13px] text-paper-muted transition hover:border-signal/30 hover:bg-ink-elev hover:text-paper"
+                          className="group flex items-center justify-between rounded-xl border border-[#e0dfd8] bg-white px-3.5 py-2.5 text-left text-[13px] text-[#0e0e0d] transition hover:border-[#6dcc99] hover:bg-[#f3fbf7]"
                         >
                           <span>{chip}</span>
-                          <span className="font-mono text-signal/40 transition group-hover:text-signal">
+                          <span className="font-mono text-[#9a9a96] transition group-hover:text-[#2d9961]">
                             ↵
                           </span>
                         </button>
@@ -254,8 +257,8 @@ export default function ChatWidget() {
             </div>
 
             {followups.length > 0 && !loading && (
-              <div className="border-t border-ink-line bg-ink-card/80 px-3 py-2.5">
-                <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-dim">
+              <div className="border-t border-[#e0dfd8] bg-white px-3 py-2.5">
+                <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#9a9a96]">
                   Suggested
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -267,7 +270,7 @@ export default function ChatWidget() {
                         setFollowups([]);
                         sendMessage(q);
                       }}
-                      className="rounded-full border border-ink-line bg-ink-elev px-2.5 py-1 text-[11px] text-paper-muted transition hover:border-signal/40 hover:text-paper"
+                      className="rounded-full border border-[#e0dfd8] bg-[#fafaf7] px-2.5 py-1 text-[11px] text-[#525251] transition hover:border-[#6dcc99] hover:bg-[#f3fbf7] hover:text-[#0e0e0d]"
                     >
                       {q}
                     </button>
@@ -277,7 +280,7 @@ export default function ChatWidget() {
             )}
 
             {error && (
-              <div className="border-t border-red-500/20 bg-red-500/10 px-4 py-2 text-xs text-red-200">
+              <div className="border-t border-red-200 bg-red-50 px-4 py-2 text-xs text-red-700">
                 {error}
               </div>
             )}
@@ -289,7 +292,7 @@ export default function ChatWidget() {
               disabled={loading}
             />
 
-            <p className="border-t border-ink-line bg-ink-card px-4 py-2 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-paper-dim">
+            <p className="border-t border-[#e0dfd8] bg-white px-4 py-2 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-[#9a9a96] sm:rounded-b-3xl">
               Powered by Llama 3.3 70B · Groq
             </p>
           </motion.div>

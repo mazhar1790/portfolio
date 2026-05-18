@@ -34,7 +34,7 @@ export default function ChatInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-end gap-2 border-t border-ink-line bg-ink-card/95 px-3 py-3"
+      className="flex items-end gap-2 border-t border-[#e0dfd8] bg-white px-3 py-3"
     >
       <textarea
         ref={inputRef}
@@ -44,13 +44,13 @@ export default function ChatInput({
         rows={1}
         placeholder="Ask anything about Mazhar..."
         disabled={disabled}
-        className="max-h-32 flex-1 resize-none rounded-lg border border-ink-line bg-ink-elev px-3 py-2 text-sm text-paper placeholder:text-paper-dim focus:border-signal/40 focus:outline-none disabled:opacity-50"
+        className="max-h-32 flex-1 resize-none rounded-xl border border-[#e0dfd8] bg-[#fafaf7] px-3 py-2 text-sm text-[#0e0e0d] placeholder:text-[#9a9a96] transition focus:border-[#6dcc99] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6dcc99]/20 disabled:opacity-50"
       />
       <button
         type="submit"
         disabled={disabled || !value.trim()}
         aria-label="Send message"
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-paper text-ink transition hover:bg-signal disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0e0e0d] text-white transition hover:bg-[#2d9961] disabled:cursor-not-allowed disabled:opacity-40"
       >
         <Send className="h-4 w-4" />
       </button>
