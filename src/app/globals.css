@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --line: rgba(255, 255, 255, 0.06);
+  --line-strong: rgba(255, 255, 255, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  background: #0a0a0a;
+  color: #fafaf9;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv01", "cv02";
+}
+
+::selection {
+  background: rgba(0, 255, 136, 0.35);
+  color: #0a0a0a;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 136, 0.18);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 136, 0.35);
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+
+  .section {
+    @apply relative py-28 sm:py-36;
+  }
+
+  /* === EDITORIAL TYPOGRAPHY === */
+  .display-1 {
+    @apply font-display text-[clamp(3rem,9vw,8rem)] font-medium leading-[0.92] tracking-tightest text-paper;
+  }
+
+  .display-2 {
+    @apply font-display text-[clamp(2.25rem,6vw,5rem)] font-medium leading-[0.95] tracking-tightest text-paper;
+  }
+
+  .display-3 {
+    @apply font-display text-[clamp(1.75rem,3.5vw,3rem)] font-medium leading-[1.05] tracking-tight text-paper;
+  }
+
+  .display-italic {
+    @apply italic text-paper-muted;
+  }
+
+  /* Meta label — uppercase mono with leading dash */
+  .meta {
+    @apply inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-paper-dim;
+  }
+  .meta::before {
+    content: "//";
+    @apply text-signal;
+  }
+
+  .meta-plain {
+    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-paper-dim;
+  }
+
+  .section-number {
+    @apply font-mono text-xs text-signal;
+  }
+
+  /* === SURFACES === */
+  .surface {
+    @apply rounded-xl border border-ink-line bg-ink-card;
+  }
+
+  .surface-elev {
+    @apply rounded-xl border border-ink-line bg-ink-elev;
+  }
+
+  .hairline {
+    @apply border-t border-ink-line;
+  }
+
+  /* === PILLS / TAGS === */
+  .tag {
+    @apply inline-flex items-center rounded-md border border-ink-line bg-ink-card px-2.5 py-1 font-mono text-[11px] text-paper-muted;
+  }
+
+  .tag-signal {
+    @apply inline-flex items-center rounded-md border border-signal/30 bg-signal/5 px-2.5 py-1 font-mono text-[11px] text-signal;
+  }
+
+  /* === BUTTONS === */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-paper px-6 py-3 text-sm font-medium text-ink transition-all duration-200 hover:bg-signal hover:shadow-signal;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink-line bg-transparent px-6 py-3 text-sm font-medium text-paper transition-all duration-200 hover:border-signal hover:text-signal;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-3 py-2 font-mono text-xs uppercase tracking-[0.18em] text-paper-muted transition hover:text-signal;
+  }
+
+  /* === SIGNAL DOT === */
+  .signal-dot {
+    @apply relative inline-flex h-2 w-2 items-center justify-center;
+  }
+  .signal-dot::before {
+    content: "";
+    @apply absolute inset-0 rounded-full bg-signal animate-ping;
+    animation-duration: 2.4s;
+  }
+  .signal-dot::after {
+    content: "";
+    @apply relative h-1.5 w-1.5 rounded-full bg-signal;
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+  }
+
+  /* === CARET FOR STREAMING === */
+  .caret::after {
+    content: "▍";
+    display: inline-block;
+    margin-left: 2px;
+    color: #00ff88;
+    animation: blink 1s steps(2, start) infinite;
+  }
+}
+
+/* === NUMBER UNDERLINES === */
+.num-line {
+  display: inline-block;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 255, 136, 0.4);
+}
+
+/* === ULTRA-SUBTLE GRID OVERLAY === */
+.grid-overlay {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* === SCANLINE OVERLAY (very subtle, optional) === */
+.scanline {
+  position: relative;
+}
+.scanline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(255, 255, 255, 0.012) 3px,
+    rgba(255, 255, 255, 0.012) 4px
+  );
+}
+
+/* === NOISE OVERLAY === */
+.noise {
+  position: relative;
+}
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* === ANIMATED DASHED PATH (for diagrams) === */
+.dash-flow {
+  stroke-dasharray: 8 6;
+  animation: dash 1.5s linear infinite;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+/* === MARQUEE TICKER === */
+.ticker-track {
+  display: inline-flex;
+  animation: ticker 50s linear infinite;
+  white-space: nowrap;
+  will-change: transform;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* === FOCUS RINGS === */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #0a0a0a, 0 0 0 3.5px #00ff88;
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  box-shadow: none;
+}
+
+/* === PROSE FOR CASE STUDIES === */
+.case-prose p {
+  @apply text-paper-muted leading-relaxed;
+}
+
+/* === SIGNAL TEXT HIGHLIGHT === */
+.signal-text {
+  @apply text-signal;
+}
+
+.paper-muted {
+  @apply text-paper-muted;
+}

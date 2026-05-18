@@ -1,0 +1,89 @@
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  theme: {
+    extend: {
+      colors: {
+        ink: {
+          DEFAULT: "#0a0a0a",
+          alt: "#0e0e0e",
+          card: "#131313",
+          elev: "#1a1a1a",
+          line: "#262626",
+        },
+        paper: {
+          DEFAULT: "#fafaf9",
+          muted: "#a1a1aa",
+          dim: "#71717a",
+        },
+        signal: {
+          DEFAULT: "#00ff88",
+          dim: "#00cc6a",
+          glow: "rgba(0, 255, 136, 0.18)",
+          fade: "rgba(0, 255, 136, 0.06)",
+        },
+        amber: {
+          signal: "#ffb84d",
+        },
+      },
+      fontFamily: {
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        display: ["var(--font-instrument)", "Georgia", "serif"],
+        mono: ["var(--font-jetbrains-mono)", "ui-monospace", "monospace"],
+      },
+      letterSpacing: {
+        tightest: "-0.04em",
+      },
+      boxShadow: {
+        "signal-sm": "0 0 12px rgba(0, 255, 136, 0.18)",
+        signal: "0 0 28px rgba(0, 255, 136, 0.22)",
+        "signal-lg": "0 0 56px rgba(0, 255, 136, 0.30)",
+        "inset-line": "inset 0 0 0 1px rgba(255, 255, 255, 0.05)",
+      },
+      animation: {
+        "pulse-signal": "pulse-signal 2.4s ease-in-out infinite",
+        "ticker": "ticker 40s linear infinite",
+        "blink": "blink 1s steps(2, start) infinite",
+        "scan": "scan 8s linear infinite",
+        "draw": "draw 1.5s ease-out forwards",
+        "dash": "dash 2.5s linear infinite",
+        "float-slow": "float-slow 7s ease-in-out infinite",
+      },
+      keyframes: {
+        "pulse-signal": {
+          "0%, 100%": {
+            boxShadow: "0 0 0 0 rgba(0, 255, 136, 0.55)",
+          },
+          "50%": {
+            boxShadow: "0 0 0 14px rgba(0, 255, 136, 0)",
+          },
+        },
+        ticker: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        blink: {
+          to: { opacity: "0" },
+        },
+        scan: {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(100%)" },
+        },
+        draw: {
+          to: { strokeDashoffset: "0" },
+        },
+        dash: {
+          to: { strokeDashoffset: "-24" },
+        },
+        "float-slow": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-6px)" },
+        },
+      },
+    },
+  },
+  plugins: [],
+};
+
+export default config;
