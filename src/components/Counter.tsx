@@ -16,12 +16,14 @@ export default function Counter({
   className,
 }: Props) {
   const [display, setDisplay] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const ref = useRef<HTMLSpanElement | null>(null);
   const startedRef = useRef(false);
 
   useEffect(() => {
+    setMounted(true);
+
     const el = ref.current;
-    if (!el) return;
 
     const start = () => {
       if (startedRef.current) return;
@@ -36,35 +38,59 @@ export default function Counter({
       requestAnimationFrame(animate);
     };
 
-    // 1. If already in viewport on mount (e.g. above-the-fold metrics), start now
-    const rect = el.getBoundingClientRect();
-    if (
-      rect.top < (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.bottom > 0
-    ) {
-      // Defer to next frame so initial paint shows 0 → animates up
-      requestAnimationFrame(start);
+    // 1. Immediate in-viewport check (above-the-fold counters animate right away)
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const viewportH =
+        window.innerHeight || document.documentElement.clientHeight;
+      if (rect.top < viewportH && rect.bottom > 0) {
+        requestAnimationFrame(start);
+      }
     }
 
-    // 2. Also observe for when it scrolls into view (below-the-fold)
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) start();
-        });
-      },
-      { threshold: 0, rootMargin: "0px 0px -10% 0px" },
-    );
-    observer.observe(el);
+    // 2. IntersectionObserver for below-the-fold counters
+    let observer: IntersectionObserver | null = null;
+    if (el && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) start();
+          }
+        },
+        { threshold: 0, rootMargin: "0px 0px -10% 0px" },
+      );
+      observer.observe(el);
+    }
 
-    // 3. Safety fallback — if nothing fired in 1.5s, force start
+    // 3. Fallback timer — force start after 1.5s if nothing triggered
     const fallback = window.setTimeout(start, 1500);
 
+    // 4. Last-resort safety — if animation itself never runs (rAF paused etc.),
+    //    just snap to the final value after 3s so the user never sees "0".
+    const finalSafety = window.setTimeout(() => {
+      if (!startedRef.current) {
+        startedRef.current = true;
+        setDisplay(value);
+      }
+    }, 3000);
+
     return () => {
-      observer.disconnect();
+      if (observer) observer.disconnect();
       window.clearTimeout(fallback);
+      window.clearTimeout(finalSafety);
     };
   }, [value, duration]);
+
+  // Before mount, render value statically — prevents any "stuck at 0" issue
+  // if hydration has any hiccup. Same chars rendered server- and client-side
+  // (0 + suffix), so no hydration mismatch.
+  if (!mounted) {
+    return (
+      <span ref={ref} className={className}>
+        0{suffix}
+      </span>
+    );
+  }
 
   return (
     <span ref={ref} className={className}>
