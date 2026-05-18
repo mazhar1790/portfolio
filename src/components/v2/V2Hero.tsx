@@ -112,24 +112,25 @@ export default function V2Hero() {
           className="order-1 mx-auto w-full max-w-sm lg:order-2 lg:max-w-md"
         >
           <div className="relative">
-            {/* The photo container — square with soft arched top */}
+            {/* The photo container — arched card */}
             <div className="relative overflow-hidden rounded-[28px] border border-cream-line bg-white shadow-[0_24px_48px_-24px_rgba(14,14,13,0.18)]">
-              <div className="relative aspect-[4/5]">
+              {/* Explicit height so next/image fill works correctly */}
+              <div className="relative h-[480px] w-full sm:h-[540px]">
                 <Image
                   src="/me.png"
                   alt={`${PERSONAL.name} — portrait`}
                   fill
                   priority
-                  sizes="(max-width: 1024px) 320px, 420px"
+                  sizes="(max-width: 640px) 320px, (max-width: 1024px) 360px, 420px"
                   className="object-cover object-top"
                 />
                 {/* Soft tint bottom */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-cream/60 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white/60 to-transparent" />
               </div>
 
-              {/* Badge */}
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-coal/85 px-3 py-1.5 text-[11px] font-medium text-cream backdrop-blur">
-                <Sparkles className="h-3 w-3 text-mint-300" />
+              {/* Badge overlay */}
+              <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-[rgba(14,14,13,0.82)] px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur">
+                <Sparkles className="h-3 w-3 text-emerald-300" />
                 Production-grade AI · since 2023
               </div>
             </div>
@@ -140,8 +141,8 @@ export default function V2Hero() {
             {/* Hand-drawn squiggle accent */}
             <Squiggle className="pointer-events-none absolute -bottom-10 -left-10 hidden h-40 w-40 text-mint-400 lg:block" />
 
-            {/* Social icons floating left */}
-            <div className="absolute -left-12 top-12 hidden flex-col gap-3 lg:flex">
+            {/* Social icons — below the card on mobile, floating left on lg */}
+            <div className="mt-4 flex justify-center gap-3 lg:absolute lg:-left-14 lg:top-12 lg:mt-0 lg:flex-col">
               <SocialPill href={PERSONAL.linkedin} label="LinkedIn">
                 <Linkedin className="h-3.5 w-3.5" />
               </SocialPill>
