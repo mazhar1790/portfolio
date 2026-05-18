@@ -26,11 +26,38 @@ const config: Config = {
         amber: {
           signal: "#ffb84d",
         },
+        // ── /v2 light theme palette ────────────────────────────────────
+        mint: {
+          50: "#f3fbf7",
+          100: "#e3f6ec",
+          200: "#c4ecd6",
+          300: "#9fdfbb",
+          400: "#6dcc99",
+          500: "#3fb578",
+          600: "#2d9961",
+          700: "#26794e",
+          800: "#1f6041",
+          900: "#1a4d36",
+        },
+        cream: {
+          DEFAULT: "#fafaf7",
+          warm: "#f6f5f0",
+          line: "#e9e8e3",
+        },
+        coal: {
+          DEFAULT: "#0e0e0d",
+          soft: "#262624",
+          muted: "#525251",
+          dim: "#9a9a96",
+        },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         display: ["var(--font-instrument)", "Georgia", "serif"],
         mono: ["var(--font-jetbrains-mono)", "ui-monospace", "monospace"],
+        // /v2 fonts
+        jakarta: ["var(--font-jakarta)", "system-ui", "sans-serif"],
+        hand: ["var(--font-caveat)", "cursive"],
       },
       letterSpacing: {
         tightest: "-0.04em",

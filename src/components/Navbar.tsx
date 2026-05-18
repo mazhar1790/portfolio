@@ -107,6 +107,14 @@ export default function Navbar() {
             For recruiters
           </a>
           <a
+            href="/v2"
+            className="hidden items-center gap-1.5 rounded-full border border-signal/40 bg-signal/5 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-signal transition hover:bg-signal/15 lg:inline-flex"
+            title="Studio edition — light theme"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-signal" />
+            Studio edition
+          </a>
+          <a
             href="/ar"
             className="hidden items-center gap-1 rounded-md border border-ink-line bg-ink-card px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-paper-dim transition hover:border-signal/40 hover:text-paper lg:inline-flex"
             aria-label="Arabic version"
