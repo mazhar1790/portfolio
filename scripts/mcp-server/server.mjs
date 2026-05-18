@@ -57,7 +57,7 @@ const PROFILE = {
   portfolio: "https://keen-tartufo-313e21.netlify.app",
   yearsOfExperience: 15,
   availability: "Available from June 2026 for senior IC, principal, or hands-on tech-lead roles. Remote, hybrid (UAE), or relocation.",
-  bookCall: "https://calendly.com/mazhar1783/30min",
+  bookCall: "https://calendly.com/mazhar1783/15min",
 };
 
 const PROJECTS = [

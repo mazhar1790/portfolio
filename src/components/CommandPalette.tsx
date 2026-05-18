@@ -132,7 +132,7 @@ export default function CommandPalette() {
     },
     {
       id: "action-book",
-      label: "Book a 20-min call",
+      label: "Book a 15-min call",
       description: "Calendly",
       icon: <Calendar className="h-4 w-4 text-signal" />,
       action: () => {

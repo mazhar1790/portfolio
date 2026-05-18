@@ -32,7 +32,7 @@ Output STRICT JSON (no markdown, no preamble) matching this shape:
     { "requirement": "<from the JD>", "honestNote": "<acknowledged gap or compensating strength>" }
   ],
   "tailoredPitch": "<3-4 sentence pitch tailored to this JD — what to say in the first call>",
-  "suggestedNextStep": "<concrete action, e.g. 'Book a 20-min call to discuss X'>"
+  "suggestedNextStep": "<concrete action, e.g. 'Book a 15-min call to discuss X'>"
 }
 
 Return ONLY the JSON. No code fences. No commentary.`;

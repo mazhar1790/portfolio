@@ -24,7 +24,7 @@ const CSS_HREF = "https://assets.calendly.com/assets/external/widget.css";
 
 export default function BookCall({
   variant = "primary",
-  label = "Book a 20-min call",
+  label = "Book a 15-min call",
   className,
 }: Props) {
   const [loading, setLoading] = useState(false);

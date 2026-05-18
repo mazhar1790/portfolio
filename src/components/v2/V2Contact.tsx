@@ -27,7 +27,7 @@ export default function V2Contact() {
               <span className="font-hand text-mint-600">let&apos;s talk.</span>
             </h2>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-coal-muted">
-              The fastest path is a 20-minute Calendly call — no slide deck, no
+              The fastest path is a 15-minute Calendly call — no slide deck, no
               prep, just questions about your problem and whether I&apos;m the
               right person for it.
             </p>
@@ -41,7 +41,7 @@ export default function V2Contact() {
                   className="group inline-flex items-center gap-2 rounded-full bg-coal px-6 py-3.5 text-sm font-semibold text-cream transition hover:bg-mint-700"
                 >
                   <Calendar className="h-4 w-4" />
-                  Book a 20-min call
+                  Book a 15-min call
                   <ArrowUpRight className="h-3.5 w-3.5 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </a>
               )}

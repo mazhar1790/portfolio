@@ -7,7 +7,7 @@ export const PERSONAL = {
   email: "Mazhar1783@outlook.com",
   phone: "+971 556 127 178",
   linkedin: "https://www.linkedin.com/in/mazharhayyat/",
-  calendly: "https://calendly.com/mazhar1783/30min",
+  calendly: "https://calendly.com/mazhar1783/15min",
   github: "https://github.com/mazhar1790",
   cvUrl: "/Mazhar-Hayat-AI-Architect-CV.docx",
   cvUrlPdf: "/Mazhar-Hayat-AI-Architect-CV.pdf",

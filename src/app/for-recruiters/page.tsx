@@ -235,7 +235,7 @@ export default function ForRecruitersPage() {
           <Calendar className="mx-auto h-6 w-6 text-signal" />
           <h2 className="display-2 mt-4">Let&apos;s talk.</h2>
           <p className="mt-3 text-paper-muted">
-            If this looks like a fit, the fastest path is a 20-minute call.
+            If this looks like a fit, the fastest path is a 15-minute call.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <BookCall variant="primary" />
