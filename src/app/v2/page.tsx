@@ -3,6 +3,7 @@ import V2Nav from "@/components/v2/V2Nav";
 import V2Hero from "@/components/v2/V2Hero";
 import V2Ticker from "@/components/v2/V2Ticker";
 import V2LogoStrip from "@/components/v2/V2LogoStrip";
+import V2TrustStrip from "@/components/v2/V2TrustStrip";
 import V2About from "@/components/v2/V2About";
 import V2Lesson from "@/components/v2/V2Lesson";
 import V2Services from "@/components/v2/V2Services";
@@ -28,6 +29,7 @@ export default function V2Home() {
         <V2Hero />
         <V2Ticker />
         <V2LogoStrip />
+        <V2TrustStrip />
         <V2About />
         <V2Lesson
           number="Lesson · 01"

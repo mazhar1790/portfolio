@@ -1,10 +1,37 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Linkedin, MapPin, Sparkles } from "lucide-react";
-import { PERSONAL } from "@/data/cv";
+import { ArrowRight, ArrowUpRight, Linkedin, MapPin, Sparkles } from "lucide-react";
+import { PERSONAL, ROTATING_HEADLINES } from "@/data/cv";
+import { useChat } from "../AiChat/ChatContext";
+
+const QUICK_PROMPTS = [
+  "What AI projects has he shipped?",
+  "Tell me about his RAG architecture",
+  "Is he available for hire?",
+];
 
 export default function V2Hero() {
+  const { openChat } = useChat();
+  const [draft, setDraft] = useState("");
+  const [headlineIdx, setHeadlineIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(
+      () => setHeadlineIdx((i) => (i + 1) % ROTATING_HEADLINES.length),
+      3800,
+    );
+    return () => clearInterval(t);
+  }, []);
+
+  function submitPrompt(prompt: string) {
+    const text = prompt.trim();
+    if (!text) return;
+    openChat(text);
+    setDraft("");
+  }
+
   return (
     <section className="relative isolate overflow-hidden bg-[#f7f7f3] pt-24 sm:pt-28">
       {/* Mint blob top-right */}
@@ -79,6 +106,83 @@ export default function V2Hero() {
               intelligence — the kind that runs 24/7, not the kind that demos
               well.
             </motion.p>
+
+            {/* Rotating proof headlines */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.22 }}
+              className="mt-6 flex h-7 items-center gap-2.5 overflow-hidden"
+            >
+              <span className="font-mono text-xs text-[#3fb578]">▸</span>
+              <div className="relative h-6 flex-1 overflow-hidden">
+                {ROTATING_HEADLINES.map((h, i) => (
+                  <motion.p
+                    key={h}
+                    initial={false}
+                    animate={{
+                      y: i === headlineIdx ? 0 : i < headlineIdx ? -28 : 28,
+                      opacity: i === headlineIdx ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-0 text-[14.5px] font-medium text-[#525251]"
+                  >
+                    {h}
+                  </motion.p>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* AI prompt composer */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mt-7 max-w-[520px]"
+            >
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[#9a9a96]">
+                Ask my AI anything
+              </p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitPrompt(draft);
+                }}
+                className="group flex items-center gap-2 rounded-2xl border border-[#e0dfd8] bg-white p-2 pl-4 transition focus-within:border-[#6dcc99] focus-within:shadow-[0_8px_24px_-12px_rgba(45,153,97,0.30)]"
+              >
+                <Sparkles className="h-4 w-4 shrink-0 text-[#3fb578]" />
+                <input
+                  type="text"
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  placeholder="Ask about Mazhar's projects, stack, availability…"
+                  className="flex-1 bg-transparent py-2.5 text-sm text-[#0e0e0d] placeholder:text-[#9a9a96] focus:outline-none sm:text-[15px]"
+                  aria-label="Ask the AI"
+                />
+                <button
+                  type="submit"
+                  disabled={!draft.trim()}
+                  aria-label="Ask"
+                  className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-[#0e0e0d] px-4 font-jakarta text-sm font-semibold text-white transition hover:bg-[#2d9961] disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Ask
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
+              </form>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {QUICK_PROMPTS.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => submitPrompt(p)}
+                    className="group inline-flex items-center gap-1.5 rounded-full border border-[#e0dfd8] bg-white px-3 py-1.5 text-xs font-medium text-[#525251] transition hover:border-[#6dcc99] hover:text-[#0e0e0d]"
+                  >
+                    {p}
+                    <ArrowUpRight className="h-3 w-3 transition group-hover:text-[#2d9961]" />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
 
             {/* Name + title strip */}
             <motion.div
