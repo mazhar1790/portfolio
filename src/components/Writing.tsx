@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, Clock, PenLine } from "lucide-react";
+import { ArrowUpRight, Clock, Github, PenLine } from "lucide-react";
 import { ARTICLES } from "@/data/cv";
+import GitHubFeed from "./GitHubFeed";
 
 function formatDate(iso: string): string {
   const [year, month] = iso.split("-");
@@ -39,53 +40,67 @@ export default function Writing() {
         </div>
 
         <div className="mt-14 divide-y divide-ink-line border-y border-ink-line">
-          {ARTICLES.map((a, i) => (
-            <motion.article
-              key={a.slug}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="group grid gap-4 py-8 lg:grid-cols-12 lg:gap-8"
-            >
-              <div className="lg:col-span-2">
-                <p className="font-mono text-xs text-paper-dim">
-                  {formatDate(a.date)}
-                </p>
-                <p className="mt-1 flex items-center gap-1 font-mono text-xs text-paper-dim">
-                  <Clock className="h-3 w-3" />
-                  {a.readMin} min read
-                </p>
-              </div>
+          {ARTICLES.map((a, i) => {
+            const ArticleWrapper = a.comingSoon ? "div" : "a";
+            const wrapperProps = a.comingSoon
+              ? {}
+              : {
+                  href: `/writing/${a.slug}`,
+                };
 
-              <div className="lg:col-span-9">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="font-display text-2xl leading-snug text-paper transition group-hover:text-signal lg:text-[1.6rem]">
-                    {a.title}
-                  </h3>
-                  {a.comingSoon ? (
-                    <span className="mt-1 shrink-0 rounded-full border border-ink-line px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-paper-dim lg:flex hidden items-center">
-                      Soon
-                    </span>
-                  ) : (
-                    <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-paper-dim transition group-hover:text-signal hidden lg:block" />
-                  )}
-                </div>
+            return (
+              <motion.article
+                key={a.slug}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: i * 0.05 }}
+                className="py-8"
+              >
+                <ArticleWrapper
+                  {...(wrapperProps as Record<string, string>)}
+                  className="group grid gap-4 lg:grid-cols-12 lg:gap-8"
+                >
+                  <div className="lg:col-span-2">
+                    <p className="font-mono text-xs text-paper-dim">
+                      {formatDate(a.date)}
+                    </p>
+                    <p className="mt-1 flex items-center gap-1 font-mono text-xs text-paper-dim">
+                      <Clock className="h-3 w-3" />
+                      {a.readMin} min read
+                    </p>
+                  </div>
 
-                <p className="mt-3 text-[15px] leading-relaxed text-paper-muted">
-                  {a.summary}
-                </p>
+                  <div className="lg:col-span-9">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="font-display text-2xl leading-snug text-paper transition group-hover:text-signal lg:text-[1.6rem]">
+                        {a.title}
+                      </h3>
+                      {a.comingSoon ? (
+                        <span className="mt-1 shrink-0 rounded-full border border-ink-line px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-paper-dim lg:flex hidden items-center">
+                          Soon
+                        </span>
+                      ) : (
+                        <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-paper-dim transition group-hover:text-signal hidden lg:block" />
+                      )}
+                    </div>
 
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {a.tags.map((tag) => (
-                    <span key={tag} className="tag">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.article>
-          ))}
+                    <p className="mt-3 text-[15px] leading-relaxed text-paper-muted">
+                      {a.summary}
+                    </p>
+
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {a.tags.map((tag) => (
+                        <span key={tag} className="tag">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </ArticleWrapper>
+              </motion.article>
+            );
+          })}
         </div>
 
         <motion.p
@@ -106,6 +121,28 @@ export default function Writing() {
           </a>{" "}
           to be notified.
         </motion.p>
+
+        {/* GitHub Activity */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-20"
+        >
+          <div className="mb-6 flex items-center gap-3">
+            <Github className="h-4 w-4 text-signal" />
+            <h3 className="font-mono text-sm uppercase tracking-[0.18em] text-paper">
+              GitHub Activity
+            </h3>
+            <span className="font-mono text-[10px] text-paper-dim">
+              · live
+            </span>
+          </div>
+          <div className="rounded-xl border border-ink-line bg-ink-card p-4">
+            <GitHubFeed />
+          </div>
+        </motion.div>
       </div>
     </section>
   );

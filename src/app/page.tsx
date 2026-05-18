@@ -1,5 +1,6 @@
 import About from "@/components/About";
 import Certifications from "@/components/Certifications";
+import CommandPalette from "@/components/CommandPalette";
 import Contact from "@/components/Contact";
 import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
@@ -14,6 +15,7 @@ import Writing from "@/components/Writing";
 export default function Home() {
   return (
     <>
+      <CommandPalette />
       <Navbar />
       <main>
         <Hero />

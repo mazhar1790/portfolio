@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { ComponentType } from "react";
 import { PROJECTS, type Project } from "@/data/cv";
@@ -164,6 +165,18 @@ function CaseStudy({
               </span>
             ))}
           </div>
+
+          {project.slug && (
+            <div className="mt-8">
+              <Link
+                href={`/projects/${project.slug}`}
+                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-signal transition hover:text-signal/80"
+              >
+                Full case study
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          )}
         </div>
 
         <div

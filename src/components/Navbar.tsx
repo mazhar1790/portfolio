@@ -1,22 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, MessageSquareText, X } from "lucide-react";
+import { Command, Menu, MessageSquareText, X } from "lucide-react";
 import { useChat } from "./AiChat/ChatContext";
+import ThemeToggle from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
-  { href: "#about", label: "About", n: "01" },
-  { href: "#projects", label: "Work", n: "02" },
-  { href: "#experience", label: "Experience", n: "04" },
-  { href: "#writing", label: "Writing", n: "08" },
-  { href: "#contact", label: "Contact", n: "09" },
+  { href: "#about", label: "About", n: "01", section: "about" },
+  { href: "#projects", label: "Work", n: "02", section: "projects" },
+  { href: "#experience", label: "Experience", n: "04", section: "experience" },
+  { href: "#writing", label: "Writing", n: "08", section: "writing" },
+  { href: "#contact", label: "Contact", n: "09", section: "contact" },
 ];
+
+const SECTION_IDS = LINKS.map((l) => l.section);
 
 export default function Navbar() {
   const { openChat } = useChat();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
     function onScroll() {
@@ -25,6 +29,26 @@ export default function Navbar() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Track active section via IntersectionObserver
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry?.isIntersecting) setActiveSection(id);
+        },
+        { threshold: 0.25, rootMargin: "-64px 0px -35% 0px" },
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   return (
@@ -48,18 +72,32 @@ export default function Navbar() {
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
-          {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="group flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-paper-dim transition hover:text-paper"
-            >
-              <span className="text-signal/60 transition group-hover:text-signal">
-                {l.n}
-              </span>
-              {l.label}
-            </a>
-          ))}
+          {LINKS.map((l) => {
+            const isActive = activeSection === l.section;
+            return (
+              <a
+                key={l.href}
+                href={l.href}
+                className={cn(
+                  "group flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] transition",
+                  isActive ? "text-paper" : "text-paper-dim hover:text-paper",
+                )}
+              >
+                <span
+                  className={cn(
+                    "transition",
+                    isActive ? "text-signal" : "text-signal/40 group-hover:text-signal",
+                  )}
+                >
+                  {l.n}
+                </span>
+                {l.label}
+                {isActive && (
+                  <span className="h-1 w-1 rounded-full bg-signal shadow-signal-sm" />
+                )}
+              </a>
+            );
+          })}
           <button
             type="button"
             onClick={() => openChat()}
@@ -68,6 +106,15 @@ export default function Navbar() {
             <MessageSquareText className="h-3 w-3" />
             Ask AI
           </button>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }))}
+            className="hidden items-center gap-1.5 rounded-md border border-ink-line px-2 py-1 font-mono text-[10px] text-paper-dim transition hover:border-signal/30 hover:text-paper xl:inline-flex"
+            aria-label="Open command palette"
+          >
+            <Command className="h-3 w-3" />K
+          </button>
+          <ThemeToggle />
         </nav>
 
         <button
@@ -83,17 +130,28 @@ export default function Navbar() {
       {menuOpen && (
         <div className="border-t border-ink-line bg-ink/95 backdrop-blur-md md:hidden">
           <nav className="container-page flex flex-col gap-1 py-4">
-            {LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 rounded-md px-3 py-3 font-mono text-xs uppercase tracking-[0.18em] text-paper-dim transition hover:bg-ink-elev hover:text-paper"
-              >
-                <span className="text-signal">{l.n}</span>
-                {l.label}
-              </a>
-            ))}
+            {LINKS.map((l) => {
+              const isActive = activeSection === l.section;
+              return (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 rounded-md px-3 py-3 font-mono text-xs uppercase tracking-[0.18em] transition hover:bg-ink-elev",
+                    isActive ? "text-paper" : "text-paper-dim hover:text-paper",
+                  )}
+                >
+                  <span className={isActive ? "text-signal" : "text-signal/50"}>
+                    {l.n}
+                  </span>
+                  {l.label}
+                  {isActive && (
+                    <span className="ml-auto h-1 w-1 rounded-full bg-signal" />
+                  )}
+                </a>
+              );
+            })}
             <button
               type="button"
               onClick={() => {

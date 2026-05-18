@@ -1,0 +1,95 @@
+export const metadata = {
+  title: "How We Cut Document Research From 2 Hours to 10 Seconds",
+  description:
+    "A deep dive into the architecture, decisions, and hard lessons from building an enterprise RAG system at SCAD that now handles 5,000+ queries a month with 92% accuracy.",
+  date: "2026-04-15",
+  readTime: "12 min",
+  tags: ["RAG", "LLM", "Azure OpenAI", "Pinecone", "Enterprise AI"],
+};
+
+# How We Cut Document Research From 2 Hours to 10 Seconds
+
+**The problem was deceptively simple.** Analysts at SCAD spent two hours per day — sometimes more — sifting through policy documents, statistical standards, and historical reports trying to answer questions they'd answered before. The documents existed. The answers existed. Nobody could find them fast enough.
+
+This is the story of how we built an enterprise RAG (Retrieval Augmented Generation) system that changed that, and what we learned along the way.
+
+---
+
+## Why Not Just Use Search?
+
+This was the first question our CTO asked. And it's the right one.
+
+Traditional full-text search (Elasticsearch, SharePoint's built-in engine) failed for a specific reason: our analysts weren't looking for *keywords*, they were asking *questions*. "What methodology did we use for the 2021 census weighting?" isn't a keyword query — it requires semantic understanding of both the question and the document corpus.
+
+Vector search alone also wasn't enough. A pure semantic approach would return vague thematic matches but miss precise factual answers buried in tables or appendices. We needed *both*.
+
+---
+
+## The Architecture
+
+After three prototypes that didn't survive contact with real users, we landed on this:
+
+```
+User Question
+    ↓
+Query Embedding (text-embedding-3-large)
+    ↓
+Hybrid Retrieval ←→ Pinecone (vector) + BM25 (keyword)
+    ↓
+Cross-Encoder Re-ranking (Cohere rerank-v3)
+    ↓
+Prompt Assembly with citations
+    ↓
+GPT-4o (Azure OpenAI) → Cited Response
+```
+
+### Why Hybrid Retrieval?
+
+Vector search is excellent at finding semantically similar passages, but it collapses when the answer contains a specific number or term the user mentions verbatim. BM25 excels at exact matches. We use Reciprocal Rank Fusion (RRF) to merge the two ranked lists. On our evaluation set, hybrid beat pure vector by 14 percentage points on NDCG@5.
+
+### Why Re-rank?
+
+The retriever's job is recall — find everything that *might* be relevant (top 50 candidates). The re-ranker's job is precision — pick the 5 best ones. Cross-encoders consider the query and each candidate *together*, making them significantly more accurate than bi-encoder similarity scores, at the cost of speed. We can afford that cost because we run it on 50 candidates, not 100,000.
+
+### The Citation Problem
+
+This was the hardest part. GPT-4o will confidently synthesize an answer from retrieved chunks — but which chunk? We solved it with a structured prompting strategy: each chunk in the prompt includes a `[SOURCE: doc_id, page_n]` tag, and we instruct the model to include these tags in its response. A post-processing pass then replaces the tags with formatted footnotes. Users can click any footnote to open the source document at the right page.
+
+---
+
+## The Numbers That Mattered to Leadership
+
+Leadership doesn't care about NDCG. They care about:
+
+- **Time saved**: From 2h to 10 seconds per query. With 200+ analysts running ~3 queries/day, that's roughly **2,400 hours/month** back in people's hands.
+- **Accuracy**: We ran a blind evaluation where five domain experts rated 200 AI answers against the source documents. **92% rated as "accurate and well-cited"**.
+- **Cost**: Despite using GPT-4o, our average cost per query is **$0.004** because re-ranking lets us send a small, high-quality context window rather than dumping in 20 raw chunks.
+
+---
+
+## Three Mistakes We Made
+
+**1. Chunking strategy matters more than the model.**
+Our first prototype used 1,024-token chunks. Answers were vague. Switching to semantic chunking — splitting on section boundaries, not token counts — improved accuracy by ~20% before we even touched the model.
+
+**2. Don't skip evaluation infra.**
+We spent two weeks building an evaluation harness before we wrote any production code. It felt slow at the time. Without it, we would never have known whether any individual change helped or hurt.
+
+**3. Users trust confidence, not accuracy.**
+An early prototype was more accurate than our final system on benchmarks, but users preferred the final version. Why? The final version would say "I couldn't find a clear answer in the available documents" when uncertain. The earlier one would confidently hallucinate. Trust is worth more than benchmark points.
+
+---
+
+## What's Next
+
+We're currently extending the system with:
+
+- **Structured document understanding** — extracting tables and figures using Azure Document Intelligence, so analysts can query tabular data in Arabic and English
+- **Multi-hop reasoning** — chaining across multiple documents when a single chunk isn't sufficient
+- **Proactive digests** — the system monitors for new publications and automatically surfaces relevant updates to analysts who've asked similar questions
+
+If you're building something similar, I'm happy to talk through the specifics. [Drop me an email](/contact) or [ask the AI on this page](/). It can answer questions about my work in real time.
+
+---
+
+*Mazhar Hayat is an AI Solutions Architect at SCAD — Statistics Centre Abu Dhabi, where he leads the design and deployment of enterprise AI systems.*

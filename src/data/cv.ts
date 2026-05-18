@@ -123,6 +123,7 @@ export const SKILLS: Record<
 };
 
 export interface Project {
+  slug: string;
   title: string;
   company: string;
   year: string;
@@ -136,6 +137,7 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
+    slug: "rag-document-intelligence",
     title: "Enterprise RAG Document Intelligence System",
     company: "SCAD — Statistics Centre Abu Dhabi",
     year: "2025",
@@ -167,6 +169,7 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    slug: "conversational-analytics",
     title: "Intelligent Conversational Analytics Platform",
     company: "SCAD — Statistics Centre Abu Dhabi",
     year: "2023 – Present",
@@ -197,6 +200,7 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    slug: "vision-ai-pipeline",
     title: "Document Processing & Vision AI Pipeline",
     company: "SCAD — Statistics Centre Abu Dhabi",
     year: "2025",
@@ -226,6 +230,7 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    slug: "ai-chatbot",
     title: "AI Conversational Chatbot (18K+ Monthly Queries)",
     company: "SCAD — Statistics Centre Abu Dhabi",
     year: "2023",
@@ -522,6 +527,16 @@ export interface Article {
 }
 
 export const ARTICLES: Article[] = [
+  {
+    slug: "how-we-cut-document-research-from-2-hours-to-10-seconds",
+    title: "How We Cut Document Research From 2 Hours to 10 Seconds",
+    summary:
+      "The architecture, trade-offs, and hard lessons from building an enterprise RAG system at SCAD that now handles 5,000+ queries a month with 92% accuracy.",
+    date: "2026-04",
+    readMin: 12,
+    tags: ["RAG", "Azure OpenAI", "Pinecone", "Enterprise AI"],
+    comingSoon: false,
+  },
   {
     slug: "rag-from-prototype-to-production",
     title: "RAG from prototype to production: what nobody tells you",

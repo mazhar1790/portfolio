@@ -61,7 +61,12 @@ export default function RagDiagram() {
         </g>
 
         {/* Embed */}
-        <DiagramNode x={144} y={50} label="Embed" sublabel="text-embedding-3" />
+        <DiagramNode
+          x={144} y={50}
+          label="Embed"
+          sublabel="text-embedding-3"
+          tooltip="OpenAI ada-002 embeddings"
+        />
         <DiagramArrow d="M 106 140 L 144 72" />
 
         {/* Vector Store */}
@@ -109,7 +114,12 @@ export default function RagDiagram() {
         </g>
 
         {/* Query path */}
-        <DiagramNode x={144} y={20} label="Query" sublabel="user prompt" />
+        <DiagramNode
+          x={144} y={20}
+          label="Query"
+          sublabel="user prompt"
+          tooltip="Natural language question"
+        />
         <DiagramArrow d="M 254 42 C 290 42, 290 90, 308 90" />
 
         {/* Retriever */}
@@ -119,6 +129,7 @@ export default function RagDiagram() {
           label="Hybrid Retriever"
           sublabel="BM25 + Vector"
           accent
+          tooltip="Semantic + keyword fusion"
         />
         <DiagramArrow d="M 254 182 C 280 182, 280 100, 308 100" />
 
@@ -128,6 +139,7 @@ export default function RagDiagram() {
           y={130}
           label="Re-ranker"
           sublabel="cross-encoder"
+          tooltip="Cohere rerank v3"
         />
         <DiagramArrow d="M 363 114 L 363 130" flow={false} />
 
@@ -138,6 +150,7 @@ export default function RagDiagram() {
           label="GPT-4"
           sublabel="Azure OpenAI"
           accent
+          tooltip="gpt-4o with citation prompting"
         />
         <DiagramArrow d="M 418 152 C 432 152, 432 122, 446 122" delay={0.4} />
 
@@ -147,6 +160,7 @@ export default function RagDiagram() {
           y={200}
           label="Response"
           sublabel="cited · 10s"
+          tooltip="Source-cited answer in ~10s"
         />
         <DiagramArrow d="M 500 144 L 500 200" delay={0.8} />
 

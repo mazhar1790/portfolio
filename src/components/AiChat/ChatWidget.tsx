@@ -20,6 +20,7 @@ export default function ChatWidget() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [followups, setFollowups] = useState<string[]>([]);
   const abortRef = useRef<AbortController | null>(null);
 
   const sendMessage = useCallback(
@@ -28,6 +29,7 @@ export default function ChatWidget() {
       if (!text || loading) return;
 
       setError(null);
+      setFollowups([]);
 
       const userMsg: ChatMessage = { role: "user", content: text };
       const assistantMsg: ChatMessage = {
@@ -88,6 +90,24 @@ export default function ChatWidget() {
           }
           return next;
         });
+
+        // Fetch suggested follow-ups in background (fire-and-forget)
+        setFollowups([]);
+        fetch("/api/chat/followups", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [...messages, userMsg].map((m) => ({
+              role: m.role,
+              content: m.content,
+            })),
+          }),
+        })
+          .then((r) => r.json())
+          .then((d: { followups?: string[] }) => {
+            if (d.followups?.length) setFollowups(d.followups);
+          })
+          .catch(() => null);
       } catch (err) {
         const msg =
           err instanceof Error && err.name === "AbortError"
@@ -218,6 +238,29 @@ export default function ChatWidget() {
                 <ChatMessages messages={messages} loading={loading} />
               )}
             </div>
+
+            {followups.length > 0 && !loading && (
+              <div className="border-t border-ink-line bg-ink-card/80 px-3 py-2.5">
+                <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-dim">
+                  Suggested
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {followups.map((q) => (
+                    <button
+                      key={q}
+                      type="button"
+                      onClick={() => {
+                        setFollowups([]);
+                        sendMessage(q);
+                      }}
+                      className="rounded-full border border-ink-line bg-ink-elev px-2.5 py-1 text-[11px] text-paper-muted transition hover:border-signal/40 hover:text-paper"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {error && (
               <div className="border-t border-red-500/20 bg-red-500/10 px-4 py-2 text-xs text-red-200">

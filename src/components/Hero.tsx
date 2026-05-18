@@ -11,6 +11,7 @@ import {
 } from "@/data/cv";
 import { useChat } from "./AiChat/ChatContext";
 import Counter from "./Counter";
+import AvailabilityBadge from "./AvailabilityBadge";
 
 const QUICK_PROMPTS = [
   "What AI projects has he shipped?",
@@ -70,10 +71,10 @@ export default function Hero() {
           className="grid items-end gap-10 lg:grid-cols-[1.45fr_1fr] lg:gap-14"
         >
           <div>
-            <motion.div variants={item} className="flex items-center gap-3">
-              <span className="signal-dot" />
-              <span className="meta-plain">
-                Available · Abu Dhabi · UAE
+            <motion.div variants={item} className="flex flex-wrap items-center gap-3">
+              <AvailabilityBadge />
+              <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-paper-dim">
+                Abu Dhabi · UAE
               </span>
             </motion.div>
 

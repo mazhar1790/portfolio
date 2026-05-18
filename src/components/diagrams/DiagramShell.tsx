@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 export function DiagramShell({
@@ -40,6 +43,7 @@ export function DiagramNode({
   label,
   sublabel,
   accent,
+  tooltip,
 }: {
   x: number;
   y: number;
@@ -48,23 +52,48 @@ export function DiagramNode({
   label: string;
   sublabel?: string;
   accent?: boolean;
+  tooltip?: string;
 }) {
+  const [hovered, setHovered] = useState(false);
+
   return (
-    <g transform={`translate(${x}, ${y})`}>
+    <g
+      transform={`translate(${x}, ${y})`}
+      style={{ cursor: tooltip ? "pointer" : "default" }}
+      onMouseEnter={() => tooltip && setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <rect
         width={w}
         height={h}
         rx={6}
-        fill={accent ? "rgba(0, 255, 136, 0.10)" : "rgba(255, 255, 255, 0.03)"}
-        stroke={accent ? "rgba(0, 255, 136, 0.55)" : "rgba(255, 255, 255, 0.16)"}
-        strokeWidth={1}
+        fill={
+          accent
+            ? hovered
+              ? "rgba(0, 255, 136, 0.18)"
+              : "rgba(0, 255, 136, 0.10)"
+            : hovered
+              ? "rgba(255, 255, 255, 0.07)"
+              : "rgba(255, 255, 255, 0.03)"
+        }
+        stroke={
+          accent
+            ? hovered
+              ? "rgba(0, 255, 136, 0.85)"
+              : "rgba(0, 255, 136, 0.55)"
+            : hovered
+              ? "rgba(255, 255, 255, 0.30)"
+              : "rgba(255, 255, 255, 0.16)"
+        }
+        strokeWidth={hovered ? 1.5 : 1}
+        style={{ transition: "fill 0.15s, stroke 0.15s" }}
       />
       <text
         x={w / 2}
         y={sublabel ? h / 2 - 2 : h / 2 + 4}
         textAnchor="middle"
         className="fill-paper font-sans"
-        style={{ fontSize: 11, fontWeight: 500 }}
+        style={{ fontSize: 11, fontWeight: 500, pointerEvents: "none" }}
       >
         {label}
       </text>
@@ -74,10 +103,34 @@ export function DiagramNode({
           y={h / 2 + 12}
           textAnchor="middle"
           className={accent ? "fill-signal" : "fill-paper-dim"}
-          style={{ fontSize: 9, fontFamily: "var(--font-jetbrains-mono)" }}
+          style={{ fontSize: 9, fontFamily: "var(--font-jetbrains-mono)", pointerEvents: "none" }}
         >
           {sublabel}
         </text>
+      )}
+      {/* Tooltip */}
+      {hovered && tooltip && (
+        <g>
+          <rect
+            x={w / 2 - 72}
+            y={h + 6}
+            width={144}
+            height={28}
+            rx={5}
+            fill="#0a0a0a"
+            stroke="rgba(0,255,136,0.35)"
+            strokeWidth={1}
+          />
+          <text
+            x={w / 2}
+            y={h + 24}
+            textAnchor="middle"
+            fill="rgba(255,255,255,0.75)"
+            style={{ fontSize: 10, fontFamily: "var(--font-jetbrains-mono)", pointerEvents: "none" }}
+          >
+            {tooltip}
+          </text>
+        </g>
       )}
     </g>
   );

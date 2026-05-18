@@ -4,12 +4,15 @@ import { motion } from "framer-motion";
 import {
   ArrowDown,
   ArrowUpRight,
+  Check,
+  Copy,
   Linkedin,
   Mail,
   MapPin,
   MessageSquareText,
   Phone,
 } from "lucide-react";
+import { useState } from "react";
 import { PERSONAL } from "@/data/cv";
 import { useChat } from "./AiChat/ChatContext";
 
@@ -65,12 +68,7 @@ export default function Contact() {
           </div>
 
           <div className="mt-20 grid gap-px overflow-hidden border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-4">
-            <ContactCell
-              icon={<Mail className="h-4 w-4" />}
-              label="Email"
-              value={PERSONAL.email}
-              href={`mailto:${PERSONAL.email}`}
-            />
+            <EmailCell />
             <ContactCell
               icon={<Linkedin className="h-4 w-4" />}
               label="LinkedIn"
@@ -130,5 +128,53 @@ function ContactCell({
     >
       {inner}
     </a>
+  );
+}
+
+function EmailCell() {
+  const [copied, setCopied] = useState(false);
+
+  function handleCopy(e: React.MouseEvent) {
+    e.preventDefault();
+    navigator.clipboard.writeText(PERSONAL.email).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
+  return (
+    <div className="group relative flex h-full min-h-[110px] flex-col justify-between bg-ink-card p-6 transition hover:bg-ink-elev">
+      <div className="flex items-start justify-between">
+        <span className="flex h-8 w-8 items-center justify-center rounded-md bg-signal/10 text-signal">
+          <Mail className="h-4 w-4" />
+        </span>
+        <button
+          type="button"
+          onClick={handleCopy}
+          aria-label="Copy email address"
+          className="rounded-md p-1.5 text-paper-dim opacity-0 transition group-hover:opacity-100 hover:bg-ink-line hover:text-signal"
+        >
+          {copied ? (
+            <Check className="h-3.5 w-3.5 text-signal" />
+          ) : (
+            <Copy className="h-3.5 w-3.5" />
+          )}
+        </button>
+      </div>
+      <div className="mt-4">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-paper-dim">
+          Email
+          {copied && (
+            <span className="ml-2 text-signal">· Copied!</span>
+          )}
+        </p>
+        <a
+          href={`mailto:${PERSONAL.email}`}
+          className="mt-1 block truncate text-sm text-paper transition hover:text-signal"
+        >
+          {PERSONAL.email}
+        </a>
+      </div>
+    </div>
   );
 }

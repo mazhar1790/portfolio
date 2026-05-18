@@ -4,6 +4,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { PERSONAL } from "@/data/cv";
 import { ChatProvider } from "@/components/AiChat/ChatContext";
+import ScrollProgress from "@/components/ScrollProgress";
+import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -68,7 +70,10 @@ export default function RootLayout({
       className={`${inter.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen bg-ink text-paper antialiased noise">
+        <ScrollProgress />
+        <ThemeProvider>
         <ChatProvider>{children}</ChatProvider>
+        </ThemeProvider>
         <Analytics />
         <SpeedInsights />
       </body>
