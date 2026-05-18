@@ -164,62 +164,19 @@ export default function V2Hero() {
               className="relative overflow-hidden rounded-[24px] bg-white"
               style={{ boxShadow: "0 20px 60px -20px rgba(14,14,13,0.22)" }}
             >
-              {/* ── Layer 1: heavily blurred + darkened background ── */}
+              {/* ── Cropped photo — background people removed ── */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/me.png"
-                alt=""
-                aria-hidden
-                width={760}
-                height={960}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  display: "block",
-                  objectFit: "cover",
-                  objectPosition: "top center",
-                  filter: "blur(28px) brightness(0.28) saturate(0.3)",
-                  transform: "scale(1.12)",
-                  position: "absolute",
-                  inset: 0,
-                }}
-              />
-
-              {/* ── Layer 2: sharp you, masked to face + torso only ── */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/me.png"
+                src="/me-cropped.png"
                 alt={`${PERSONAL.name} — portrait`}
-                width={760}
-                height={960}
+                width={374}
+                height={576}
                 style={{
                   width: "100%",
                   height: "auto",
                   display: "block",
                   objectFit: "cover",
                   objectPosition: "top center",
-                  position: "relative",
-                  // Tight ellipse focused on your face (upper-left of frame)
-                  // You are roughly at 35% from left, 35% from top
-                  WebkitMaskImage:
-                    "radial-gradient(ellipse 52% 58% at 38% 38%, black 25%, rgba(0,0,0,0.9) 45%, rgba(0,0,0,0.4) 65%, transparent 85%)",
-                  maskImage:
-                    "radial-gradient(ellipse 52% 58% at 38% 38%, black 25%, rgba(0,0,0,0.9) 45%, rgba(0,0,0,0.4) 65%, transparent 85%)",
-                }}
-              />
-
-              {/* ── Layer 3: extra dark overlay on right & top edges ── */}
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background: [
-                    // Right side — covers the man on the right
-                    "linear-gradient(to left, rgba(8,8,8,0.82) 0%, rgba(8,8,8,0.55) 25%, transparent 55%)",
-                    // Top-right — covers the woman in hijab
-                    "linear-gradient(to bottom-left, rgba(8,8,8,0.78) 0%, rgba(8,8,8,0.4) 28%, transparent 55%)",
-                    // Top edge general darkening
-                    "linear-gradient(to bottom, rgba(8,8,8,0.50) 0%, transparent 35%)",
-                  ].join(", "),
                 }}
               />
 
