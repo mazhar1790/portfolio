@@ -17,12 +17,36 @@ const LINKS = [
 
 export default function V2Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Active-section tracking
+  useEffect(() => {
+    const ids = LINKS.map((l) => l.href.replace(/^#/, "")).filter(Boolean);
+    const targets = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (targets.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Pick the entry closest to the top of the viewport that's intersecting
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActiveId(visible[0].target.id);
+      },
+      { rootMargin: "-30% 0px -55% 0px", threshold: 0 },
+    );
+
+    targets.forEach((t) => observer.observe(t));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -42,15 +66,34 @@ export default function V2Nav() {
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
-          {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="rounded-full px-4 py-2 text-sm font-medium text-coal-muted transition hover:bg-mint-100 hover:text-coal"
-            >
-              {l.label}
-            </a>
-          ))}
+          {LINKS.map((l) => {
+            const id = l.href.replace(/^#/, "");
+            const isActive = activeId === id;
+            return (
+              <a
+                key={l.href}
+                href={l.href}
+                className={`relative rounded-full px-4 py-2 text-sm font-medium transition ${
+                  isActive
+                    ? "text-coal"
+                    : "text-coal-muted hover:bg-mint-100 hover:text-coal"
+                }`}
+              >
+                <span className="relative z-10 inline-flex items-center gap-1.5">
+                  {isActive && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-mint-500" />
+                  )}
+                  {l.label}
+                </span>
+                {isActive && (
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 rounded-full bg-mint-100"
+                  />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2">

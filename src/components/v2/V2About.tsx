@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { METRICS, PERSONAL, PRINCIPLES } from "@/data/cv";
+import Counter from "../Counter";
 import ListenButton from "../ListenButton";
 
 const ABOUT_SPOKEN = `I'm Mazhar — an AI Solutions Architect in Abu Dhabi. Before LLMs were cool I was shipping dot-net systems for governments and ministries serving millions of users. When the world changed, I went deep on retrieval, prompt engineering, evals, and the unglamorous plumbing that makes AI work in production. I've now shipped four production AI systems at the Statistics Centre Abu Dhabi: a RAG system on 100,000 documents, a natural language SQL platform for 200 analysts, a vision pipeline saving 2,000 staff hours monthly, and a chatbot handling 18,000 queries each month. I'm now open to senior AI architecture roles or consulting from June 2026.`;
@@ -95,8 +96,7 @@ export default function V2About() {
                       i === 0 ? "text-6xl" : "text-4xl"
                     }`}
                   >
-                    {m.value}
-                    {m.suffix}
+                    <Counter value={m.value} suffix={m.suffix} />
                   </div>
                   <div className="mt-2 font-mono text-[10px] uppercase tracking-widest text-[#525251]">
                     {m.label}

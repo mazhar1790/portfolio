@@ -19,6 +19,7 @@ import V2Writing from "@/components/v2/V2Writing";
 import V2EmailSignup from "@/components/v2/V2EmailSignup";
 import V2Contact from "@/components/v2/V2Contact";
 import V2Footer from "@/components/v2/V2Footer";
+import V2MobileCta from "@/components/v2/V2MobileCta";
 
 export default function V2Home() {
   return (
@@ -57,6 +58,7 @@ export default function V2Home() {
         <V2Contact />
       </main>
       <V2Footer />
+      <V2MobileCta />
     </>
   );
 }

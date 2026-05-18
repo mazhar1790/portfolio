@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight, Linkedin, MapPin, Sparkles } from "lucide-react";
 import { PERSONAL, ROTATING_HEADLINES } from "@/data/cv";
 import { useChat } from "../AiChat/ChatContext";
@@ -263,42 +263,9 @@ export default function V2Hero() {
               </a>
             </div>
 
-            {/* Photo card */}
-            <div
-              className="relative overflow-hidden rounded-[24px] bg-white"
-              style={{ boxShadow: "0 20px 60px -20px rgba(14,14,13,0.22)" }}
-            >
-              {/* ── Cropped photo — background people removed ── */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/me-cropped.png"
-                alt={`${PERSONAL.name} — portrait`}
-                width={374}
-                height={576}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  display: "block",
-                  objectFit: "cover",
-                  objectPosition: "top center",
-                }}
-              />
+            {/* Photo card with subtle 3D tilt on mouse */}
+            <TiltCard />
 
-              {/* Bottom gradient fade */}
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4"
-                style={{ background: "linear-gradient(to top, rgba(247,247,243,0.75), transparent)" }}
-              />
-
-              {/* Badge */}
-              <div
-                className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-medium text-white"
-                style={{ background: "rgba(14,14,13,0.80)", backdropFilter: "blur(8px)" }}
-              >
-                <Sparkles className="h-3 w-3 text-emerald-300" />
-                Production-grade AI · since 2023
-              </div>
-            </div>
 
             {/* Hand-drawn squiggle — bottom right */}
             <svg
@@ -355,3 +322,104 @@ export default function V2Hero() {
     </section>
   );
 }
+
+/**
+ * Photo card with subtle mouse-tracking 3D tilt.
+ * Spring-damped so it feels weighty, never twitchy.
+ */
+function TiltCard() {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const springConfig = { stiffness: 180, damping: 18, mass: 0.6 };
+  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), springConfig);
+  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-6, 6]), springConfig);
+  const glareX = useTransform(mx, [-0.5, 0.5], ["20%", "80%"]);
+  const glareY = useTransform(my, [-0.5, 0.5], ["20%", "80%"]);
+
+  function handleMove(e: React.MouseEvent<HTMLDivElement>) {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width - 0.5);
+    my.set((e.clientY - rect.top) / rect.height - 0.5);
+  }
+
+  function handleLeave() {
+    mx.set(0);
+    my.set(0);
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+        transformPerspective: 1000,
+      }}
+      className="relative overflow-hidden rounded-[24px] bg-white"
+    >
+      <div
+        className="relative"
+        style={{ boxShadow: "0 20px 60px -20px rgba(14,14,13,0.22)" }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/me-cropped.png"
+          alt={`${PERSONAL.name} — portrait`}
+          width={374}
+          height={576}
+          draggable={false}
+          style={{
+            width: "100%",
+            height: "auto",
+            display: "block",
+            objectFit: "cover",
+            objectPosition: "top center",
+            transform: "translateZ(40px)",
+          }}
+        />
+
+        {/* Specular highlight that tracks the cursor */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: useTransform(
+              [glareX, glareY] as never,
+              ([x, y]: [string, string]) =>
+                `radial-gradient(220px circle at ${x} ${y}, rgba(255,255,255,0.45), transparent 60%)`,
+            ),
+            mixBlendMode: "soft-light",
+          }}
+        />
+
+        {/* Bottom gradient fade */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(247,247,243,0.75), transparent)",
+          }}
+        />
+
+        {/* Badge */}
+        <div
+          className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-medium text-white"
+          style={{
+            background: "rgba(14,14,13,0.80)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <Sparkles className="h-3 w-3 text-emerald-300" />
+          Production-grade AI · since 2023
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
