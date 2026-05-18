@@ -105,6 +105,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${inter.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${plusJakarta.variable} ${caveat.variable}`}
     >
       <body className="min-h-screen antialiased">

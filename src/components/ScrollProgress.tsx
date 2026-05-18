@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 
 export default function ScrollProgress() {
+  const [mounted, setMounted] = useState(false);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    setMounted(true);
     function update() {
       const scrollTop = window.scrollY;
       const docHeight =
@@ -16,6 +18,8 @@ export default function ScrollProgress() {
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <div
