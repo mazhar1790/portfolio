@@ -116,7 +116,7 @@ export default function V2Hero() {
             <div className="relative overflow-hidden rounded-[28px] border border-cream-line bg-white shadow-[0_24px_48px_-24px_rgba(14,14,13,0.18)]">
               <div className="relative aspect-[4/5]">
                 <Image
-                  src="/me.jpg"
+                  src="/me.png"
                   alt={`${PERSONAL.name} — portrait`}
                   fill
                   priority
