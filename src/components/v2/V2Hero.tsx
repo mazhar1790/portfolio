@@ -159,11 +159,35 @@ export default function V2Hero() {
               </a>
             </div>
 
-            {/* Photo card — plain <img> for maximum reliability */}
+            {/* Photo card */}
             <div
               className="relative overflow-hidden rounded-[24px] bg-white"
               style={{ boxShadow: "0 20px 60px -20px rgba(14,14,13,0.22)" }}
             >
+              {/* ── Blurred background layer ── */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/me.png"
+                alt=""
+                aria-hidden
+                width={760}
+                height={960}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                  objectFit: "cover",
+                  objectPosition: "top center",
+                  filter: "blur(14px) brightness(0.55) saturate(0.6)",
+                  transform: "scale(1.08)", // prevent blur edges
+                  position: "absolute",
+                  inset: 0,
+                }}
+              />
+
+              {/* ── Sharp foreground layer with radial mask ──
+                  The radial gradient mask keeps you (center-bottom) sharp
+                  and fades out towards the top-edges where the crowd is. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/me.png"
@@ -176,13 +200,29 @@ export default function V2Hero() {
                   display: "block",
                   objectFit: "cover",
                   objectPosition: "top center",
+                  position: "relative",
+                  // Radial mask: sharp oval centred on your face/torso,
+                  // fades to transparent at the edges (revealing blurred layer)
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse 62% 75% at 52% 48%, black 30%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.3) 70%, transparent 100%)",
+                  maskImage:
+                    "radial-gradient(ellipse 62% 75% at 52% 48%, black 30%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.3) 70%, transparent 100%)",
                 }}
               />
 
-              {/* Gradient fade at bottom */}
+              {/* Soft dark vignette over the blurred background edges */}
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 65% 78% at 52% 48%, transparent 40%, rgba(10,10,10,0.45) 100%)",
+                }}
+              />
+
+              {/* Bottom gradient fade */}
               <div
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4"
-                style={{ background: "linear-gradient(to top, rgba(247,247,243,0.7), transparent)" }}
+                style={{ background: "linear-gradient(to top, rgba(247,247,243,0.75), transparent)" }}
               />
 
               {/* Badge */}
