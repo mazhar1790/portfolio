@@ -11,7 +11,7 @@ export default function Footer() {
               © {new Date().getFullYear()} {PERSONAL.name}.
             </p>
             <p className="mt-1 font-mono text-xs text-paper-dim">
-              Built with Next.js · Tailwind · Claude.{" "}
+              Next.js · Tailwind · Groq · Gemini · Cohere · Pinecone.{" "}
               <span className="text-signal">All systems nominal.</span>
             </p>
           </div>

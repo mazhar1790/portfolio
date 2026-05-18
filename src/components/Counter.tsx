@@ -23,31 +23,47 @@ export default function Counter({
     const el = ref.current;
     if (!el) return;
 
+    const start = () => {
+      if (startedRef.current) return;
+      startedRef.current = true;
+      const t0 = performance.now();
+      const animate = (now: number) => {
+        const t = Math.min(1, (now - t0) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        setDisplay(Math.round(value * eased));
+        if (t < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+    };
+
+    // 1. If already in viewport on mount (e.g. above-the-fold metrics), start now
+    const rect = el.getBoundingClientRect();
+    if (
+      rect.top < (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.bottom > 0
+    ) {
+      // Defer to next frame so initial paint shows 0 → animates up
+      requestAnimationFrame(start);
+    }
+
+    // 2. Also observe for when it scrolls into view (below-the-fold)
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !startedRef.current) {
-            startedRef.current = true;
-
-            // Small delay so the element is fully visible before animating
-            setTimeout(() => {
-              const start = performance.now();
-              const animate = (now: number) => {
-                const t = Math.min(1, (now - start) / duration);
-                const eased = 1 - Math.pow(1 - t, 3);
-                setDisplay(Math.round(value * eased));
-                if (t < 1) requestAnimationFrame(animate);
-              };
-              requestAnimationFrame(animate);
-            }, 120);
-          }
+          if (entry.isIntersecting) start();
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" },
     );
-
     observer.observe(el);
-    return () => observer.disconnect();
+
+    // 3. Safety fallback — if nothing fired in 1.5s, force start
+    const fallback = window.setTimeout(start, 1500);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, [value, duration]);
 
   return (

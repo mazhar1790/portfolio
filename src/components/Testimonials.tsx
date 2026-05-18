@@ -9,7 +9,7 @@ export default function Testimonials() {
     <section id="testimonials" className="section bg-ink-alt">
       <div className="container-page">
         <div className="flex items-center gap-4">
-          <span className="font-mono text-xs text-signal">07</span>
+          <span className="font-mono text-xs text-signal">06</span>
           <span className="hairline w-12" />
           <span className="meta-plain">What colleagues say</span>
         </div>
