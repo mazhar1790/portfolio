@@ -24,8 +24,8 @@ const ORGS: Org[] = [
   },
   {
     icon: GraduationCap,
-    name: "Microsoft Certified",
-    sub: "AI-102 · AZ-305 · AI-3016",
+    name: "Microsoft AI Developer Program",
+    sub: "Trained · Aug–Sep 2025",
   },
   {
     icon: Award,
@@ -39,7 +39,7 @@ export default function V2TrustStrip() {
     <section className="border-y border-[#e0dfd8] bg-[#fafaf7] py-10">
       <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
         <p className="mb-5 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-[#9a9a96]">
-          Shipped systems for · Verified by
+          Shipped systems for · Trained by
         </p>
         <motion.div
           initial={{ opacity: 0 }}

@@ -16,8 +16,8 @@ const ORGS = [
   },
   {
     icon: GraduationCap,
-    name: "Microsoft Certified",
-    sub: "AI-102 · AZ-305 · AI-3016",
+    name: "Microsoft AI Developer Program",
+    sub: "Trained · Aug–Sep 2025",
   },
   {
     icon: Award,
@@ -31,7 +31,7 @@ export default function TrustStrip() {
     <section className="border-y border-ink-line bg-ink-alt/40 py-8">
       <div className="container-page">
         <p className="mb-5 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-paper-dim">
-          Shipped systems for · Verified by
+          Shipped systems for · Trained by
         </p>
         <motion.div
           initial={{ opacity: 0 }}

@@ -575,29 +575,49 @@ export const EXPERIENCE: ExperienceItem[] = [
 
 export interface Certification {
   name: string;
+  /** Program / course identifier (no exam code unless the exam was actually attempted). */
   code: string;
   issuer: string;
   color: "cyan" | "violet" | "blue";
+  /** "training" = course/program completion certificate; "exam" = passed certification exam. */
+  kind: "training" | "exam";
+  /** Period the training was attended, e.g. "Aug – Sep 2025". */
+  period?: string;
+  /** Optional path under /public to the actual certificate image, used as proof. */
+  proof?: string;
+  /** Short factual description, shown in cards. */
+  detail?: string;
 }
 
 export const CERTIFICATIONS: Certification[] = [
   {
-    name: "Azure AI Engineer Associate",
-    code: "AI-102",
-    issuer: "Microsoft",
+    name: "Microsoft AI Developer Program",
+    code: "Official course",
+    issuer: "Microsoft · delivered by Skillsoft Global Knowledge",
     color: "cyan",
+    kind: "training",
+    period: "25 Aug – 30 Sep 2025",
+    proof: "/certs/microsoft-ai-developer-program.png",
+    detail:
+      "Completed the full Microsoft Official Course covering Azure AI services, Copilot Studio, prompt engineering, RAG, and responsible AI.",
   },
   {
-    name: "Develop Custom Copilots with AI Studio",
-    code: "AI-3016",
-    issuer: "Microsoft",
+    name: "Azure AI Engineer track (AI-102)",
+    code: "Training completed · exam not yet attempted",
+    issuer: "Microsoft Learn",
     color: "violet",
+    kind: "training",
+    detail:
+      "Worked through the full AI-102 curriculum — Azure OpenAI, Cognitive Services, knowledge mining, conversational AI — applied directly in production at SCAD.",
   },
   {
-    name: "Azure Solutions Architect",
-    code: "AZ-305",
-    issuer: "Microsoft",
+    name: "Azure Solutions Architect track (AZ-305)",
+    code: "Training completed · exam not yet attempted",
+    issuer: "Microsoft Learn",
     color: "blue",
+    kind: "training",
+    detail:
+      "Self-paced study of architecture design patterns for Azure, identity, governance, data platform, and business-continuity design.",
   },
 ];
 
@@ -687,10 +707,10 @@ SKILLS:
 - Cloud: Azure OpenAI, Azure Functions, Cosmos DB, Azure DevOps, Docker, Kubernetes, AWS
 - Full Stack: .NET Core 8, Angular 17, React, TypeScript, Node.js, SQL Server
 
-CERTIFICATIONS:
-- Microsoft Azure AI Engineer Associate (AI-102)
-- AI-3016: Develop Custom Copilots with AI Studio
-- Azure Solutions Architect (AZ-305)
+TRAINING & PROGRAMS:
+- Microsoft AI Developer Program — Microsoft Official Course, completed Aug–Sep 2025 (Skillsoft Global Knowledge)
+- Azure AI Engineer (AI-102) learning path — training completed via Microsoft Learn (exam not yet attempted)
+- Azure Solutions Architect (AZ-305) learning path — training completed via Microsoft Learn (exam not yet attempted)
 
 AVAILABILITY: Open to senior AI architecture roles, consulting engagements, and speaking opportunities in the UAE and globally.
 

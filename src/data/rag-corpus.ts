@@ -92,12 +92,12 @@ export const RAG_CORPUS: KnowledgeChunk[] = [
     content: `Key career achievements by Mazhar Hayat: reduced document research time from 2 hours to 10 seconds with RAG system; built AI chatbot now handling 18,000+ queries per month; enabled 200+ non-technical staff to query databases in plain English; deployed vision AI pipeline saving 2,000 staff hours every month; reduced GPT-4 API costs by 38% through context compression; built systems serving 500+ daily users; processed 100,000+ documents through AI pipelines.`,
   },
 
-  // ── Certifications ────────────────────────────────────────────────────────
+  // ── Training & programs ────────────────────────────────────────────────────
   {
-    id: "certifications",
-    category: "certifications",
-    title: "Professional certifications",
-    content: `Mazhar Hayat holds multiple Microsoft certifications: Microsoft Certified Azure AI Engineer Associate (AI-102), Microsoft Certified Azure Developer Associate (AZ-204), and Microsoft Certified Azure Administrator Associate (AZ-104). These demonstrate deep expertise in Azure cloud services, AI/ML services, and enterprise development on the Azure platform.`,
+    id: "training",
+    category: "training",
+    title: "Microsoft training & development programs",
+    content: `Training and AI/Azure programs Mazhar has completed: (1) Microsoft AI Developer Program — a Microsoft Official Course delivered by Skillsoft Global Knowledge, attended 25 August – 30 September 2025, covering Azure AI services, Copilot Studio, prompt engineering, RAG, and responsible AI; a Microsoft Certificate of Achievement was issued for completion. (2) Azure AI Engineer (AI-102) learning path — full curriculum completed via Microsoft Learn (Azure OpenAI, Cognitive Services, knowledge mining, conversational AI); applied directly in production at SCAD. (3) Azure Solutions Architect (AZ-305) learning path — full curriculum completed via Microsoft Learn. Important: these are training-program completions; Mazhar has not yet sat the AI-102 or AZ-305 certification exams. The knowledge is applied daily in production but the formal exam credentials are not held.`,
   },
 
   // ── Differentiators ───────────────────────────────────────────────────────

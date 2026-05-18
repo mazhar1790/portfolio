@@ -51,7 +51,7 @@ Required:
 - Comfortable with Arabic content / bilingual systems
 
 Nice to have:
-- Microsoft Azure certifications
+- Microsoft Azure AI training or certifications
 - Experience in regulated environments (banking, government)
 - Open-source contributions`;
 
