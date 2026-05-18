@@ -8,13 +8,35 @@ interface Item {
   name: string;
   note?: string;
   mark: Mark;
+  /** When provided, an official logo from /public/logos is rendered instead of the custom glyph. */
+  officialLogo?: { src: string; alt: string; dark?: boolean };
 }
 
 const AFFILIATIONS: Item[] = [
-  { name: "SCAD", note: "Statistics Centre Abu Dhabi", mark: "scad" },
-  { name: "MoHRE", note: "UAE Government", mark: "mohre" },
-  { name: "NETSOL", note: "Enterprise Leasing", mark: "netsol" },
-  { name: "TRG Tech", note: "Sentiment Engine", mark: "trg" },
+  {
+    name: "SCAD",
+    note: "Statistics Centre Abu Dhabi",
+    mark: "scad",
+    officialLogo: { src: "/logos/scad-colored.svg", alt: "Statistics Centre Abu Dhabi" },
+  },
+  {
+    name: "MoHRE",
+    note: "UAE Government",
+    mark: "mohre",
+    officialLogo: { src: "/logos/mohre.png", alt: "UAE Ministry of Human Resources & Emiratisation" },
+  },
+  {
+    name: "NETSOL",
+    note: "Asset Finance Platform",
+    mark: "netsol",
+    officialLogo: { src: "/logos/netsol.png", alt: "NETSOL Technologies" },
+  },
+  {
+    name: "TRG Tech",
+    note: "Sentiment Engine",
+    mark: "trg",
+    officialLogo: { src: "/logos/trg.svg", alt: "TRG Holdings", dark: true },
+  },
   { name: "Microsoft", note: "Certified", mark: "ms" },
 ];
 
@@ -35,6 +57,10 @@ export default function V2LogoStrip() {
           <Row label="Where I've shipped" items={AFFILIATIONS} delay={0} />
           <div className="mx-auto my-9 h-px max-w-3xl bg-[#b8e8ce]/60" />
           <Row label="What I build with" items={TECH} delay={0.15} muted />
+          <p className="mx-auto mt-10 max-w-2xl text-center font-mono text-[10px] leading-relaxed text-[#9a9a96]">
+            Logos shown are the property of their respective owners and used here solely to
+            identify past clients and employers. No endorsement or partnership is implied.
+          </p>
         </div>
       </div>
     </section>
@@ -74,13 +100,25 @@ function Row({
             className="group flex items-center gap-3"
           >
             <span
-              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition group-hover:-translate-y-0.5 ${
-                muted
-                  ? "border-[#e0dfd8] bg-white"
-                  : "border-[#b8e8ce] bg-white"
+              className={`flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border transition group-hover:-translate-y-0.5 ${
+                it.officialLogo?.dark
+                  ? "border-[#1a1a1a] bg-[#0e0e0d]"
+                  : muted
+                    ? "border-[#e0dfd8] bg-white"
+                    : "border-[#b8e8ce] bg-white"
               }`}
             >
-              <Glyph mark={it.mark} />
+              {it.officialLogo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={it.officialLogo.src}
+                  alt={it.officialLogo.alt}
+                  className="max-h-7 max-w-[34px] object-contain"
+                  loading="lazy"
+                />
+              ) : (
+                <Glyph mark={it.mark} />
+              )}
             </span>
             <div className="leading-tight">
               <span

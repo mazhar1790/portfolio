@@ -1,16 +1,24 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Award, Building2, GraduationCap, Shield } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { Award, GraduationCap } from "lucide-react";
 
-const ORGS = [
+type Org = {
+  icon?: LucideIcon;
+  logo?: { src: string; alt: string };
+  name: string;
+  sub: string;
+};
+
+const ORGS: Org[] = [
   {
-    icon: Building2,
+    logo: { src: "/logos/scad-colored.svg", alt: "Statistics Centre Abu Dhabi" },
     name: "SCAD",
     sub: "Statistics Centre Abu Dhabi",
   },
   {
-    icon: Shield,
+    logo: { src: "/logos/mohre.png", alt: "UAE Ministry of Human Resources & Emiratisation" },
     name: "MoHRE",
     sub: "Ministry of Human Resources · UAE",
   },
@@ -47,8 +55,18 @@ export default function V2TrustStrip() {
                 key={org.name}
                 className="group flex items-center gap-3 bg-white px-5 py-5 transition hover:bg-[#f3fbf7]"
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#f3fbf7] transition group-hover:bg-[#e3f6ec]">
-                  <Icon className="h-4 w-4 text-[#2d9961]" />
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f3fbf7] transition group-hover:bg-[#e3f6ec]">
+                  {org.logo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={org.logo.src}
+                      alt={org.logo.alt}
+                      className="max-h-6 max-w-[28px] object-contain"
+                      loading="lazy"
+                    />
+                  ) : Icon ? (
+                    <Icon className="h-4 w-4 text-[#2d9961]" />
+                  ) : null}
                 </span>
                 <div className="min-w-0">
                   <p className="truncate font-jakarta text-sm font-bold text-[#0e0e0d]">
