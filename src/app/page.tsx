@@ -33,16 +33,16 @@ export default function Home() {
         <V2TrustStrip />
         <V2About />
         <V2Lesson
+          number="Lesson · 02"
+          text="The bottleneck is never the model — it's chunking, retrieval, and prompts."
+        />
+        <V2Pipelines />
+        <V2Lesson
           number="Lesson · 01"
           text="A demo is a hypothesis. Production is the only evidence."
         />
         <V2Services />
         <V2Portfolio />
-        <V2Lesson
-          number="Lesson · 02"
-          text="The bottleneck is never the model — it's chunking, retrieval, and prompts."
-        />
-        <V2Pipelines />
         <V2Skills />
         <V2Experience />
         <V2Certifications />
