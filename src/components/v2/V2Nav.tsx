@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Download } from "lucide-react";
+import { Briefcase, Download } from "lucide-react";
 import { PERSONAL } from "@/data/cv";
 
 const LINKS = [
@@ -58,7 +58,7 @@ export default function V2Nav() {
       }`}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
-        <Link href="/v2" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5">
           <Logo />
           <span className="font-jakarta text-lg font-bold tracking-tight text-coal">
             mazhar.
@@ -97,6 +97,14 @@ export default function V2Nav() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="/for-recruiters"
+            className="hidden items-center gap-1.5 rounded-full border border-mint-300 bg-mint-50 px-3.5 py-2 text-xs font-semibold text-mint-700 transition hover:bg-mint-100 hover:text-coal lg:inline-flex"
+            title="Recruiter-friendly one-page summary"
+          >
+            <Briefcase className="h-3.5 w-3.5" />
+            For recruiters
+          </Link>
           <Link
             href="/dark"
             className="hidden rounded-full px-3 py-2 text-xs font-medium text-coal-muted transition hover:text-coal sm:inline-flex"
