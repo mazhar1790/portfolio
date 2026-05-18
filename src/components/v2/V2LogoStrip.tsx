@@ -37,7 +37,6 @@ const AFFILIATIONS: Item[] = [
     mark: "trg",
     officialLogo: { src: "/logos/trg.svg", alt: "TRG Holdings", dark: true },
   },
-  { name: "Microsoft", note: "Certified", mark: "ms" },
 ];
 
 const TECH: Item[] = [
