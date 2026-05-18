@@ -249,12 +249,25 @@ body {
 /* === MARQUEE TICKER === */
 .ticker-track {
   display: inline-flex;
-  animation: ticker 50s linear infinite;
+  animation: ticker 60s linear infinite;
   white-space: nowrap;
   will-change: transform;
 }
 .ticker-track:hover {
   animation-play-state: paused;
+}
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
 }
 
 /* === FOCUS RINGS === */
