@@ -5,6 +5,7 @@ import { Command } from "cmdk";
 import {
   BookOpen,
   BriefcaseBusiness,
+  Database,
   FileDown,
   MessageSquareText,
   Search,
@@ -87,6 +88,14 @@ export default function CommandPalette() {
       description: "Tech stack & capabilities",
       icon: <Wrench className="h-4 w-4" />,
       action: () => navigate("#skills"),
+      group: "Navigate",
+    },
+    {
+      id: "nav-rag-demo",
+      label: "Live RAG Demo",
+      description: "Query Mazhar's CV with vector search",
+      icon: <Database className="h-4 w-4 text-signal" />,
+      action: () => navigate("#rag-demo"),
       group: "Navigate",
     },
     {

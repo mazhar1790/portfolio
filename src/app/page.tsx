@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Projects from "@/components/Projects";
+import RagSection from "@/components/RagSection";
 import Skills from "@/components/Skills";
 import Testimonials from "@/components/Testimonials";
 import Ticker from "@/components/Ticker";
@@ -25,6 +26,7 @@ export default function Home() {
         <Skills />
         <Experience />
         <Certifications />
+        <RagSection />
         <Testimonials />
         <Writing />
         <Contact />

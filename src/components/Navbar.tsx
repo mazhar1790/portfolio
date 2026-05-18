@@ -10,11 +10,13 @@ const LINKS = [
   { href: "#about", label: "About", n: "01", section: "about" },
   { href: "#projects", label: "Work", n: "02", section: "projects" },
   { href: "#experience", label: "Experience", n: "04", section: "experience" },
+  { href: "#rag-demo", label: "RAG Demo", n: "07", section: "rag-demo" },
   { href: "#writing", label: "Writing", n: "08", section: "writing" },
   { href: "#contact", label: "Contact", n: "09", section: "contact" },
 ];
 
 const SECTION_IDS = LINKS.map((l) => l.section);
+
 
 export default function Navbar() {
   const { openChat } = useChat();
