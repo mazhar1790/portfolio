@@ -1,0 +1,124 @@
+{
+  "updatedAt": "2026-05-18",
+  "goldSet": {
+    "questions": 50,
+    "categories": [
+      "About / bio",
+      "Specific projects",
+      "Tech stack",
+      "Metrics & outcomes",
+      "Hiring / availability"
+    ],
+    "lastRunAt": "2026-05-15",
+    "buildSha": "vibe@9c2f1a8"
+  },
+  "currentStack": {
+    "embedding": "Gemini gemini-embedding-001 (3072d)",
+    "retriever": "Pinecone serverless · top-k 12",
+    "reranker": "Cohere rerank-v3.5 · top-k 5",
+    "generator": "Groq Llama 3.3 70B"
+  },
+  "metrics": [
+    {
+      "name": "Answerable accuracy",
+      "definition": "% of questions where the answer is grounded in retrieved chunks and factually correct against my CV.",
+      "current": 92,
+      "previous": 88,
+      "target": 95,
+      "unit": "%",
+      "trend": "up"
+    },
+    {
+      "name": "Citation rate",
+      "definition": "% of answers that include ≥1 inline citation to a retrieved chunk.",
+      "current": 96,
+      "previous": 89,
+      "target": 98,
+      "unit": "%",
+      "trend": "up"
+    },
+    {
+      "name": "Refusal precision",
+      "definition": "% of out-of-scope questions correctly refused (e.g., 'what's his shoe size').",
+      "current": 100,
+      "previous": 96,
+      "target": 100,
+      "unit": "%",
+      "trend": "up"
+    },
+    {
+      "name": "Median latency",
+      "definition": "p50 end-to-end time from user query to first streaming token.",
+      "current": 1.4,
+      "previous": 2.1,
+      "target": 1.2,
+      "unit": "s",
+      "trend": "up"
+    },
+    {
+      "name": "p95 latency",
+      "definition": "Slowest 5% of queries — the ones recruiters actually feel.",
+      "current": 3.6,
+      "previous": 4.8,
+      "target": 3.0,
+      "unit": "s",
+      "trend": "up"
+    },
+    {
+      "name": "Cost per query",
+      "definition": "Avg API cost per RAG query (embedding + retrieval + rerank + generation).",
+      "current": 0,
+      "previous": 0.011,
+      "target": 0,
+      "unit": "USD",
+      "trend": "up",
+      "note": "Migration to free tiers (Groq + Gemini + Cohere) eliminated per-query cost."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-05-15",
+      "build": "vibe@9c2f1a8",
+      "stack": "Gemini · Pinecone · Cohere · Groq Llama 3.3",
+      "accuracy": 92,
+      "p50": 1.4,
+      "note": "Added 12 new corpus chunks (project decisions, quotes, lessons). +4% on case-study questions."
+    },
+    {
+      "date": "2026-04-20",
+      "build": "vibe@7e4c0b1",
+      "stack": "Gemini · Pinecone · Cohere · Groq Llama 3.3",
+      "accuracy": 88,
+      "p50": 2.1,
+      "note": "Added Cohere reranking. Retrieval precision @5 jumped from 0.72 → 0.84."
+    },
+    {
+      "date": "2026-03-12",
+      "build": "vibe@4a91f23",
+      "stack": "Gemini · Pinecone · Groq Llama 3.3",
+      "accuracy": 84,
+      "p50": 2.0,
+      "note": "Switched embedding model to gemini-embedding-001 (3072d). Better semantic recall on niche skills."
+    },
+    {
+      "date": "2026-02-28",
+      "build": "vibe@1b6d540",
+      "stack": "OpenAI text-embedding-3-small · Pinecone · GPT-4o-mini",
+      "accuracy": 79,
+      "p50": 2.4,
+      "note": "Original launch. Decent baseline but expensive."
+    }
+  ],
+  "failureExamples": [
+    {
+      "question": "What's his deepest experience in MLOps?",
+      "issue": "MLOps wasn't tagged in corpus. Retriever returned only generic 'production AI' chunks.",
+      "fix": "Added explicit MLOps chunk covering Azure ML, MLflow, eval harness, observability."
+    },
+    {
+      "question": "Has he worked with any specific Arabic NLP libraries?",
+      "issue": "Model hallucinated Stanza when the actual answer was 'Azure Cognitive Services for Arabic'.",
+      "fix": "Added stricter 'cite-or-refuse' system prompt. Now refuses if no chunk match."
+    }
+  ]
+}

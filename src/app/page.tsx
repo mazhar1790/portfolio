@@ -7,6 +7,7 @@ import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Lesson from "@/components/Lesson";
+import McpStrip from "@/components/McpStrip";
 import Navbar from "@/components/Navbar";
 import Projects from "@/components/Projects";
 import RagSection from "@/components/RagSection";
@@ -39,6 +40,7 @@ export default function Home() {
         <Experience />
         <Certifications />
         <RagSection />
+        <McpStrip />
         <Lesson
           number="Lesson · 03"
           text="Measure or it didn't happen. Latency, accuracy, cost — define them first."

@@ -7,6 +7,7 @@ import { ChatProvider } from "@/components/AiChat/ChatContext";
 import ScrollProgress from "@/components/ScrollProgress";
 import ThemeProvider from "@/components/ThemeProvider";
 import VisitPulse from "@/components/VisitPulse";
+import EasterEgg from "@/components/EasterEgg";
 import "./globals.css";
 
 const inter = Inter({
@@ -96,6 +97,7 @@ export default function RootLayout({
         <ChatProvider>{children}</ChatProvider>
         </ThemeProvider>
         <VisitPulse />
+        <EasterEgg />
         <Analytics />
         <SpeedInsights />
       </body>

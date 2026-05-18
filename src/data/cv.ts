@@ -7,6 +7,8 @@ export const PERSONAL = {
   email: "Mazhar1783@outlook.com",
   phone: "+971 556 127 178",
   linkedin: "https://www.linkedin.com/in/mazharhayyat/",
+  calendly: "https://calendly.com/mazhar1783/30min",
+  github: "https://github.com/mazhar1790",
   cvUrl: "/Mazhar-Hayat-AI-Architect-CV.docx",
   cvUrlPdf: "/Mazhar-Hayat-AI-Architect-CV.pdf",
   cvLabel: "Mazhar Hayat — AI Architect CV",
@@ -794,3 +796,42 @@ export const ARTICLES: Article[] = [
     comingSoon: true,
   },
 ];
+
+
+// -- Skill ? proof links --------------------------------------------------
+// Map a skill item (string from SKILLS.items) to a proof URL.
+// Used by <Skills /> to make the tags clickable evidence.
+export const SKILL_PROOFS: Record<string, string> = {
+  // RAG & retrieval
+  "Pinecone": "/projects/rag-document-intelligence",
+  "Re-ranking": "/projects/rag-document-intelligence",
+  "Hybrid Search": "/projects/rag-document-intelligence",
+  "Multi-stage Retrieval": "/projects/rag-document-intelligence",
+  "OpenAI Embeddings": "/projects/rag-document-intelligence",
+  "FAISS": "/projects/rag-document-intelligence",
+  // LLMs
+  "GPT-4 / GPT-3.5-Turbo": "/projects/rag-document-intelligence",
+  "Azure OpenAI": "/projects/rag-document-intelligence",
+  "Prompt Engineering": "/writing/prompt-engineering-patterns",
+  "Few-shot Learning": "/projects/conversational-analytics",
+  "Function Calling": "/projects/conversational-analytics",
+  "Chain-of-Thought Reasoning": "/projects/rag-document-intelligence",
+  // Frameworks
+  "LangChain": "/projects/rag-document-intelligence",
+  "Semantic Kernel": "/projects/conversational-analytics",
+  "LlamaIndex": "/projects/rag-document-intelligence",
+  // Architecture
+  "Microservices": "/projects/conversational-analytics",
+  "Event-Driven Architecture": "/projects/vision-ai-pipeline",
+  "Cosmos DB": "/projects/vision-ai-pipeline",
+  "Docker": "/projects/conversational-analytics",
+  "Kubernetes": "/projects/conversational-analytics",
+  // Full stack
+  ".NET Core 8": "/projects/conversational-analytics",
+  "TypeScript": "/stack",
+  "React": "/stack",
+  // Vision
+  "Multi-turn Dialogue": "/projects/conversational-analytics",
+  "Intent Classification": "/projects/conversational-analytics",
+  "Entity Extraction": "/projects/vision-ai-pipeline",
+};

@@ -1,0 +1,32 @@
+{
+  "name": "mazhar-cv-mcp",
+  "version": "0.1.0",
+  "description": "Model Context Protocol server exposing Mazhar Hayat's CV, projects, and live RAG corpus as agent tools.",
+  "type": "module",
+  "bin": {
+    "mazhar-cv-mcp": "./server.mjs"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node test-local.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "author": "Mazhar Hayat <Mazhar1783@outlook.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mazhar1790/portfolio"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "cv",
+    "portfolio",
+    "ai-agent"
+  ]
+}

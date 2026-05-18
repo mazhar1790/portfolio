@@ -13,6 +13,8 @@ import { useChat } from "./AiChat/ChatContext";
 import Counter from "./Counter";
 import AvailabilityBadge from "./AvailabilityBadge";
 import CvDownload from "./CvDownload";
+import MediaIntro from "./MediaIntro";
+import HeroHeadline, { trackHeroConversion } from "./HeroHeadline";
 
 const QUICK_PROMPTS = [
   "What AI projects has he shipped?",
@@ -49,6 +51,7 @@ export default function Hero() {
   function submitPrompt(prompt: string) {
     const text = prompt.trim();
     if (!text) return;
+    trackHeroConversion("chat_submit");
     openChat(text);
     setDraft("");
   }
@@ -79,11 +82,9 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            <motion.h1 variants={item} className="display-1 mt-8">
-              I architect <span className="display-italic">AI systems</span>
-              <br />
-              that ship.
-            </motion.h1>
+            <motion.div variants={item}>
+              <HeroHeadline />
+            </motion.div>
 
             <motion.div
               variants={item}
@@ -134,7 +135,11 @@ export default function Hero() {
             variants={item}
             className="mt-12 flex flex-wrap items-center gap-3"
           >
-            <a href="#projects" className="btn-primary">
+            <a
+              href="#projects"
+              className="btn-primary"
+              onClick={() => trackHeroConversion("cta_see_work")}
+            >
               See the work
               <ArrowRight className="h-4 w-4" />
             </a>
@@ -142,6 +147,7 @@ export default function Hero() {
               Get in touch
             </a>
             <CvDownload variant="ghost" />
+            <MediaIntro />
           </motion.div>
           </div>
 

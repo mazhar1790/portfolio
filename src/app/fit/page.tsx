@@ -9,12 +9,16 @@ import {
   Check,
   Loader2,
   Mail,
+  Plus,
   Sparkles,
   Target,
+  Trash2,
   X,
+  GitCompare,
 } from "lucide-react";
 import { PERSONAL } from "@/data/cv";
 import { cn } from "@/lib/utils";
+import BookCall from "@/components/BookCall";
 
 interface FitReport {
   overallFit: "strong" | "good" | "partial" | "weak";
@@ -51,11 +55,78 @@ Nice to have:
 - Experience in regulated environments (banking, government)
 - Open-source contributions`;
 
+interface CompareJD {
+  id: number;
+  label: string;
+  jd: string;
+  report: FitReport | null;
+  loading: boolean;
+  error: string | null;
+}
+
+let nextId = 1;
+
 export default function FitPage() {
+  const [mode, setMode] = useState<"single" | "compare">("single");
   const [jd, setJd] = useState("");
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<FitReport | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [comparisons, setComparisons] = useState<CompareJD[]>(() => [
+    { id: nextId++, label: "JD 1", jd: "", report: null, loading: false, error: null },
+    { id: nextId++, label: "JD 2", jd: "", report: null, loading: false, error: null },
+  ]);
+
+  async function analyzeOne(text: string): Promise<FitReport | { error: string }> {
+    const res = await fetch("/api/fit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jd: text }),
+    });
+    const data = await res.json();
+    if (!res.ok) return { error: data.error ?? "Analysis failed" };
+    return data as FitReport;
+  }
+
+  async function analyzeAll() {
+    // Analyse every JD that has content but no report yet
+    const targets = comparisons.filter((c) => c.jd.trim() && !c.report && !c.loading);
+    if (!targets.length) return;
+    setComparisons((prev) =>
+      prev.map((c) =>
+        targets.find((t) => t.id === c.id) ? { ...c, loading: true, error: null } : c,
+      ),
+    );
+    await Promise.all(
+      targets.map(async (t) => {
+        const result = await analyzeOne(t.jd);
+        setComparisons((prev) =>
+          prev.map((c) =>
+            c.id === t.id
+              ? "error" in result
+                ? { ...c, loading: false, error: result.error }
+                : { ...c, loading: false, report: result }
+              : c,
+          ),
+        );
+      }),
+    );
+  }
+
+  function addComparison() {
+    setComparisons((prev) => [
+      ...prev,
+      { id: nextId++, label: `JD ${prev.length + 1}`, jd: "", report: null, loading: false, error: null },
+    ]);
+  }
+
+  function removeComparison(id: number) {
+    setComparisons((prev) => prev.filter((c) => c.id !== id));
+  }
+
+  function updateComparison(id: number, patch: Partial<CompareJD>) {
+    setComparisons((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
+  }
 
   async function analyze() {
     if (!jd.trim() || loading) return;
@@ -112,8 +183,48 @@ export default function FitPage() {
             tailored pitch, and a suggested next step. Powered by Llama 3.3 70B
             on Groq. Takes ~10 seconds. Free.
           </p>
+
+          {/* Mode toggle */}
+          <div className="mt-8 inline-flex rounded-full border border-ink-line bg-ink-card p-1">
+            <button
+              type="button"
+              onClick={() => setMode("single")}
+              className={cn(
+                "rounded-full px-4 py-1.5 font-mono text-[11px] uppercase tracking-widest transition",
+                mode === "single"
+                  ? "bg-signal/15 text-signal"
+                  : "text-paper-dim hover:text-paper",
+              )}
+            >
+              <Target className="-mt-0.5 mr-1.5 inline h-3 w-3" />
+              Single JD
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("compare")}
+              className={cn(
+                "rounded-full px-4 py-1.5 font-mono text-[11px] uppercase tracking-widest transition",
+                mode === "compare"
+                  ? "bg-signal/15 text-signal"
+                  : "text-paper-dim hover:text-paper",
+              )}
+            >
+              <GitCompare className="-mt-0.5 mr-1.5 inline h-3 w-3" />
+              Compare {comparisons.length} JDs
+            </button>
+          </div>
         </header>
 
+        {mode === "compare" ? (
+          <ComparePanel
+            comparisons={comparisons}
+            onUpdate={updateComparison}
+            onAdd={addComparison}
+            onRemove={removeComparison}
+            onAnalyze={analyzeAll}
+          />
+        ) : (
+        <>
         {/* JD input */}
         <section className="mt-12">
           <div className="flex items-center justify-between">
@@ -282,15 +393,18 @@ export default function FitPage() {
                     {report.suggestedNextStep}
                   </p>
                 </div>
-                <a
-                  href={`mailto:${PERSONAL.email}?subject=${encodeURIComponent(
-                    "Quick call about fit — " + report.headline,
-                  )}`}
-                  className="btn-primary"
-                >
-                  <Mail className="h-3.5 w-3.5 text-ink" />
-                  Email Mazhar
-                </a>
+                <div className="flex flex-wrap gap-2">
+                  <BookCall variant="primary" label="Book call" />
+                  <a
+                    href={`mailto:${PERSONAL.email}?subject=${encodeURIComponent(
+                      "Quick call about fit — " + report.headline,
+                    )}`}
+                    className="btn-secondary"
+                  >
+                    <Mail className="h-3.5 w-3.5 text-signal" />
+                    Email
+                  </a>
+                </div>
               </div>
 
               <p className="mt-6 text-center font-mono text-[10px] uppercase tracking-widest text-paper-dim">
@@ -308,7 +422,191 @@ export default function FitPage() {
             more context, the sharper the analysis.
           </p>
         )}
+        </>
+        )}
       </div>
     </main>
+  );
+}
+
+function ComparePanel({
+  comparisons,
+  onUpdate,
+  onAdd,
+  onRemove,
+  onAnalyze,
+}: {
+  comparisons: CompareJD[];
+  onUpdate: (id: number, patch: Partial<CompareJD>) => void;
+  onAdd: () => void;
+  onRemove: (id: number) => void;
+  onAnalyze: () => void;
+}) {
+  const anyAnalysed = comparisons.some((c) => c.report);
+  const anyLoading = comparisons.some((c) => c.loading);
+  const ready = comparisons.filter((c) => c.jd.trim()).length;
+
+  return (
+    <section className="mt-12">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="meta">Side-by-side mode</p>
+          <p className="mt-1.5 text-sm text-paper-muted">
+            Paste {comparisons.length} JDs. I&apos;ll score them all in parallel
+            and surface the strongest match.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onAdd}
+            disabled={comparisons.length >= 4}
+            className="btn-ghost"
+          >
+            <Plus className="h-3.5 w-3.5 text-signal" />
+            Add JD
+          </button>
+          <button
+            type="button"
+            onClick={onAnalyze}
+            disabled={!ready || anyLoading}
+            className={cn(
+              "inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition",
+              ready && !anyLoading
+                ? "bg-signal text-ink hover:bg-signal/80"
+                : "bg-ink-line text-paper-dim",
+            )}
+          >
+            {anyLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Analysing {comparisons.filter((c) => c.loading).length}…
+              </>
+            ) : (
+              <>
+                <Sparkles className="h-4 w-4" />
+                Analyse all ({ready})
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* JD inputs grid */}
+      <div className="mt-6 grid gap-5 lg:grid-cols-2">
+        {comparisons.map((c) => (
+          <div
+            key={c.id}
+            className="rounded-xl border border-ink-line bg-ink-card p-4"
+          >
+            <div className="flex items-center justify-between">
+              <input
+                value={c.label}
+                onChange={(e) => onUpdate(c.id, { label: e.target.value })}
+                className="bg-transparent font-mono text-[11px] uppercase tracking-widest text-signal outline-none"
+              />
+              {comparisons.length > 2 && (
+                <button
+                  type="button"
+                  onClick={() => onRemove(c.id)}
+                  aria-label="Remove JD"
+                  className="rounded p-1 text-paper-dim transition hover:text-red-400"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+            <textarea
+              value={c.jd}
+              onChange={(e) => onUpdate(c.id, { jd: e.target.value })}
+              placeholder="Paste JD here…"
+              rows={8}
+              maxLength={8000}
+              className="mt-2 w-full resize-y rounded-lg border border-ink-line bg-ink p-3 text-sm text-paper placeholder:text-paper-dim focus:border-signal/40 focus:outline-none"
+            />
+            <p className="mt-1 font-mono text-[10px] text-paper-dim">
+              {c.jd.length.toLocaleString()} chars
+            </p>
+            {c.error && (
+              <p className="mt-2 rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+                {c.error}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Comparison table */}
+      {anyAnalysed && (
+        <div className="mt-12">
+          <p className="meta mb-4">Comparison results</p>
+          <div className="overflow-x-auto rounded-2xl border border-ink-line">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-ink-line bg-ink-card font-mono text-[10px] uppercase tracking-widest text-paper-dim">
+                  <th className="px-4 py-3 text-left">JD</th>
+                  <th className="px-4 py-3 text-left">Score</th>
+                  <th className="px-4 py-3 text-left">Fit</th>
+                  <th className="px-4 py-3 text-left">Headline</th>
+                  <th className="px-4 py-3 text-right">Strengths · Gaps</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...comparisons]
+                  .filter((c) => c.report)
+                  .sort((a, b) => (b.report!.fitScore - a.report!.fitScore))
+                  .map((c, i) => (
+                    <tr
+                      key={c.id}
+                      className={cn(
+                        "border-b border-ink-line transition hover:bg-ink-card",
+                        i === 0 && "bg-signal/[0.05]",
+                      )}
+                    >
+                      <td className="px-4 py-4 font-medium text-paper">
+                        {c.label}
+                        {i === 0 && (
+                          <span className="ml-2 rounded-full border border-signal/40 bg-signal/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-widest text-signal">
+                            Best
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-4 font-display text-2xl text-paper">
+                        {c.report!.fitScore}
+                      </td>
+                      <td className="px-4 py-4">
+                        <span
+                          className={cn(
+                            "rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest",
+                            FIT_COLORS[c.report!.overallFit],
+                          )}
+                        >
+                          {c.report!.overallFit}
+                        </span>
+                      </td>
+                      <td className="max-w-md px-4 py-4 text-paper-muted">
+                        {c.report!.headline}
+                      </td>
+                      <td className="px-4 py-4 text-right font-mono text-xs text-paper-dim">
+                        <span className="text-signal">
+                          ✓ {c.report!.strengths.length}
+                        </span>{" "}
+                        ·{" "}
+                        <span className="text-amber-400">
+                          ⚠ {c.report!.gaps.length}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-widest text-paper-dim">
+            Sorted by fit score · highest first · all reports grounded in the
+            same CV
+          </p>
+        </div>
+      )}
+    </section>
   );
 }

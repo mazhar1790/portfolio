@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SKILLS } from "@/data/cv";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { SKILLS, SKILL_PROOFS } from "@/data/cv";
 
 export default function Skills() {
   const entries = Object.entries(SKILLS);
@@ -48,12 +50,32 @@ export default function Skills() {
 
               <div className="lg:col-span-8">
                 <div className="flex flex-wrap gap-1.5">
-                  {data.items.map((item) => (
-                    <span key={item} className="tag">
-                      {item}
-                    </span>
-                  ))}
+                  {data.items.map((item) => {
+                    const proof = SKILL_PROOFS[item];
+                    if (proof) {
+                      return (
+                        <Link
+                          key={item}
+                          href={proof}
+                          className="group inline-flex items-center gap-1 rounded-full border border-signal/30 bg-signal/[0.06] px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-signal transition hover:border-signal/60 hover:bg-signal/10"
+                          aria-label={`See ${item} in action`}
+                        >
+                          {item}
+                          <ArrowUpRight className="h-2.5 w-2.5 opacity-60 transition group-hover:opacity-100" />
+                        </Link>
+                      );
+                    }
+                    return (
+                      <span key={item} className="tag">
+                        {item}
+                      </span>
+                    );
+                  })}
                 </div>
+                <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-paper-dim">
+                  <span className="text-signal">●</span> Green items link to
+                  proof — a project or article where I used them
+                </p>
               </div>
             </motion.div>
           ))}

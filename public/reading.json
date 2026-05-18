@@ -1,0 +1,49 @@
+{
+  "updatedAt": "2026-05-18",
+  "books": [
+    {
+      "id": "designing-data-intensive-applications",
+      "title": "Designing Data-Intensive Applications",
+      "author": "Martin Kleppmann",
+      "status": "re-reading",
+      "note": "The single best systems book of the last decade. Re-reading for distributed-RAG ideas."
+    },
+    {
+      "id": "the-staff-engineer-path",
+      "title": "The Staff Engineer's Path",
+      "author": "Tanya Reilly",
+      "status": "reading",
+      "note": "Helpful framing for the IC track at principal level."
+    },
+    {
+      "id": "ai-engineering",
+      "title": "AI Engineering",
+      "author": "Chip Huyen",
+      "status": "finished",
+      "note": "The closest thing to a definitive playbook for production LLM systems."
+    }
+  ],
+  "papers": [
+    {
+      "id": "rerank-bias",
+      "title": "Lost in the Middle: How Language Models Use Long Contexts",
+      "authors": "Liu et al.",
+      "note": "Empirical case for hard top-k limits + smart reranking — not just bigger context windows."
+    },
+    {
+      "id": "rag-survey-2024",
+      "title": "Retrieval-Augmented Generation for LLMs: A Survey",
+      "authors": "Gao et al.",
+      "note": "Taxonomy of RAG patterns. Useful for naming what I already do."
+    }
+  ],
+  "talks": [
+    {
+      "id": "swyx-eval",
+      "title": "Evals are the new unit tests",
+      "speaker": "Swyx · AI.Engineer Summit 2025",
+      "url": "https://www.youtube.com/results?search_query=swyx+evals+ai+engineer",
+      "note": "Validates the eval-harness-first approach I've been preaching to the team."
+    }
+  ]
+}

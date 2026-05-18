@@ -48,6 +48,22 @@ export default function Footer() {
                 /uses
               </Link>
               <span className="text-ink-line">·</span>
+              <Link href="/now" className="transition hover:text-paper">
+                /now
+              </Link>
+              <span className="text-ink-line">·</span>
+              <Link href="/evals" className="transition hover:text-paper">
+                Evals
+              </Link>
+              <span className="text-ink-line">·</span>
+              <Link href="/podcast" className="transition hover:text-paper">
+                Podcast
+              </Link>
+              <span className="text-ink-line">·</span>
+              <Link href="/mcp" className="transition hover:text-signal">
+                MCP server
+              </Link>
+              <span className="text-ink-line">·</span>
               <a
                 href="https://github.com/mazhar1790/portfolio"
                 target="_blank"

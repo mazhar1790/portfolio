@@ -4,15 +4,7 @@ import { PROJECTS } from "@/data/cv";
 export const runtime = "edge";
 export const size = ogSize;
 export const contentType = ogContentType;
-
-export async function generateImageMetadata({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const project = PROJECTS.find((p) => p.slug === params.slug);
-  return [{ id: params.slug, alt: project?.title ?? "Project case study", size }];
-}
+export const alt = "Project case study — Mazhar Hayat";
 
 export default function Image({ params }: { params: { slug: string } }) {
   const project = PROJECTS.find((p) => p.slug === params.slug);

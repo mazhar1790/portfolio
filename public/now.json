@@ -1,0 +1,25 @@
+{
+  "updatedAt": "2026-05-18",
+  "location": "Abu Dhabi, UAE",
+  "focus": [
+    "Hardening the multi-agent orchestrator at SCAD for Q3 launch",
+    "Open-sourcing pieces of the RAG infra (chunking heuristics, eval harness)",
+    "Writing — finishing the NL-to-SQL accuracy article"
+  ],
+  "learning": [
+    "Anthropic's MCP (Model Context Protocol) — building a server for my own CV",
+    "Latest reranker comparisons: Cohere v3.5 vs Voyage v2 vs ColBERT",
+    "Cost-aware RAG: caching strategies for 100K+ daily queries"
+  ],
+  "building": [
+    "Personal portfolio at $0/month (this site)",
+    "Internal MCP-based agent framework for SCAD",
+    "MDX-based technical writing pipeline"
+  ],
+  "blockers": [
+    "Arabic OCR ground truth dataset — building one slowly",
+    "Pinecone serverless cold-start latency on bursty traffic"
+  ],
+  "moodOfTheWeek": "Cautiously optimistic about agentic systems. Skeptical of demos. Bullish on evals.",
+  "currentlyReadingId": "designing-data-intensive-applications"
+}

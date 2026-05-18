@@ -140,30 +140,130 @@ export function DiagramArrow({
   d,
   flow = true,
   delay = 0,
+  tone = "signal",
 }: {
   d: string;
   flow?: boolean;
   delay?: number;
+  tone?: "signal" | "amber" | "muted";
 }) {
+  const stroke =
+    tone === "amber"
+      ? "rgba(255,184,77,0.7)"
+      : tone === "muted"
+        ? "rgba(255,255,255,0.32)"
+        : "rgba(0,255,136,0.85)";
   return (
     <g>
       <path
         d={d}
         fill="none"
-        stroke="rgba(255,255,255,0.18)"
+        stroke="rgba(255,255,255,0.10)"
         strokeWidth={1}
       />
       {flow && (
         <path
           d={d}
           fill="none"
-          stroke="rgba(0,255,136,0.85)"
+          stroke={stroke}
           strokeWidth={1.5}
-          strokeDasharray="6 8"
+          strokeDasharray={tone === "amber" ? "3 4" : "6 8"}
           className="dash-flow"
           style={{ animationDelay: `${delay}s` }}
         />
       )}
+    </g>
+  );
+}
+
+/**
+ * A lane (column) label rendered as a subtle vertical band header.
+ */
+export function DiagramLane({
+  x,
+  y,
+  w,
+  h,
+  label,
+}: {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  label: string;
+}) {
+  return (
+    <g>
+      <rect
+        x={x}
+        y={y}
+        width={w}
+        height={h}
+        rx={6}
+        fill="rgba(255,255,255,0.015)"
+        stroke="rgba(255,255,255,0.06)"
+        strokeDasharray="2 3"
+      />
+      <text
+        x={x + w / 2}
+        y={y + 14}
+        textAnchor="middle"
+        className="fill-paper-dim font-mono"
+        style={{ fontSize: 8.5, letterSpacing: 1.5 }}
+      >
+        {label}
+      </text>
+    </g>
+  );
+}
+
+/**
+ * A "code card" that renders monospaced lines inside a styled rect.
+ */
+export function DiagramCodeCard({
+  x,
+  y,
+  w,
+  title,
+  lines,
+  accent = false,
+}: {
+  x: number;
+  y: number;
+  w: number;
+  title: string;
+  lines: string[];
+  accent?: boolean;
+}) {
+  const h = 26 + lines.length * 12 + 8;
+  return (
+    <g transform={`translate(${x}, ${y})`}>
+      <rect
+        width={w}
+        height={h}
+        rx={6}
+        fill={accent ? "rgba(0,255,136,0.06)" : "rgba(0,0,0,0.4)"}
+        stroke={accent ? "rgba(0,255,136,0.30)" : "rgba(255,255,255,0.12)"}
+      />
+      <text
+        x={10}
+        y={16}
+        className={accent ? "fill-signal font-mono" : "fill-paper-dim font-mono"}
+        style={{ fontSize: 8.5, letterSpacing: 1.2 }}
+      >
+        {title}
+      </text>
+      {lines.map((ln, i) => (
+        <text
+          key={i}
+          x={10}
+          y={32 + i * 12}
+          className="fill-paper font-mono"
+          style={{ fontSize: 9 }}
+        >
+          {ln}
+        </text>
+      ))}
     </g>
   );
 }

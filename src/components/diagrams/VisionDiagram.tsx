@@ -1,164 +1,225 @@
 "use client";
 
-import { DiagramArrow, DiagramNode, DiagramShell } from "./DiagramShell";
+import {
+  DiagramArrow,
+  DiagramCodeCard,
+  DiagramLane,
+  DiagramNode,
+  DiagramShell,
+} from "./DiagramShell";
 
 export default function VisionDiagram() {
   return (
     <DiagramShell title="vision.pipeline">
       <svg
-        viewBox="0 0 560 280"
+        viewBox="0 0 700 360"
         className="w-full"
         role="img"
         aria-label="Document processing and Vision AI pipeline"
       >
-        {/* Inbox / source */}
-        <g transform="translate(14, 40)">
+        {/* Lanes */}
+        <DiagramLane x={10} y={12} w={130} h={336} label="INTAKE" />
+        <DiagramLane x={150} y={12} w={160} h={336} label="ROUTE" />
+        <DiagramLane x={320} y={12} w={160} h={336} label="EXTRACT · MERGE" />
+        <DiagramLane x={490} y={12} w={200} h={336} label="VALIDATE · DELIVER" />
+
+        {/* ── INTAKE ───────────────────────────────────────────────── */}
+        <g transform="translate(20, 38)">
           <rect
-            width={108}
-            height={200}
-            rx={8}
+            width={110}
+            height={290}
+            rx={6}
             fill="rgba(255,255,255,0.02)"
             stroke="rgba(255,255,255,0.10)"
           />
           <text
-            x={54}
+            x={55}
             y={20}
             textAnchor="middle"
             className="fill-paper-dim font-mono"
-            style={{ fontSize: 9, letterSpacing: 1 }}
+            style={{ fontSize: 8.5, letterSpacing: 1 }}
           >
             INBOX · 1K/DAY
           </text>
-          {/* Document icons */}
           {[
-            { y: 40, label: "PDF" },
-            { y: 80, label: "JPG" },
-            { y: 120, label: "PNG" },
-            { y: 160, label: "FORM" },
+            { y: 40, label: "PDF", count: "420" },
+            { y: 80, label: "JPG", count: "180" },
+            { y: 120, label: "PNG", count: "150" },
+            { y: 160, label: "FORM", count: "210" },
+            { y: 200, label: "SCAN", count: "40" },
           ].map((d) => (
-            <g key={d.label} transform={`translate(20, ${d.y})`}>
+            <g key={d.label} transform={`translate(15, ${d.y})`}>
               <rect
-                width={68}
-                height={30}
+                width={80}
+                height={28}
                 rx={3}
                 fill="rgba(255,255,255,0.04)"
                 stroke="rgba(255,255,255,0.10)"
               />
               <text
                 x={8}
-                y={19}
+                y={18}
                 className="fill-paper-muted font-mono"
                 style={{ fontSize: 9 }}
               >
                 ▤ {d.label}
               </text>
+              <text
+                x={72}
+                y={18}
+                textAnchor="end"
+                className="fill-paper-dim font-mono"
+                style={{ fontSize: 8 }}
+              >
+                {d.count}
+              </text>
             </g>
           ))}
+          <text
+            x={55}
+            y={252}
+            textAnchor="middle"
+            className="fill-paper-dim font-mono"
+            style={{ fontSize: 8 }}
+          >
+            AR + EN content
+          </text>
+          <text
+            x={55}
+            y={266}
+            textAnchor="middle"
+            className="fill-paper-dim font-mono"
+            style={{ fontSize: 8 }}
+          >
+            handwriting · tables
+          </text>
+          <text
+            x={55}
+            y={280}
+            textAnchor="middle"
+            className="fill-signal font-mono"
+            style={{ fontSize: 8 }}
+          >
+            14 document types
+          </text>
         </g>
 
-        <DiagramArrow d="M 122 142 L 162 142" />
+        {/* ── ROUTE: classifier picks the right extractor ─────────── */}
+        <DiagramArrow d="M 130 180 L 162 180" />
 
-        {/* Form Recognizer */}
         <DiagramNode
           x={162}
-          y={60}
-          w={130}
-          label="Form Recognizer"
-          sublabel="layout + fields"
-        />
-        <DiagramArrow d="M 122 142 L 162 82" />
-
-        {/* GPT-4 Vision */}
-        <DiagramNode
-          x={162}
-          y={140}
-          w={130}
-          label="GPT-4 Vision"
-          sublabel="unstructured"
-          accent
-        />
-
-        {/* Classifier */}
-        <DiagramNode
-          x={162}
-          y={220}
-          w={130}
+          y={156}
+          w={136}
+          h={48}
           label="Classifier"
           sublabel="route by type"
+          accent
+          tooltip="Type-aware routing — each doc type goes to its best extractor"
         />
-        <DiagramArrow d="M 122 142 L 162 240" />
 
-        {/* Merge / Enrich */}
-        <DiagramArrow d="M 292 82 L 332 132" delay={0.2} />
-        <DiagramArrow d="M 292 162 L 332 162" delay={0.3} />
-        <DiagramArrow d="M 292 240 L 332 192" delay={0.4} />
+        {/* Routing arrows to three extractors */}
+        <DiagramArrow d="M 230 156 C 230 110, 280 110, 322 70" delay={0.15} />
+        <DiagramArrow d="M 298 180 L 322 180" delay={0.2} />
+        <DiagramArrow d="M 230 204 C 230 250, 280 250, 322 290" delay={0.25} />
+
+        {/* ── EXTRACT: three parallel models ──────────────────────── */}
 
         <DiagramNode
-          x={332}
-          y={140}
-          w={120}
+          x={322}
+          y={46}
+          w={150}
+          h={48}
+          label="Form Recognizer"
+          sublabel="structured forms"
+          tooltip="Azure Document Intelligence — cheap, fast, accurate on forms"
+        />
+
+        <DiagramNode
+          x={322}
+          y={156}
+          w={150}
+          h={48}
+          label="GPT-4 Vision"
+          sublabel="unstructured · AR"
+          accent
+          tooltip="Handles handwriting, mixed Arabic-English, complex layouts"
+        />
+
+        <DiagramNode
+          x={322}
+          y={266}
+          w={150}
+          h={48}
+          label="Tesseract · OCR"
+          sublabel="legacy scans"
+          tooltip="Fallback for low-quality legacy scans"
+        />
+
+        {/* Three → Merge */}
+        <DiagramArrow d="M 472 70 C 510 70, 510 162, 530 162" delay={0.35} />
+        <DiagramArrow d="M 472 180 L 530 180" delay={0.4} />
+        <DiagramArrow d="M 472 290 C 510 290, 510 198, 530 198" delay={0.45} />
+
+        {/* ── MERGE + VALIDATE ────────────────────────────────────── */}
+
+        <DiagramNode
+          x={530}
+          y={146}
+          w={150}
+          h={56}
           label="Merge + Enrich"
-          sublabel="validate"
+          sublabel="per-field confidence"
+          accent
+          tooltip="Combine sources; per-field confidence drives review"
+        />
+
+        {/* Down to schema output */}
+        <DiagramArrow d="M 605 202 L 605 230" delay={0.55} />
+
+        <DiagramCodeCard
+          x={500}
+          y={230}
+          w={190}
+          title="STRUCTURED · COSMOS DB"
+          lines={[
+            "{ type, fields, conf }",
+            '  emp_id: "12345" (0.99)',
+            '  date:   "2024-01" (0.94)',
+            '  notes:  ar+en       (0.71)',
+          ]}
           accent
         />
 
-        {/* Output card */}
-        <g transform="translate(332, 200)">
-          <rect
-            width={208}
-            height={56}
-            rx={6}
-            fill="rgba(0,255,136,0.06)"
-            stroke="rgba(0,255,136,0.30)"
+        {/* Confidence-gated review branch */}
+        <g>
+          <path
+            d="M 605 202 C 605 222, 240 220, 235 250"
+            fill="none"
+            stroke="rgba(255,184,77,0.50)"
+            strokeWidth={1}
+            strokeDasharray="3 4"
           />
           <text
-            x={10}
-            y={18}
-            className="fill-signal font-mono"
-            style={{ fontSize: 9, letterSpacing: 1 }}
+            x={395}
+            y={222}
+            textAnchor="middle"
+            className="fill-amber-signal font-mono"
+            style={{ fontSize: 8.5, letterSpacing: 1 }}
           >
-            STRUCTURED OUTPUT
-          </text>
-          <text
-            x={10}
-            y={34}
-            className="fill-paper font-mono"
-            style={{ fontSize: 9.5 }}
-          >
-            {"{ type, fields, confidence }"}
-          </text>
-          <text
-            x={10}
-            y={48}
-            className="fill-paper-dim font-mono"
-            style={{ fontSize: 9 }}
-          >
-            → Cosmos DB
+            ↳ if conf &lt; 0.85 → human review queue
           </text>
         </g>
 
-        <DiagramArrow d="M 392 184 L 392 200" delay={0.5} />
-
-        {/* Time box */}
-        <DiagramNode
-          x={462}
-          y={60}
-          w={78}
-          h={68}
-          label="30s"
-          sublabel="(was 15m)"
-          accent
-        />
-        <DiagramArrow d="M 452 162 C 480 162, 480 130, 480 128" delay={0.3} />
-
+        {/* Stats strip */}
         <text
-          x={280}
-          y={272}
+          x={350}
+          y={350}
           textAnchor="middle"
           className="fill-paper-dim font-mono"
           style={{ fontSize: 9, letterSpacing: 1.5 }}
         >
-          80% AUTOMATED · 94% EXTRACTION · 2K+ HRS SAVED/MO
+          80% AUTOMATED · 94% EXTRACTION · 2K+ HRS SAVED/MO · 30s VS 15min · 14 DOC TYPES
         </text>
       </svg>
     </DiagramShell>

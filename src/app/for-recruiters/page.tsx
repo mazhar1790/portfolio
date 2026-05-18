@@ -13,6 +13,7 @@ import {
 import { PERSONAL, METRICS } from "@/data/cv";
 import CvDownload from "@/components/CvDownload";
 import AvailabilityBadge from "@/components/AvailabilityBadge";
+import BookCall from "@/components/BookCall";
 
 export const metadata: Metadata = {
   title: `For recruiters — ${PERSONAL.name}`,
@@ -109,20 +110,21 @@ export default function ForRecruitersPage() {
 
         {/* Quick CTA buttons */}
         <section className="mt-8 flex flex-wrap gap-3">
-          <a href={`mailto:${PERSONAL.email}`} className="btn-primary">
-            <Mail className="h-3.5 w-3.5 text-ink" />
+          <BookCall variant="primary" />
+          <a href={`mailto:${PERSONAL.email}`} className="btn-secondary">
+            <Mail className="h-3.5 w-3.5 text-signal" />
             Email me
           </a>
           <a
             href={PERSONAL.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-secondary"
+            className="btn-ghost"
           >
             <MessageSquareText className="h-3.5 w-3.5 text-signal" />
-            Message on LinkedIn
+            LinkedIn
           </a>
-          <CvDownload variant="secondary" />
+          <CvDownload variant="ghost" />
           <a
             href={`tel:${PERSONAL.phone.replace(/\s+/g, "")}`}
             className="btn-ghost"
@@ -236,15 +238,16 @@ export default function ForRecruitersPage() {
             If this looks like a fit, the fastest path is a 20-minute call.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <a href={`mailto:${PERSONAL.email}`} className="btn-primary">
-              <Mail className="h-3.5 w-3.5 text-ink" />
+            <BookCall variant="primary" />
+            <a href={`mailto:${PERSONAL.email}`} className="btn-secondary">
+              <Mail className="h-3.5 w-3.5 text-signal" />
               {PERSONAL.email}
             </a>
             <a
               href={PERSONAL.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary"
+              className="btn-ghost"
             >
               LinkedIn
             </a>

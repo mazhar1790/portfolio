@@ -15,6 +15,7 @@ import { useState } from "react";
 import { PERSONAL } from "@/data/cv";
 import { useChat } from "./AiChat/ChatContext";
 import CvDownload from "./CvDownload";
+import BookCall from "./BookCall";
 
 export default function Contact() {
   const { openChat } = useChat();
@@ -45,14 +46,15 @@ export default function Contact() {
           </p>
 
           <div className="mt-12 flex flex-wrap items-center gap-4">
-            <a href={`mailto:${PERSONAL.email}`} className="btn-primary">
+            <BookCall variant="primary" />
+            <a href={`mailto:${PERSONAL.email}`} className="btn-secondary">
               Start a conversation
               <ArrowUpRight className="h-4 w-4" />
             </a>
             <button
               type="button"
               onClick={() => openChat("Is he available for new opportunities?")}
-              className="btn-secondary"
+              className="btn-ghost"
             >
               <MessageSquareText className="h-4 w-4 text-signal" />
               Ask the AI
