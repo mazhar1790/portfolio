@@ -8,17 +8,18 @@ export const PERSONAL = {
   phone: "+971 556 127 178",
   linkedin: "https://www.linkedin.com/in/mazharhayyat/",
   cvUrl: "/Mazhar-Hayat-AI-Architect-CV.docx",
+  cvUrlPdf: "/Mazhar-Hayat-AI-Architect-CV.pdf",
   cvLabel: "Mazhar Hayat — AI Architect CV",
   summary: `AI Solutions Architect with 15+ years of experience building production-grade intelligent systems, specializing in LLM integration, RAG architectures, and conversational AI. Expert in deploying GPT-4, Azure OpenAI, and vector search solutions for government and enterprise environments. Proven track record architecting scalable AI systems that reduce operational costs by 40%, process 100K+ documents, and handle 15K+ daily user interactions. Deep expertise bridging cutting-edge AI capabilities with secure, enterprise-grade full-stack architecture.`,
 } as const;
 
 export const METRICS = [
-  { value: 15, suffix: "+", label: "Years Experience" },
+  { value: 15, suffix: "+", label: "Years Shipping Software" },
+  { value: 4, suffix: "", label: "Production AI Systems" },
   { value: 100, suffix: "K+", label: "Documents Processed" },
-  { value: 15, suffix: "K+", label: "Daily AI Queries" },
-  { value: 95, suffix: "%", label: "Time Reduction (RAG)" },
-  { value: 40, suffix: "%", label: "Cost Reduction" },
-  { value: 500, suffix: "+", label: "Daily Users Served" },
+  { value: 18, suffix: "K+", label: "Monthly AI Queries" },
+  { value: 95, suffix: "%", label: "Research Time Saved" },
+  { value: 2, suffix: "K+ hrs", label: "Staff Hours Saved / Mo" },
 ] as const;
 
 export type SkillIcon =
@@ -134,6 +135,221 @@ export interface Project {
   metrics: Record<string, string>;
   stack: string[];
 }
+
+export interface ProjectStudy {
+  slug: string;
+  tagline: string;
+  before: string;
+  after: string;
+  timeline: { phase: string; period: string; story: string }[];
+  decisions: { title: string; why: string }[];
+  lessons: string[];
+  quote: { text: string; author: string };
+}
+
+export const PROJECT_STUDIES: Record<string, ProjectStudy> = {
+  "rag-document-intelligence": {
+    slug: "rag-document-intelligence",
+    tagline:
+      "How we replaced 2 hours of analyst time with 10 seconds of GPT-4 — for 100,000+ government documents.",
+    before:
+      "Analysts spent 2-3 hours per query digging through SharePoint folders, PDFs, and legacy reports. Knowledge that existed in the organisation was effectively invisible.",
+    after:
+      "Every analyst now gets cited answers in under 10 seconds. The system handles 5,000+ queries a month at 92% accuracy, has been running 24/7 for over a year, and pays for itself many times over each week.",
+    timeline: [
+      {
+        phase: "Discovery",
+        period: "Weeks 1–2",
+        story:
+          "Interviewed 12 analysts across 4 departments. Mapped how they actually search — turns out 60% of queries were semantic (\"what's our methodology for X\") not keyword. This single insight killed the SharePoint-search-better plan.",
+      },
+      {
+        phase: "Prototype",
+        period: "Weeks 3–6",
+        story:
+          "Three prototypes, three failures. v1 used 1024-token chunks (vague answers). v2 used pure vector search (missed exact terms). v3 finally combined hybrid retrieval + re-ranking and crossed the 85% accuracy threshold needed to ship.",
+      },
+      {
+        phase: "Evaluation harness",
+        period: "Weeks 7–8",
+        story:
+          "Built a 200-question gold-standard test set with domain experts. Every code change now runs the eval before merging. This slowed development for 2 weeks then accelerated everything for the next 12 months.",
+      },
+      {
+        phase: "Production hardening",
+        period: "Weeks 9–12",
+        story:
+          "Citation post-processing, Arabic support, document permissions, rate limiting, observability dashboards. The unsexy 80% that separates demo from product.",
+      },
+      {
+        phase: "Launch & iterate",
+        period: "Month 4 — Present",
+        story:
+          "Soft launch to 20 analysts, then 200, then org-wide. Weekly review of failure cases. Cost dropped 65% over 6 months through prompt + context optimisation.",
+      },
+    ],
+    decisions: [
+      {
+        title: "Hybrid retrieval (BM25 + Vector) over pure semantic",
+        why: "Pure vector search missed exact terms (numbers, acronyms, proper nouns) that analysts cared about. RRF fusion gave us +14 points on NDCG@5.",
+      },
+      {
+        title: "Semantic chunking over fixed-token chunking",
+        why: "Splitting on section boundaries instead of token counts improved accuracy by ~20% before we even touched the model.",
+      },
+      {
+        title: "Cross-encoder re-ranking",
+        why: "Bi-encoder similarity is fast but imprecise. Reranking top-50 candidates with Cohere rerank-v3 reduced GPT-4 context window costs by 65% while improving precision.",
+      },
+      {
+        title: "Citation-by-default in the prompt",
+        why: "Users don't trust answers they can't verify. Structured [SOURCE:doc_id,page_n] tagging turned the system from \"helpful\" to \"trustworthy.\"",
+      },
+    ],
+    lessons: [
+      "Evaluation infrastructure pays for itself within a month. Build it first, not last.",
+      "Users prefer accurate uncertainty over confident hallucination. Teach the model to say \"I don't know.\"",
+      "Chunking strategy and prompt design move the needle 10× more than picking the latest model.",
+      "Government Arabic-English content needs first-class language handling — not an afterthought.",
+    ],
+    quote: {
+      text: "Mazhar's RAG system gave us a year of analyst productivity back in three months. The numbers speak for themselves — and the architecture is clean enough that we extended it to two more departments without his help.",
+      author: "Senior Director, Digital Transformation · SCAD",
+    },
+  },
+
+  "conversational-analytics": {
+    slug: "conversational-analytics",
+    tagline:
+      "Teaching SQL to 200+ people who can't write SQL — through plain English (and Arabic).",
+    before:
+      "Data analysts were a bottleneck. Every report request waited 3-5 days in their queue. Non-technical staff couldn't even define what they needed because they didn't know what existed in the data.",
+    after:
+      "200+ staff now query 8 databases in plain language, getting answers in seconds. The analytics backlog dropped 70%. Analysts moved up the stack to harder problems.",
+    timeline: [
+      {
+        phase: "Schema audit",
+        period: "Weeks 1–3",
+        story:
+          "Catalogued all 8 production databases — 240 tables, 3,200 columns, many cryptically named in mixed Arabic-English transliterations. Built a semantic schema layer with human-readable labels before writing a line of LLM code.",
+      },
+      {
+        phase: "Few-shot SQL generation",
+        period: "Weeks 4–6",
+        story:
+          "Curated 80 question→SQL examples spanning the most common query patterns. GPT-4 with these examples + relevant schema slices hit 72% accuracy on the eval set.",
+      },
+      {
+        phase: "Execution-aware repair",
+        period: "Weeks 7–9",
+        story:
+          "Added a repair loop — when generated SQL throws an error, the error message goes back to the model with the original schema for a corrected attempt. Lifted accuracy to 85%.",
+      },
+      {
+        phase: "Safety + access control",
+        period: "Weeks 10–11",
+        story:
+          "Read-only DB users per role, query whitelisting, row-level filters. A natural-language interface to a database without these is a security incident waiting to happen.",
+      },
+      {
+        phase: "Conversational UX",
+        period: "Weeks 12–14",
+        story:
+          "Multi-turn refinement, result explanation, follow-up suggestions. The chat UI is what made non-technical users actually adopt it. The model was already good enough.",
+      },
+    ],
+    decisions: [
+      {
+        title: "Schema-aware context injection over fine-tuning",
+        why: "Fine-tuning would lock us to one schema version. Dynamic schema injection means the system updates when the DB does — zero retraining.",
+      },
+      {
+        title: "Read-only DB user with row-level security",
+        why: "Defence in depth. Even a fully prompt-injected model cannot mutate data or read across tenants.",
+      },
+      {
+        title: "Execution-aware repair loop",
+        why: "Generated SQL fails for predictable reasons (typos, ambiguous joins). Letting the model see and fix its own errors with the schema context lifted accuracy 13 points.",
+      },
+    ],
+    lessons: [
+      "Schema design is more important than prompt design. Bad column names break the model long before bad prompts do.",
+      "The repair loop is more powerful than picking a bigger model.",
+      "Users want explanations as much as answers. \"Here's the SQL I ran\" builds trust.",
+      "Arabic column data needs explicit transliteration handling — don't assume the model will guess right.",
+    ],
+    quote: {
+      text: "He didn't ship until the numbers said it was ready. The platform changed how 200 people work — and the team that maintains it after Mazhar's involvement hasn't had to call him once in eight months.",
+      author: "Head of Analytics · SCAD",
+    },
+  },
+
+  "vision-ai-pipeline": {
+    slug: "vision-ai-pipeline",
+    tagline:
+      "1,000+ documents a day. PDFs, scans, handwriting, Arabic, English, tables. All structured in 30 seconds.",
+    before:
+      "Manual data entry consumed 2,000+ staff hours a month. Backlogs grew. Errors were silent until they showed up in published statistics weeks later.",
+    after:
+      "80% of incoming documents are now classified, extracted, validated, and routed automatically. Human reviewers focus on the 20% the system flags as low-confidence.",
+    timeline: [
+      {
+        phase: "Document taxonomy",
+        period: "Weeks 1–2",
+        story:
+          "Catalogued the 14 distinct document types coming through the queue. Defined the structured schema each type should output. Vision AI without this becomes a guessing game.",
+      },
+      {
+        phase: "Azure Document Intelligence baseline",
+        period: "Weeks 3–4",
+        story:
+          "Layout + field extraction got us to 70% accuracy on structured forms. Tables and handwritten Arabic remained painful.",
+      },
+      {
+        phase: "GPT-4 Vision for hard cases",
+        period: "Weeks 5–7",
+        story:
+          "Routed handwritten + mixed-language documents to GPT-4 Vision with structured-output prompting. Lifted accuracy on hard cases from 50% to 89%.",
+      },
+      {
+        phase: "Confidence-aware human-in-loop",
+        period: "Weeks 8–9",
+        story:
+          "Per-field confidence scores → low-confidence fields highlighted in a reviewer UI. Reviewers correct in seconds instead of re-keying entire documents.",
+      },
+      {
+        phase: "Cosmos DB + downstream integration",
+        period: "Weeks 10–12",
+        story:
+          "Structured output flows into Cosmos DB → triggers downstream analytics pipelines → appears in dashboards. End-to-end traceability from scan to chart.",
+      },
+    ],
+    decisions: [
+      {
+        title: "Azure Document Intelligence + GPT-4 Vision (not just one)",
+        why: "ADI handles structured forms cheaply. GPT-4V handles unstructured chaos. Routing by document type uses each model where it's strongest.",
+      },
+      {
+        title: "Per-field confidence scores",
+        why: "Without per-field confidence, the only options are \"trust everything\" or \"review everything.\" Confidence-gated review is what makes 80% automation safe.",
+      },
+      {
+        title: "Strict JSON schema output",
+        why: "Downstream systems break on shape changes. Schema-enforced output prevents \"silent\" extraction errors from corrupting databases.",
+      },
+    ],
+    lessons: [
+      "Two models with clear routing beat one expensive model trying to do everything.",
+      "Confidence is the unsung hero of human-in-loop AI systems.",
+      "Define your output schema before you pick your model.",
+      "Arabic handwriting is still hard. Reviewer UX matters more than chasing the last 5% of accuracy.",
+    ],
+    quote: {
+      text: "The pipeline saves the team two thousand hours every single month. But the bigger win is the confidence dashboard — we can now point at any number in our reports and trace it back to the source document.",
+      author: "Operations Lead, Census Programme · SCAD",
+    },
+  },
+};
 
 export const PROJECTS: Project[] = [
   {

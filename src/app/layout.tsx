@@ -30,10 +30,16 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://keen-tartufo-313e21.netlify.app";
+
+const SHORT_DESCRIPTION =
+  "AI Solutions Architect (15+ yrs) shipping production RAG, NL-to-SQL, and Vision AI systems. This site runs RAG on itself — try the live demo.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mazharcv.runasp.net"),
+  metadataBase: new URL(SITE_URL),
   title: `${PERSONAL.name} — ${PERSONAL.title}`,
-  description: PERSONAL.summary,
+  description: SHORT_DESCRIPTION,
   keywords: [
     "AI Solutions Architect",
     "LLM",
@@ -44,18 +50,32 @@ export const metadata: Metadata = {
     "Conversational AI",
     "Mazhar Hayat",
     "Abu Dhabi",
+    "UAE",
   ],
-  authors: [{ name: PERSONAL.name }],
+  authors: [{ name: PERSONAL.name, url: SITE_URL }],
+  creator: PERSONAL.name,
   openGraph: {
     title: `${PERSONAL.name} — ${PERSONAL.title}`,
-    description: PERSONAL.summary,
+    description: SHORT_DESCRIPTION,
+    url: SITE_URL,
+    siteName: `${PERSONAL.name} — Portfolio`,
     type: "website",
     locale: "en_US",
+    // /opengraph-image.tsx is auto-detected by Next.js
   },
   twitter: {
     card: "summary_large_image",
     title: `${PERSONAL.name} — ${PERSONAL.title}`,
-    description: PERSONAL.summary,
+    description: SHORT_DESCRIPTION,
+    creator: "@mazharhayyat",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  alternates: {
+    canonical: SITE_URL,
   },
 };
 

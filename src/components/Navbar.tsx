@@ -100,6 +100,20 @@ export default function Navbar() {
               </a>
             );
           })}
+          <a
+            href="/for-recruiters"
+            className="hidden items-center gap-1.5 rounded-full border border-ink-line bg-ink-card px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-dim transition hover:border-signal/40 hover:text-paper lg:inline-flex"
+          >
+            For recruiters
+          </a>
+          <a
+            href="/ar"
+            className="hidden items-center gap-1 rounded-md border border-ink-line bg-ink-card px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-paper-dim transition hover:border-signal/40 hover:text-paper lg:inline-flex"
+            aria-label="Arabic version"
+            title="النسخة العربية"
+          >
+            عر
+          </a>
           <button
             type="button"
             onClick={() => openChat()}

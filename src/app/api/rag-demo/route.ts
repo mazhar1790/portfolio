@@ -7,8 +7,8 @@ import { CORPUS_NAMESPACE, PINECONE_INDEX_NAME } from "@/data/rag-corpus";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const TOP_K_RETRIEVE = 10; // retrieve more, rerank down to 5
-const TOP_K_RERANK = 5;
+const DEFAULT_TOP_K = 5;
+const RETRIEVE_MULTIPLIER = 2; // when reranking, retrieve 2x more to rerank from
 
 interface RetrievedChunk {
   id: string;
@@ -36,9 +36,26 @@ export async function POST(req: Request) {
   }
 
   let query = "";
+  let topK = DEFAULT_TOP_K;
+  let useRerank = true;
+  let model = "llama-3.3-70b-versatile";
   try {
     const body = await req.json();
     query = (body.query ?? "").trim();
+    if (typeof body.topK === "number") {
+      topK = Math.max(1, Math.min(10, Math.round(body.topK)));
+    }
+    if (typeof body.rerank === "boolean") {
+      useRerank = body.rerank;
+    }
+    if (typeof body.model === "string") {
+      const allowed = [
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant",
+        "gemma2-9b-it",
+      ];
+      if (allowed.includes(body.model)) model = body.model;
+    }
   } catch {
     return new Response(JSON.stringify({ error: "Invalid request body" }), {
       status: 400,
@@ -65,13 +82,16 @@ export async function POST(req: Request) {
 
   // ── 2. Retrieve from Pinecone ──────────────────────────────────────────────
   const index = pc.index(PINECONE_INDEX_NAME);
+  const willRerank = useRerank && !!cohereKey;
+  const retrieveCount = willRerank ? Math.min(20, topK * RETRIEVE_MULTIPLIER) : topK;
+
   const queryResult = await (index.namespace(CORPUS_NAMESPACE).query as (opts: {
     vector: number[];
     topK: number;
     includeMetadata: boolean;
   }) => Promise<{ matches?: Array<{ id: string; score?: number; metadata?: Record<string, unknown> }> }>)({
     vector: queryVector,
-    topK: cohereKey ? TOP_K_RETRIEVE : TOP_K_RERANK,
+    topK: retrieveCount,
     includeMetadata: true,
   });
 
@@ -85,19 +105,18 @@ export async function POST(req: Request) {
       score: m.score ?? 0,
     }));
 
-  // ── 3. Cohere rerank (if key available) ───────────────────────────────────
-  let rerankScores: Record<string, number> = {};
-  if (cohereKey && chunks.length > 1) {
+  // ── 3. Cohere rerank (if enabled + key available) ──────────────────────────
+  const rerankScores: Record<string, number> = {};
+  if (willRerank && chunks.length > 1) {
     try {
       const cohere = new CohereClient({ token: cohereKey });
       const rerankResult = await cohere.rerank({
         model: "rerank-v3.5",
         query,
         documents: chunks.map((c) => `${c.title}\n${c.content}`),
-        topN: TOP_K_RERANK,
+        topN: topK,
       });
 
-      // Build score map and reorder
       for (const r of rerankResult.results) {
         const chunk = chunks[r.index];
         if (chunk) rerankScores[chunk.id] = r.relevanceScore;
@@ -106,13 +125,12 @@ export async function POST(req: Request) {
       chunks = rerankResult.results
         .map((r) => ({ ...chunks[r.index]!, score: r.relevanceScore }))
         .filter(Boolean)
-        .slice(0, TOP_K_RERANK);
+        .slice(0, topK);
     } catch {
-      // Rerank failed — continue with vector scores
-      chunks = chunks.slice(0, TOP_K_RERANK);
+      chunks = chunks.slice(0, topK);
     }
   } else {
-    chunks = chunks.slice(0, TOP_K_RERANK);
+    chunks = chunks.slice(0, topK);
   }
 
   if (chunks.length === 0) {
@@ -135,13 +153,14 @@ export async function POST(req: Request) {
   const userPrompt = `Sources:\n${contextBlock}\n\nQuestion: ${query}\n\nAnswer using the sources above and cite them by number:`;
 
   const encoder = new TextEncoder();
-  const reranked = cohereKey && Object.keys(rerankScores).length > 0;
+  const reranked = willRerank && Object.keys(rerankScores).length > 0;
+  const t0 = Date.now();
 
   const stream = new ReadableStream({
     async start(controller) {
       try {
         const completion = await groq.chat.completions.create({
-          model: "llama-3.3-70b-versatile",
+          model,
           max_tokens: 512,
           stream: true,
           messages: [
@@ -155,7 +174,6 @@ export async function POST(req: Request) {
           if (text) controller.enqueue(encoder.encode(text));
         }
 
-        // Append sources sentinel
         const sourcesPayload = chunks.map((c) => ({
           id: c.id,
           title: c.title,
@@ -163,8 +181,18 @@ export async function POST(req: Request) {
           score: c.score,
           reranked,
         }));
+        const meta = {
+          chunks: sourcesPayload,
+          stats: {
+            latencyMs: Date.now() - t0,
+            topK,
+            retrieved: retrieveCount,
+            reranked,
+            model,
+          },
+        };
         controller.enqueue(
-          encoder.encode(`\n\n__SOURCES__${JSON.stringify(sourcesPayload)}`),
+          encoder.encode(`\n\n__SOURCES__${JSON.stringify(meta)}`),
         );
         controller.close();
       } catch (err) {

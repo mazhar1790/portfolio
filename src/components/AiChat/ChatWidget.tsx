@@ -9,9 +9,11 @@ import { useChat } from "./ChatContext";
 
 const QUICK_CHIPS = [
   "What AI projects has he shipped?",
-  "Tell me about his RAG experience",
+  "Tell me about the RAG system at SCAD",
   "Is he available for hire?",
   "What's his tech stack?",
+  "How does he reduce GPT-4 costs?",
+  "Why hire him over other AI engineers?",
 ];
 
 export default function ChatWidget() {
@@ -192,7 +194,7 @@ export default function ChatWidget() {
                     Mazhar&apos;s AI
                   </p>
                   <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-paper-dim">
-                    <span className="text-signal">●</span> Online · Claude
+                    <span className="text-signal">●</span> Online · Groq Llama 3.3
                   </p>
                 </div>
               </div>
@@ -208,30 +210,42 @@ export default function ChatWidget() {
 
             <div className="flex-1 overflow-y-auto bg-ink/70">
               {messages.length === 0 ? (
-                <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-signal/30 bg-signal/10 text-signal">
-                    <Sparkles className="h-5 w-5" />
+                <div className="flex h-full flex-col gap-5 overflow-y-auto px-5 py-6">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-signal/30 bg-signal/10 text-signal">
+                      <Sparkles className="h-4 w-4" />
+                    </div>
+                    <div className="rounded-2xl rounded-tl-sm border border-ink-line bg-ink-card px-4 py-3 text-sm text-paper-muted">
+                      <p>
+                        Hey — I&apos;m Mazhar&apos;s AI assistant. I know
+                        everything in his CV: projects, stack, the systems he
+                        shipped at SCAD, his availability, and his approach.
+                      </p>
+                      <p className="mt-2">
+                        Ask me anything, or tap a suggestion below 👇
+                      </p>
+                    </div>
                   </div>
+
                   <div>
-                    <p className="font-display text-xl text-paper">
-                      Ask me anything.
+                    <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-dim">
+                      Try asking
                     </p>
-                    <p className="mt-1 max-w-[280px] text-sm text-paper-muted">
-                      I&apos;m Mazhar&apos;s portfolio AI. Projects, stack,
-                      availability — I have the answers.
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap justify-center gap-1.5 pt-2">
-                    {QUICK_CHIPS.map((chip) => (
-                      <button
-                        key={chip}
-                        type="button"
-                        onClick={() => sendMessage(chip)}
-                        className="rounded-full border border-ink-line bg-ink-card px-3 py-1.5 text-xs text-paper-muted transition hover:border-signal/40 hover:text-paper"
-                      >
-                        {chip}
-                      </button>
-                    ))}
+                    <div className="flex flex-col gap-1.5">
+                      {QUICK_CHIPS.map((chip) => (
+                        <button
+                          key={chip}
+                          type="button"
+                          onClick={() => sendMessage(chip)}
+                          className="group flex items-center justify-between rounded-lg border border-ink-line bg-ink-card/60 px-3.5 py-2.5 text-left text-[13px] text-paper-muted transition hover:border-signal/30 hover:bg-ink-elev hover:text-paper"
+                        >
+                          <span>{chip}</span>
+                          <span className="font-mono text-signal/40 transition group-hover:text-signal">
+                            ↵
+                          </span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -276,7 +290,7 @@ export default function ChatWidget() {
             />
 
             <p className="border-t border-ink-line bg-ink-card px-4 py-2 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-paper-dim">
-              Powered by Claude · Anthropic
+              Powered by Llama 3.3 70B · Groq
             </p>
           </motion.div>
         )}

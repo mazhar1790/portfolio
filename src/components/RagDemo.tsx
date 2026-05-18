@@ -2,7 +2,16 @@
 
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ChevronDown, ChevronUp, Database, Loader2, Search, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  ChevronUp,
+  Database,
+  Loader2,
+  Search,
+  Settings2,
+  Zap,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Source {
@@ -18,7 +27,20 @@ interface DemoResult {
   sources: Source[];
   query: string;
   latencyMs: number;
+  stats?: {
+    latencyMs: number;
+    topK: number;
+    retrieved: number;
+    reranked: boolean;
+    model: string;
+  };
 }
+
+const MODELS = [
+  { id: "llama-3.3-70b-versatile", label: "Llama 3.3 70B", hint: "best quality" },
+  { id: "llama-3.1-8b-instant", label: "Llama 3.1 8B", hint: "fastest" },
+  { id: "gemma2-9b-it", label: "Gemma 2 9B", hint: "lightweight" },
+];
 
 const EXAMPLE_QUERIES = [
   "How did you cut document research from 2 hours to 10 seconds?",
@@ -48,6 +70,10 @@ export default function RagDemo() {
   const [sources, setSources] = useState<Source[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [showSources, setShowSources] = useState(false);
+  const [showSandbox, setShowSandbox] = useState(false);
+  const [topK, setTopK] = useState(5);
+  const [rerank, setRerank] = useState(true);
+  const [model, setModel] = useState(MODELS[0].id);
   const abortRef = useRef<AbortController | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -70,7 +96,7 @@ export default function RagDemo() {
       const res = await fetch("/api/rag-demo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: q }),
+        body: JSON.stringify({ query: q, topK, rerank, model }),
         signal: abortRef.current.signal,
       });
 
@@ -101,13 +127,19 @@ export default function RagDemo() {
           const sourcesPart = fullText.slice(sentinelIdx + "__SOURCES__".length);
           setStreamedText(answerPart);
           try {
-            const parsedSources: Source[] = JSON.parse(sourcesPart);
+            const parsed = JSON.parse(sourcesPart);
+            // Support both old shape (array) and new shape ({ chunks, stats })
+            const parsedSources: Source[] = Array.isArray(parsed)
+              ? parsed
+              : (parsed.chunks ?? []);
+            const stats = Array.isArray(parsed) ? undefined : parsed.stats;
             setSources(parsedSources);
             setResult({
               answer: answerPart,
               sources: parsedSources,
               query: q,
               latencyMs: Date.now() - startMs,
+              stats,
             });
           } catch {
             /* sources parse failed — ignore */
@@ -191,7 +223,7 @@ export default function RagDemo() {
         </form>
 
         {/* Example queries */}
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap items-center gap-2">
           {EXAMPLE_QUERIES.slice(0, 4).map((q) => (
             <button
               key={q}
@@ -203,7 +235,112 @@ export default function RagDemo() {
               {q.length > 42 ? q.slice(0, 42) + "…" : q}
             </button>
           ))}
+          <button
+            type="button"
+            onClick={() => setShowSandbox((v) => !v)}
+            className={cn(
+              "ml-auto inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition",
+              showSandbox
+                ? "border-signal/40 bg-signal/10 text-signal"
+                : "border-ink-line bg-ink-elev text-paper-dim hover:text-paper",
+            )}
+            aria-expanded={showSandbox}
+          >
+            <Settings2 className="h-3 w-3" />
+            Sandbox
+          </button>
         </div>
+
+        {/* Sandbox controls */}
+        <AnimatePresence>
+          {showSandbox && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="mt-4 grid gap-4 rounded-xl border border-ink-line bg-ink-elev/60 p-4 sm:grid-cols-3">
+                {/* top_k slider */}
+                <div>
+                  <label className="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-paper-dim">
+                    <span>top_k</span>
+                    <span className="text-signal">{topK}</span>
+                  </label>
+                  <input
+                    type="range"
+                    min={1}
+                    max={10}
+                    value={topK}
+                    onChange={(e) => setTopK(Number(e.target.value))}
+                    className="mt-2 w-full accent-signal"
+                  />
+                  <p className="mt-1 text-[10px] text-paper-dim">
+                    Chunks sent to the model
+                  </p>
+                </div>
+
+                {/* rerank toggle */}
+                <div>
+                  <label className="font-mono text-[10px] uppercase tracking-widest text-paper-dim">
+                    Reranking
+                  </label>
+                  <div className="mt-2 flex gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setRerank(true)}
+                      className={cn(
+                        "flex-1 rounded-md border px-2 py-1.5 text-xs transition",
+                        rerank
+                          ? "border-signal/40 bg-signal/10 text-signal"
+                          : "border-ink-line text-paper-dim hover:text-paper",
+                      )}
+                    >
+                      Cohere on
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRerank(false)}
+                      className={cn(
+                        "flex-1 rounded-md border px-2 py-1.5 text-xs transition",
+                        !rerank
+                          ? "border-paper/40 bg-paper/10 text-paper"
+                          : "border-ink-line text-paper-dim hover:text-paper",
+                      )}
+                    >
+                      Vector only
+                    </button>
+                  </div>
+                  <p className="mt-1 text-[10px] text-paper-dim">
+                    Cross-encoder reranking lifts precision
+                  </p>
+                </div>
+
+                {/* model picker */}
+                <div>
+                  <label className="font-mono text-[10px] uppercase tracking-widest text-paper-dim">
+                    Generator
+                  </label>
+                  <select
+                    value={model}
+                    onChange={(e) => setModel(e.target.value)}
+                    className="mt-2 w-full rounded-md border border-ink-line bg-ink-card px-2 py-1.5 text-xs text-paper focus:border-signal/40 focus:outline-none"
+                  >
+                    {MODELS.map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.label} — {m.hint}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="mt-1 text-[10px] text-paper-dim">
+                    Try a smaller model — see latency drop
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Results */}
@@ -249,8 +386,17 @@ export default function RagDemo() {
                 </div>
               ))}
               {result && (
-                <span className="ml-auto shrink-0 text-paper-dim">
-                  {result.latencyMs}ms
+                <span className="ml-auto flex shrink-0 items-center gap-2 text-paper-dim">
+                  <span>{(result.stats?.latencyMs ?? result.latencyMs)}ms</span>
+                  {result.stats && (
+                    <>
+                      <span className="text-ink-line">·</span>
+                      <span>
+                        top_k={result.stats.topK}
+                        {result.stats.reranked ? "·rerank" : ""}
+                      </span>
+                    </>
+                  )}
                 </span>
               )}
             </div>

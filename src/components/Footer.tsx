@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUp, Linkedin, Mail } from "lucide-react";
 import { PERSONAL } from "@/data/cv";
 
@@ -13,6 +14,27 @@ export default function Footer() {
             <p className="mt-1 font-mono text-xs text-paper-dim">
               Next.js · Tailwind · Groq · Gemini · Cohere · Pinecone.{" "}
               <span className="text-signal">All systems nominal.</span>
+            </p>
+            <p className="mt-2 flex flex-wrap items-center gap-3 font-mono text-[11px] text-paper-dim">
+              <Link
+                href="/for-recruiters"
+                className="transition hover:text-paper"
+              >
+                For recruiters
+              </Link>
+              <span className="text-ink-line">·</span>
+              <Link href="/stack" className="transition hover:text-paper">
+                Stack & cost
+              </Link>
+              <span className="text-ink-line">·</span>
+              <a
+                href="https://github.com/mazhar1790/portfolio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition hover:text-paper"
+              >
+                Source
+              </a>
             </p>
           </div>
 

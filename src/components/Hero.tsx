@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight, ArrowUpRight, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, MapPin, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   METRICS,
@@ -12,6 +12,7 @@ import {
 import { useChat } from "./AiChat/ChatContext";
 import Counter from "./Counter";
 import AvailabilityBadge from "./AvailabilityBadge";
+import CvDownload from "./CvDownload";
 
 const QUICK_PROMPTS = [
   "What AI projects has he shipped?",
@@ -140,14 +141,7 @@ export default function Hero() {
             <a href="#contact" className="btn-secondary">
               Get in touch
             </a>
-            <a
-              href={PERSONAL.cvUrl}
-              download={PERSONAL.cvLabel}
-              className="btn-ghost"
-            >
-              <ArrowDown className="h-3.5 w-3.5 text-signal" />
-              Download CV
-            </a>
+            <CvDownload variant="ghost" />
           </motion.div>
           </div>
 

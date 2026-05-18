@@ -1,0 +1,25 @@
+feat: add /for-recruiters, /stack, /ar pages + RAG sandbox + trust signals
+
+Major enhancements across the portfolio:
+
+- /for-recruiters: dedicated landing page designed for 6-second scan with
+  elevator pitch, quick facts, looking-for/not-looking-for, CTAs and headline
+  metrics
+- /stack: transparency page showing the full $0/month stack — 8 services,
+  free tiers, principles, signed receipt
+- /ar: Arabic / RTL landing page demonstrating bilingual capability
+- Beefed up /projects/[slug] case studies with narrative timeline, key
+  architecture decisions, before/after, stakeholder quote, lessons learned,
+  prev/next nav
+- RAG sandbox: live controls for top_k (1-10), Cohere rerank on/off, and
+  model picker (Llama 3.3 70B / 3.1 8B / Gemma 2). Server returns latency
+  and stats; UI shows them inline.
+- Trust signals strip: SCAD, MoHRE, Microsoft Certified, 15+ years
+- "Lesson" pull-quotes scattered between sections (Signal-themed)
+- CV download dropdown supports both PDF (ATS-safe) and DOCX (editable)
+- Hero metrics refined ("4 Production AI Systems", "2K+ Staff Hours Saved")
+- Chat widget welcome message + visible starter chips on first open
+- Updated chat branding from Claude to Groq Llama 3.3 70B
+- Wired metadataBase, canonical URL, robots, twitter creator for proper OG
+- Footer links to /for-recruiters, /stack, source
+- Navbar adds For-recruiters + AR language toggle

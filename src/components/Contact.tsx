@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import {
-  ArrowDown,
   ArrowUpRight,
   Check,
   Copy,
@@ -15,6 +14,7 @@ import {
 import { useState } from "react";
 import { PERSONAL } from "@/data/cv";
 import { useChat } from "./AiChat/ChatContext";
+import CvDownload from "./CvDownload";
 
 export default function Contact() {
   const { openChat } = useChat();
@@ -57,14 +57,7 @@ export default function Contact() {
               <MessageSquareText className="h-4 w-4 text-signal" />
               Ask the AI
             </button>
-            <a
-              href={PERSONAL.cvUrl}
-              download={PERSONAL.cvLabel}
-              className="btn-ghost"
-            >
-              <ArrowDown className="h-3.5 w-3.5 text-signal" />
-              Download CV
-            </a>
+            <CvDownload variant="ghost" />
           </div>
 
           <div className="mt-20 grid gap-px overflow-hidden border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-4">
