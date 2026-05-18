@@ -3,12 +3,19 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.14);
+}
+
+/* Dark mode overrides (used inside /dark/* via next-themes) */
+.dark {
   color-scheme: dark;
   --line: rgba(255, 255, 255, 0.06);
   --line-strong: rgba(255, 255, 255, 0.12);
 }
 
-/* Light mode overrides */
+/* Re-apply Studio (light) tokens explicitly when next-themes adds .light */
 .light {
   color-scheme: light;
   --line: rgba(0, 0, 0, 0.08);
@@ -49,8 +56,8 @@ html {
 
 html,
 body {
-  background: #0a0a0a;
-  color: #fafaf9;
+  background: #fafaf7;
+  color: #0e0e0d;
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

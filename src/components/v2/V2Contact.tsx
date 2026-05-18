@@ -56,7 +56,7 @@ export default function V2Contact() {
 
             {/* Quick links to the deeper system */}
             <div className="mt-12 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              <Link href="/" className="text-coal-muted underline-offset-4 hover:text-coal hover:underline">
+              <Link href="/dark" className="text-coal-muted underline-offset-4 hover:text-coal hover:underline">
                 Original dark theme
               </Link>
               <span className="text-coal-dim">·</span>

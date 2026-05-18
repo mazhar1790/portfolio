@@ -98,7 +98,7 @@ export default function V2Nav() {
 
         <div className="flex items-center gap-2">
           <Link
-            href="/"
+            href="/dark"
             className="hidden rounded-full px-3 py-2 text-xs font-medium text-coal-muted transition hover:text-coal sm:inline-flex"
             title="Switch to the original dark theme"
           >

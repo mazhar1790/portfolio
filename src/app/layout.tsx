@@ -107,7 +107,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${plusJakarta.variable} ${caveat.variable}`}
     >
-      <body className="min-h-screen bg-ink text-paper antialiased noise">
+      <body className="min-h-screen antialiased">
         <ScrollProgress />
         <ThemeProvider>
         <ChatProvider>{children}</ChatProvider>

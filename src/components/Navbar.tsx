@@ -107,9 +107,9 @@ export default function Navbar() {
             For recruiters
           </a>
           <a
-            href="/v2"
+            href="/"
             className="hidden items-center gap-1.5 rounded-full border border-signal/40 bg-signal/5 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-signal transition hover:bg-signal/15 lg:inline-flex"
-            title="Studio edition — light theme"
+            title="Studio edition — default light theme"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-signal" />
             Studio edition

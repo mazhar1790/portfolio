@@ -93,7 +93,7 @@ export default function V2Footer() {
             with care in {PERSONAL.location.split(",")[0]}.
           </p>
           <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#9a9a96]">
-            <Link href="/" className="hover:text-[#0e0e0d]">
+            <Link href="/dark" className="hover:text-[#0e0e0d]">
               ← Switch to dark version
             </Link>
             <span>·</span>
