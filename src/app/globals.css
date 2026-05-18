@@ -24,11 +24,24 @@
 .light .bg-ink-alt { background-color: #f2f2f0 !important; }
 .light .bg-ink-card { background-color: #ffffff !important; }
 .light .bg-ink-elev { background-color: #f5f5f4 !important; }
+.light .bg-ink-line { background-color: rgba(0, 0, 0, 0.08) !important; }
 .light .border-ink-line { border-color: rgba(0, 0, 0, 0.08) !important; }
 .light .text-paper { color: #0a0a0a !important; }
 .light .text-paper-muted { color: #3f3f46 !important; }
 .light .text-paper-dim { color: #71717a !important; }
 .light .noise::after { opacity: 0.02; }
+
+/* Make the green signal less harsh in light mode */
+.light .text-signal { color: #00a05a !important; }
+.light .bg-signal { background-color: #00a05a !important; }
+.light .border-signal\/40 { border-color: rgba(0, 160, 90, 0.4) !important; }
+.light .border-signal\/30 { border-color: rgba(0, 160, 90, 0.3) !important; }
+.light .border-signal\/20 { border-color: rgba(0, 160, 90, 0.2) !important; }
+
+/* Light-mode scrollbar */
+.light::-webkit-scrollbar-track { background: #f9f9f8; }
+.light::-webkit-scrollbar-thumb { background: rgba(0, 160, 90, 0.25); }
+.light::-webkit-scrollbar-thumb:hover { background: rgba(0, 160, 90, 0.5); }
 
 html {
   scroll-behavior: smooth;

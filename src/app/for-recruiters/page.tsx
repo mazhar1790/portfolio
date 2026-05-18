@@ -132,6 +132,25 @@ export default function ForRecruitersPage() {
           </a>
         </section>
 
+        {/* /fit teaser */}
+        <section className="mt-10 rounded-2xl border border-signal/30 bg-signal/[0.06] p-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-signal">
+            New · AI fit analyser
+          </p>
+          <h2 className="display-2 mt-3">
+            Paste your JD.{" "}
+            <span className="display-italic">I&apos;ll tell you honestly</span>{" "}
+            if I&apos;m a fit.
+          </h2>
+          <p className="mt-3 text-paper-muted">
+            Get a structured fit report — strengths, real gaps, tailored pitch
+            — in 10 seconds. Saves us both time.
+          </p>
+          <Link href="/fit" className="btn-primary mt-5 inline-flex">
+            Try the fit analyser →
+          </Link>
+        </section>
+
         {/* Quick facts table */}
         <section className="mt-12">
           <p className="meta mb-4">Quick facts</p>

@@ -6,7 +6,26 @@ import { PROJECTS, PROJECT_STUDIES, PERSONAL } from "@/data/cv";
 import RagDiagram from "@/components/diagrams/RagDiagram";
 import NlSqlDiagram from "@/components/diagrams/NlSqlDiagram";
 import VisionDiagram from "@/components/diagrams/VisionDiagram";
+import ProjectChat from "@/components/ProjectChat";
 import type { ComponentType } from "react";
+
+const CHAT_SUGGESTIONS: Record<string, string[]> = {
+  "rag-document-intelligence": [
+    "What was the hardest part of building this?",
+    "How did you reduce GPT-4 costs by 65%?",
+    "What would you do differently?",
+  ],
+  "conversational-analytics": [
+    "How does the SQL repair loop work?",
+    "What about security and SQL injection?",
+    "Why few-shot over fine-tuning?",
+  ],
+  "vision-ai-pipeline": [
+    "Why two models instead of one?",
+    "How do confidence scores work?",
+    "What's the accuracy on Arabic handwriting?",
+  ],
+};
 
 const DIAGRAMS: Record<string, ComponentType> = {
   "rag-document-intelligence": RagDiagram,
@@ -84,7 +103,11 @@ export default function ProjectPage({
         {Diagram && (
           <section className="mt-16">
             <p className="meta mb-4">Architecture</p>
-            <Diagram />
+            <div className="-mx-5 overflow-x-auto sm:mx-0">
+              <div className="min-w-[640px] px-5 sm:min-w-0 sm:px-0">
+                <Diagram />
+              </div>
+            </div>
           </section>
         )}
 
@@ -252,6 +275,13 @@ export default function ProjectPage({
             ))}
           </div>
         </section>
+
+        {/* Project-scoped AI chat */}
+        <ProjectChat
+          slug={project.slug}
+          projectName={project.title}
+          suggestions={CHAT_SUGGESTIONS[project.slug] ?? []}
+        />
 
         {/* Prev / Next */}
         <nav className="mt-20 flex items-center justify-between border-t border-ink-line pt-10">

@@ -6,6 +6,7 @@ import { PERSONAL } from "@/data/cv";
 import { ChatProvider } from "@/components/AiChat/ChatContext";
 import ScrollProgress from "@/components/ScrollProgress";
 import ThemeProvider from "@/components/ThemeProvider";
+import VisitPulse from "@/components/VisitPulse";
 import "./globals.css";
 
 const inter = Inter({
@@ -94,6 +95,7 @@ export default function RootLayout({
         <ThemeProvider>
         <ChatProvider>{children}</ChatProvider>
         </ThemeProvider>
+        <VisitPulse />
         <Analytics />
         <SpeedInsights />
       </body>

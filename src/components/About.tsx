@@ -2,6 +2,9 @@
 
 import { motion } from "framer-motion";
 import { PERSONAL, PRINCIPLES } from "@/data/cv";
+import ListenButton from "./ListenButton";
+
+const ABOUT_SPOKEN = `I'm Mazhar — an AI Solutions Architect in Abu Dhabi. Before LLMs were cool I was shipping dot-net systems for governments and ministries serving millions of users. When the world changed, I went deep on retrieval, prompt engineering, evals, and the unglamorous plumbing that makes AI work in production. I've now shipped four production AI systems at the Statistics Centre Abu Dhabi: a RAG system on 100,000 documents, a natural language SQL platform for 200 analysts, a vision pipeline saving 2,000 staff hours monthly, and a chatbot handling 18,000 queries each month. I'm now open to senior AI architecture roles or consulting from June 2026.`;
 
 export default function About() {
   return (
@@ -21,12 +24,15 @@ export default function About() {
             transition={{ duration: 0.7 }}
             className="lg:col-span-7"
           >
-            <h2 className="display-2 max-w-3xl">
-              Fifteen years of shipping software.{" "}
-              <span className="display-italic">
-                The last three building AI.
-              </span>
-            </h2>
+            <div className="flex items-start justify-between gap-4">
+              <h2 className="display-2 max-w-3xl">
+                Fifteen years of shipping software.{" "}
+                <span className="display-italic">
+                  The last three building AI.
+                </span>
+              </h2>
+              <ListenButton text={ABOUT_SPOKEN} label="Listen" />
+            </div>
 
             <div className="mt-12 max-w-2xl space-y-6 text-lg leading-relaxed text-paper-muted">
               <p>

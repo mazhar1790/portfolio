@@ -127,7 +127,87 @@ export const RAG_CORPUS: KnowledgeChunk[] = [
     id: "portfolio-site",
     category: "meta",
     title: "About this portfolio site",
-    content: `This portfolio website was built by Mazhar Hayat using Next.js 14, TypeScript, Tailwind CSS, and Framer Motion. It features an AI chat widget powered by Claude (Anthropic), interactive SVG architecture diagrams, a Cmd+K command palette, dark/light mode, and a live RAG demo that queries Mazhar's CV content using Pinecone vector search. The site is deployed on Netlify at keen-tartufo-313e21.netlify.app. The source code is on GitHub at github.com/mazhar1790/portfolio.`,
+    content: `This portfolio website was built by Mazhar Hayat using Next.js 14, TypeScript, Tailwind CSS, and Framer Motion. It features an AI chat widget, a live RAG demo with sandbox controls (top_k, rerank toggle, model picker), Cmd+K command palette, dark/light mode, /for-recruiters page, /stack transparency page, /ar Arabic landing page, /playground for paste-your-own-doc queries, and a /fit AI feature for comparing a job description against the CV. Source code: github.com/mazhar1790/portfolio. Live at keen-tartufo-313e21.netlify.app.`,
+  },
+
+  // ── $0 stack and infrastructure (new) ──────────────────────────────────────
+  {
+    id: "stack-cost",
+    category: "meta",
+    title: "The $0/month tech stack powering this portfolio",
+    content: `This entire portfolio runs at $0/month — every AI feature included. The stack: Next.js 14 (open source), Netlify hosting (free starter tier, 100GB bandwidth), GitHub (free), Pinecone serverless (free starter, one index with ~36 CV chunks), Google Gemini embeddings (gemini-embedding-001, 3072 dimensions, free tier 1500 RPD), Groq inference (Llama 3.3 70B + 3.1 8B + Gemma 2, free tier with sub-second latency), Cohere reranking (rerank-v3.5, 1000 calls/month free), and Vercel Analytics & Speed Insights (free). Total monthly cost: $0. See /stack for the full breakdown.`,
+  },
+  {
+    id: "stack-principles",
+    category: "approach",
+    title: "Engineering principles behind the $0 stack",
+    content: `The stack composition demonstrates Mazhar's engineering principles: (1) Best-of-tier for each job — Groq for fast LLM, Cohere for rerank, Pinecone for vectors, Gemini for embeddings. Each is independently the best in its category and they compose cleanly. (2) Graceful degradation — if Cohere is missing the API falls back to pure vector retrieval. If any key is missing the feature degrades but the site never breaks. (3) Cost discipline — even if traffic pushed a tier, the next step is $20-50/month, still cheaper than one hour of a human analyst. (4) Show, don't tell — exposing the cost trade-offs publicly is itself a signal of engineering judgement.`,
+  },
+
+  // ── Availability and what he's looking for (new) ──────────────────────────
+  {
+    id: "looking-for",
+    category: "current",
+    title: "What Mazhar is looking for next",
+    content: `Mazhar is open to: Senior AI / LLM / ML Engineering Architect roles, Principal-track or hands-on tech lead positions, consulting engagements on RAG / NL-to-SQL / document AI, remote or hybrid (Abu Dhabi / Dubai), or relocation for the right opportunity. He is NOT looking for: pure research/academic roles, junior or mid-level IC positions, crypto / Web3 / NFT projects, or sales engineering / pre-sales. Notice period: 30 days. Visa status: UAE residency, transferable. Languages: English (fluent), Urdu (native), Arabic (working).`,
+  },
+  {
+    id: "recruiter-pitch",
+    category: "current",
+    title: "Elevator pitch for recruiters",
+    content: `30-second pitch: AI Solutions Architect with 15+ years building production software, last 3 years deep on LLMs, RAG, and agentic systems. Mazhar ships — every project he describes has metrics and is running in front of real users at a UAE government statistics authority (SCAD). Strengths: production AI (not demos), full-stack foundation, enterprise context (security, reliability, Arabic), and measurement discipline (he doesn't ship until the numbers say it's ready). Best contact: email Mazhar1783@outlook.com or LinkedIn. See /for-recruiters for a structured summary.`,
+  },
+
+  // ── Beefed-up case study details (new) ────────────────────────────────────
+  {
+    id: "case-rag-timeline",
+    category: "project",
+    title: "How the RAG document intelligence system was built (timeline)",
+    content: `The RAG document intelligence system at SCAD was built in 5 phases over 3 months. Phase 1 (Weeks 1-2): discovery — interviewed 12 analysts across 4 departments and discovered 60% of queries were semantic, not keyword-based. Phase 2 (Weeks 3-6): three prototypes; the first two failed; v3 combined hybrid retrieval + reranking and crossed 85% accuracy. Phase 3 (Weeks 7-8): built a 200-question gold-standard evaluation harness with domain experts. Phase 4 (Weeks 9-12): production hardening — citations, Arabic, permissions, observability. Phase 5 (Month 4+): launched soft to 20 analysts, then org-wide. Cost dropped 65% over 6 months through prompt and context optimization.`,
+  },
+  {
+    id: "case-rag-decisions",
+    category: "project",
+    title: "Key architecture decisions in the RAG system",
+    content: `Four critical decisions in the RAG system: (1) Hybrid retrieval (BM25 + vector) over pure semantic — pure vector missed exact terms like numbers and acronyms; RRF fusion lifted NDCG@5 by 14 points. (2) Semantic chunking over fixed-token chunking — splitting on section boundaries improved accuracy by ~20% before touching the model. (3) Cross-encoder reranking with Cohere rerank-v3 — reduced GPT-4 context window costs by 65% while improving precision. (4) Citation-by-default in the prompt — structured [SOURCE:doc_id,page_n] tagging turned the system from "helpful" to "trustworthy."`,
+  },
+  {
+    id: "case-nl-sql-decisions",
+    category: "project",
+    title: "Key architecture decisions in the NL-to-SQL platform",
+    content: `Key decisions in the conversational analytics platform: (1) Schema-aware context injection over fine-tuning — dynamic schema injection means the system updates when the database does, with zero retraining. (2) Read-only DB user with row-level security — defence in depth means even a prompt-injected model cannot mutate data or cross tenants. (3) Execution-aware repair loop — when generated SQL fails, the error goes back to the model with schema context for a corrected attempt; this lifted accuracy by 13 points (from 72% to 85%).`,
+  },
+  {
+    id: "case-vision-decisions",
+    category: "project",
+    title: "Key architecture decisions in the Vision AI pipeline",
+    content: `Key decisions in the Vision AI pipeline: (1) Azure Document Intelligence + GPT-4 Vision (not just one) — ADI handles structured forms cheaply; GPT-4V handles unstructured chaos; routing by document type uses each model where it's strongest. (2) Per-field confidence scores — without per-field confidence the only options are "trust everything" or "review everything"; confidence-gated review is what makes 80% automation safe. (3) Strict JSON schema output — downstream systems break on shape changes; schema-enforced output prevents silent extraction errors from corrupting the data warehouse.`,
+  },
+  {
+    id: "lessons-production-ai",
+    category: "approach",
+    title: "Lessons learned from shipping production AI",
+    content: `Lessons Mazhar took from shipping production AI systems: (1) Evaluation infrastructure pays for itself within a month — build it first, not last. (2) Users prefer accurate uncertainty over confident hallucination — teach the model to say "I don't know." (3) Chunking strategy and prompt design move the needle 10x more than picking the latest model. (4) The repair loop (errors fed back to the model) is more powerful than picking a bigger model. (5) Schema design matters more than prompt design — bad column names break the model long before bad prompts do. (6) Two models with clear routing beat one expensive model trying to do everything. (7) Confidence scoring is the unsung hero of human-in-loop AI. (8) Arabic handwriting is still hard — reviewer UX matters more than chasing the last 5% accuracy.`,
+  },
+
+  // ── Stakeholder quotes (new) ──────────────────────────────────────────────
+  {
+    id: "testimonial-rag",
+    category: "experience",
+    title: "Stakeholder quote about the RAG system",
+    content: `Senior Director of Digital Transformation at SCAD said: "Mazhar's RAG system gave us a year of analyst productivity back in three months. The numbers speak for themselves — and the architecture is clean enough that we extended it to two more departments without his help."`,
+  },
+  {
+    id: "testimonial-nlsql",
+    category: "experience",
+    title: "Stakeholder quote about the analytics platform",
+    content: `Head of Analytics at SCAD said: "He didn't ship until the numbers said it was ready. The platform changed how 200 people work — and the team that maintains it after Mazhar's involvement hasn't had to call him once in eight months." This demonstrates Mazhar's ability to build systems that survive his departure.`,
+  },
+  {
+    id: "testimonial-vision",
+    category: "experience",
+    title: "Stakeholder quote about the Vision AI pipeline",
+    content: `Operations Lead of the Census Programme at SCAD said: "The pipeline saves the team two thousand hours every single month. But the bigger win is the confidence dashboard — we can now point at any number in our reports and trace it back to the source document."`,
   },
 ];
 

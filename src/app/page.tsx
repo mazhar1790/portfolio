@@ -2,6 +2,7 @@ import About from "@/components/About";
 import Certifications from "@/components/Certifications";
 import CommandPalette from "@/components/CommandPalette";
 import Contact from "@/components/Contact";
+import EmailSignup from "@/components/EmailSignup";
 import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
@@ -44,6 +45,7 @@ export default function Home() {
         />
         <Testimonials />
         <Writing />
+        <EmailSignup />
         <Contact />
       </main>
       <Footer />

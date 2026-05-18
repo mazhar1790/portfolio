@@ -15,16 +15,37 @@ export default function Footer() {
               Next.js · Tailwind · Groq · Gemini · Cohere · Pinecone.{" "}
               <span className="text-signal">All systems nominal.</span>
             </p>
-            <p className="mt-2 flex flex-wrap items-center gap-3 font-mono text-[11px] text-paper-dim">
-              <Link
-                href="/for-recruiters"
-                className="transition hover:text-paper"
-              >
+            <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] text-paper-dim">
+              <Link href="/for-recruiters" className="transition hover:text-paper">
                 For recruiters
               </Link>
               <span className="text-ink-line">·</span>
+              <Link href="/fit" className="transition hover:text-paper">
+                Fit analyser
+              </Link>
+              <span className="text-ink-line">·</span>
+              <Link href="/playground" className="transition hover:text-paper">
+                Playground
+              </Link>
+              <span className="text-ink-line">·</span>
+              <Link href="/projects" className="transition hover:text-paper">
+                All projects
+              </Link>
+              <span className="text-ink-line">·</span>
+              <Link href="/timeline" className="transition hover:text-paper">
+                Timeline
+              </Link>
+              <span className="text-ink-line">·</span>
+              <Link href="/embeddings" className="transition hover:text-paper">
+                Embeddings
+              </Link>
+              <span className="text-ink-line">·</span>
               <Link href="/stack" className="transition hover:text-paper">
-                Stack & cost
+                Stack
+              </Link>
+              <span className="text-ink-line">·</span>
+              <Link href="/uses" className="transition hover:text-paper">
+                /uses
               </Link>
               <span className="text-ink-line">·</span>
               <a
