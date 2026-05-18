@@ -17,7 +17,7 @@ export const PERSONAL = {
 
 export const METRICS = [
   { value: 15, suffix: "+", label: "Years Shipping Software" },
-  { value: 4, suffix: "", label: "Production AI Systems" },
+  { value: 20, suffix: "+", label: "Production AI Systems" },
   { value: 100, suffix: "K+", label: "Documents Processed" },
   { value: 18, suffix: "K+", label: "Monthly AI Queries" },
   { value: 95, suffix: "%", label: "Research Time Saved" },
@@ -469,6 +469,296 @@ export const PROJECTS: Project[] = [
       "LangChain",
       ".NET Core",
     ],
+  },
+
+  // ── Smaller applied-AI engagements (internal tools, automations, copilots) ──
+  {
+    slug: "arabic-english-translation-assistant",
+    title: "Arabic ↔ English Statistical Report Translator",
+    company: "SCAD — Statistics Centre Abu Dhabi",
+    year: "2025",
+    featured: false,
+    challenge:
+      "Bilingual reports required 2–3 days of manual translation with statistical terminology drift between Arabic and English versions.",
+    solution:
+      "Built a GPT-4 translation copilot with a SCAD-specific glossary (UN SDG terms, demographic taxonomies) and a side-by-side reviewer UI.",
+    impact: [
+      "Cut bilingual report turnaround from 3 days to 4 hours",
+      "Eliminated terminology drift on 200+ recurring statistical terms",
+      "Adopted by the publications team for every quarterly release",
+    ],
+    metrics: { speedup: "18×", glossary: "200+ terms", adoption: "100%" },
+    stack: ["GPT-4", "Azure OpenAI", "Custom Glossary", "Angular"],
+  },
+  {
+    slug: "smart-meeting-summariser",
+    title: "Smart Meeting Summariser & Action-Item Extractor",
+    company: "SCAD — Statistics Centre Abu Dhabi",
+    year: "2025",
+    featured: false,
+    challenge:
+      "Meeting minutes were inconsistent and action items routinely fell through the cracks across departments.",
+    solution:
+      "Pipeline ingests Teams transcripts, summarises in Arabic + English, extracts owners and deadlines, and posts structured items to Planner.",
+    impact: [
+      "Adopted across 6 departments and ~120 meetings/month",
+      "85% reduction in time spent writing minutes",
+      "Action-item follow-through up from ~60% to ~92%",
+    ],
+    metrics: { meetings: "120+/mo", departments: "6", followthrough: "92%" },
+    stack: ["Whisper", "GPT-4", "Microsoft Graph", "Power Automate"],
+  },
+  {
+    slug: "policy-document-qa-bot",
+    title: "Internal Policy & HR Q&A Bot",
+    company: "SCAD — Statistics Centre Abu Dhabi",
+    year: "2024",
+    featured: false,
+    challenge:
+      "HR was answering the same ~50 policy questions repeatedly; staff couldn't navigate the policy PDF library.",
+    solution:
+      "Slim RAG pipeline over the policy library with citation-first answers and an escalation hand-off to a human HR contact.",
+    impact: [
+      "Deflected ~70% of repetitive HR enquiries",
+      "Every answer carries a cited policy clause + page number",
+      "Quietly running for over a year with no human-curated FAQ",
+    ],
+    metrics: { deflection: "70%", uptime: "12+ mo", citations: "100%" },
+    stack: ["Azure OpenAI", "Azure AI Search", "LangChain", ".NET Core"],
+  },
+  {
+    slug: "email-triage-copilot",
+    title: "Inbox Triage & Auto-Reply Drafting Copilot",
+    company: "Internal use",
+    year: "2025",
+    featured: false,
+    challenge:
+      "Senior team members spent 60–90 minutes a day classifying and replying to repetitive stakeholder emails.",
+    solution:
+      "Outlook add-in that classifies incoming mail by intent, drafts a tone-matched reply, and learns from accept/reject signals.",
+    impact: [
+      "Saved ~5 hours/week per user across the pilot group",
+      "Acceptance rate on drafted replies climbed to 78% after 2 weeks",
+      "Triage accuracy held at 91% on 12-category classification",
+    ],
+    metrics: { saved: "5 hrs/wk", accept: "78%", accuracy: "91%" },
+    stack: ["GPT-4", "Microsoft Graph", "Office Add-in", ".NET"],
+  },
+  {
+    slug: "code-review-assistant",
+    title: "AI Code-Review Assistant for .NET Repos",
+    company: "Internal engineering",
+    year: "2025",
+    featured: false,
+    challenge:
+      "Code reviews were inconsistent across teams; common security and performance issues kept slipping past human reviewers.",
+    solution:
+      "GitHub Action that posts inline review comments — security checks, async/await pitfalls, EF Core anti-patterns, and a prompt-injection scanner for any AI-touching files.",
+    impact: [
+      "Catches ~40% of bugs before human review across 6 active repos",
+      "Reduced average PR cycle time from 2.5 days to 1.1 days",
+      "Surfaced 14 latent SQL-injection and async issues in the first month",
+    ],
+    metrics: { caught: "40%", cycle: "-56%", repos: "6" },
+    stack: ["GPT-4", "GitHub Actions", "Roslyn Analyzer", "Octokit"],
+  },
+  {
+    slug: "data-quality-anomaly-detector",
+    title: "Statistical Data-Quality Anomaly Detector",
+    company: "SCAD — Statistics Centre Abu Dhabi",
+    year: "2024",
+    featured: false,
+    challenge:
+      "Monthly economic indicator submissions occasionally contained unit-of-measure errors that weren't caught until publication.",
+    solution:
+      "Hybrid stats + LLM pipeline: classical outlier detection flags suspect rows, then GPT-4 reasons about whether they're real changes vs. likely data-entry mistakes.",
+    impact: [
+      "Caught 23 publication-blocking issues across 9 months pre-release",
+      "Reduced false positives by 60% vs. the prior threshold-only system",
+      "Cut publication delays linked to data quality from 4/yr to 0",
+    ],
+    metrics: { caught: "23 issues", fp: "-60%", delays: "0" },
+    stack: ["Python", "GPT-4", "scikit-learn", "Azure Functions"],
+  },
+  {
+    slug: "survey-open-ended-coder",
+    title: "Open-Ended Survey Response Coder",
+    company: "SCAD — Statistics Centre Abu Dhabi",
+    year: "2024",
+    featured: false,
+    challenge:
+      "Coding 30,000+ Arabic open-ended responses to a single fixed taxonomy used to take a team of 4 about 6 weeks.",
+    solution:
+      "Few-shot Arabic-first LLM coder with confidence thresholds; high-confidence answers auto-coded, low-confidence ones routed to a human-in-the-loop UI.",
+    impact: [
+      "Reduced coding cycle from 6 weeks to 4 days",
+      "92% agreement with the human gold-standard sample",
+      "Freed the survey team to focus on edge-case review",
+    ],
+    metrics: { speedup: "10×", agreement: "92%", responses: "30K+" },
+    stack: ["GPT-4", "Azure OpenAI", "Arabic NLP", "Angular"],
+  },
+  {
+    slug: "smart-form-validator",
+    title: "Smart Form Validator (Arabic Address & Name Parsing)",
+    company: "SCAD — Statistics Centre Abu Dhabi",
+    year: "2024",
+    featured: false,
+    challenge:
+      "Field-collected forms had inconsistent Arabic name and address formatting that broke downstream record linkage.",
+    solution:
+      "Light GPT-3.5 normaliser + transliteration model that standardises names, splits address components, and validates them against the national address registry.",
+    impact: [
+      "Improved record-linkage match rate from 72% to 94%",
+      "Replaced 8 brittle regex rule sets with one model + small ruleset",
+      "Runs in-line on form submit, sub-200ms p95 latency",
+    ],
+    metrics: { match: "+22pp", latency: "200ms", rules: "-8 systems" },
+    stack: ["GPT-3.5", "Azure Functions", "Arabic Transliteration"],
+  },
+  {
+    slug: "knowledge-base-auto-tagger",
+    title: "Knowledge-Base Auto-Tagger & Linker",
+    company: "SCAD — Statistics Centre Abu Dhabi",
+    year: "2024",
+    featured: false,
+    challenge:
+      "Internal SharePoint had 40,000+ documents with inconsistent (or missing) metadata, making search useless.",
+    solution:
+      "Batch embedding + classification pipeline that assigns SDG topics, year, language, and confidentiality tier, plus suggests related documents.",
+    impact: [
+      "Tagged 40K+ documents in under 36 hours",
+      "Lifted search click-through-to-relevant by 3.4×",
+      "Powers the RAG retrieval filters in the main document system",
+    ],
+    metrics: { docs: "40K+", ctr: "3.4×", time: "36 hrs" },
+    stack: ["text-embedding-3", "GPT-4", "Azure AI Search", ".NET"],
+  },
+  {
+    slug: "exec-dashboard-narrator",
+    title: "Executive Dashboard Narrator",
+    company: "SCAD — Statistics Centre Abu Dhabi",
+    year: "2025",
+    featured: false,
+    challenge:
+      "Leadership wanted prose summaries on top of Power BI dashboards — not just charts — with month-over-month commentary.",
+    solution:
+      "Scheduled job reads dashboard datasets, runs significance tests, and writes a 4-paragraph bilingual executive brief grounded in the actual numbers.",
+    impact: [
+      "Bilingual briefs delivered the morning of the monthly review (was 2-day lag)",
+      "Adopted as the default lead-in for the executive committee deck",
+      "Zero hallucinated numbers in 9 months of running (numbers are templated, not generated)",
+    ],
+    metrics: { lag: "-2 days", hallucinations: "0", languages: "AR + EN" },
+    stack: ["Power BI", "GPT-4", "Azure Functions", "Logic Apps"],
+  },
+  {
+    slug: "regulatory-change-watcher",
+    title: "Regulatory & Policy Change Watcher",
+    company: "MoHRE — UAE Government",
+    year: "2022",
+    featured: false,
+    challenge:
+      "Compliance team had to manually scan 30+ regulator websites for changes that affected labour-services applications.",
+    solution:
+      "Daily crawler + LLM diff summariser that posts only material policy changes — with citations — to a Teams channel.",
+    impact: [
+      "Compliance review effort cut by ~80%",
+      "Caught two high-impact regulatory changes before manual review would have",
+      "Running for 3+ years with under 5 false-positive flags total",
+    ],
+    metrics: { effort: "-80%", recall: "100%", falsepos: "<5" },
+    stack: ["Python", "GPT-4", "Microsoft Teams", "Azure Logic Apps"],
+  },
+  {
+    slug: "service-request-router",
+    title: "Citizen Service Request Auto-Router",
+    company: "MoHRE — UAE Government",
+    year: "2021",
+    featured: false,
+    challenge:
+      "Bilingual citizen requests were misrouted ~28% of the time, causing SLA breaches across labour service teams.",
+    solution:
+      "Intent + topic classifier on top of the request text routes to one of 22 specialist teams, with a confidence-gated escalation path.",
+    impact: [
+      "Misrouting dropped from 28% to 6%",
+      "First-touch resolution improved 19 percentage points",
+      "Reduced SLA-breach rate on labour services by 41%",
+    ],
+    metrics: { misroute: "-22pp", ftr: "+19pp", sla: "-41%" },
+    stack: ["BERT (Arabic)", "ML.NET", "Azure ML", "Web API"],
+  },
+  {
+    slug: "social-sentiment-engine",
+    title: "Real-Time Social Sentiment Engine",
+    company: "TRG Tech",
+    year: "2017",
+    featured: false,
+    challenge:
+      "Marketing customers needed near-real-time brand sentiment from 100K+ daily social posts across Twitter, Facebook, Instagram.",
+    solution:
+      "Streaming pipeline classifies sentiment + topic, detects spikes, and pushes alerts to subscriber dashboards.",
+    impact: [
+      "Processed 100K+ posts/day per tenant",
+      "Median end-to-end latency under 30 seconds",
+      "Onboarded 12 brand customers in the first quarter",
+    ],
+    metrics: { volume: "100K+/day", latency: "30s", tenants: "12" },
+    stack: ["Node.js", "RabbitMQ", "Sentiment Analysis", "Angular"],
+  },
+  {
+    slug: "lead-scoring-model",
+    title: "Lease Application Lead Scoring",
+    company: "NETSOL Technologies",
+    year: "2014",
+    featured: false,
+    challenge:
+      "Sales teams at OEM finance clients were chasing low-probability leases, eating up cycle time on poor-fit applicants.",
+    solution:
+      "Logistic-regression scoring model on application + bureau features, exposed as an API into the leasing workflow.",
+    impact: [
+      "Improved closed-lease yield by 18%",
+      "Cut average time-to-decision from 36 hours to 8 hours",
+      "Deployed at two international leasing customers",
+    ],
+    metrics: { yield: "+18%", decision: "-77%", customers: "2 OEMs" },
+    stack: ["R", ".NET", "SQL Server", "REST API"],
+  },
+  {
+    slug: "prompt-eval-harness",
+    title: "Prompt & RAG Evaluation Harness",
+    company: "SCAD — Statistics Centre Abu Dhabi",
+    year: "2025",
+    featured: false,
+    challenge:
+      "Every prompt or retrieval tweak was being shipped on vibes — there was no way to measure regressions on the RAG and NL-to-SQL systems.",
+    solution:
+      "Open-source-flavoured eval harness with ~400 graded queries, judge-LLM scoring, and a CI step that blocks regressions in retrieval recall and answer quality.",
+    impact: [
+      "Caught 6 regressions before they hit production",
+      "Made prompt iteration data-driven instead of intuition-driven",
+      "Adopted as the gate on every RAG/NL-to-SQL change",
+    ],
+    metrics: { suites: "2", queries: "400+", regressions: "6 caught" },
+    stack: ["GPT-4 (judge)", "Python", "GitHub Actions", "DVC"],
+  },
+  {
+    slug: "mcp-portfolio-server",
+    title: "Portfolio Model Context Protocol Server",
+    company: "Personal · Open-source",
+    year: "2026",
+    featured: false,
+    challenge:
+      "AI assistants (Claude, ChatGPT, Cursor) had no clean way to query my CV, projects, and case studies as structured data.",
+    solution:
+      "stdio MCP server exposing typed tools (get_projects, get_case_study, search_writing) so any compatible client can ground answers in real portfolio data.",
+    impact: [
+      "Recruiters can run a Claude/Cursor session against my real corpus",
+      "Underpins the on-site Ask AI chatbot",
+      "Documented at /mcp with copy-paste config",
+    ],
+    metrics: { tools: "5", clients: "Claude · Cursor", ground: "100%" },
+    stack: ["MCP", "TypeScript", "Node stdio", "Zod"],
   },
 ];
 

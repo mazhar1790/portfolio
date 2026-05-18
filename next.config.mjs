@@ -18,6 +18,17 @@ const nextConfig = {
       bodySizeLimit: "2mb",
     },
   },
+  async redirects() {
+    return [
+      // Old PDF link kept floating around (bookmarks, prior deploys, social).
+      // Forward to the actual file we ship.
+      {
+        source: "/Mazhar-Hayat-AI-Architect-CV.pdf",
+        destination: "/Mazhar-Hayat-AI-Architect-CV.docx",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withMDX(nextConfig);
