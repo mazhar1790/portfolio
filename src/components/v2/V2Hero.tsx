@@ -1,257 +1,252 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Instagram, Linkedin, MapPin, Sparkles } from "lucide-react";
+import { ArrowUpRight, Linkedin, MapPin, Sparkles } from "lucide-react";
 import { PERSONAL } from "@/data/cv";
 
 export default function V2Hero() {
   return (
-    <section className="relative isolate overflow-hidden pt-28 sm:pt-32">
-      {/* Soft background blobs */}
+    <section className="relative isolate overflow-hidden bg-[#f7f7f3] pt-24 sm:pt-28">
+      {/* Mint blob top-right */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-40 top-40 -z-10 h-[28rem] w-[28rem] rounded-full bg-mint-200/40 blur-3xl"
+        className="pointer-events-none absolute -right-32 -top-20 -z-10 h-[28rem] w-[28rem] rounded-full bg-[#d4f0e0] opacity-60 blur-[80px]"
       />
+      {/* Mint blob bottom-left */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[-10rem] top-[-4rem] -z-10 h-[24rem] w-[24rem] rounded-full bg-mint-100/60 blur-3xl"
-      />
-      {/* Subtle dotted noise */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.5] [background-image:radial-gradient(rgba(14,14,13,0.06)_1px,transparent_1px)] [background-size:18px_18px]"
+        className="pointer-events-none absolute -left-20 bottom-0 -z-10 h-[20rem] w-[20rem] rounded-full bg-[#d4f0e0] opacity-40 blur-[60px]"
       />
 
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-5 pb-20 sm:px-8 lg:grid-cols-[1fr_auto] lg:gap-16">
-        {/* Left: copy */}
-        <div className="order-2 lg:order-1">
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 rounded-full border border-mint-200 bg-white px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-mint-700"
-          >
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-mint-500" />
-            Available · June 2026
-          </motion.p>
+      <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
 
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05 }}
-            className="mt-8 font-jakarta text-5xl font-extrabold leading-[1.02] tracking-tight text-coal sm:text-6xl lg:text-[5.5rem]"
-          >
-            I architect{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10">AI&nbsp;systems</span>
-              <Underline />
-            </span>
-            <br />
-            that ship.
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="mt-7 max-w-xl text-lg leading-relaxed text-coal-muted"
-          >
-            15+ years building production software · 3+ years shipping
-            enterprise LLM systems for government. RAG, NL-to-SQL, document
-            intelligence — the kind that runs 24/7, not the kind that demos
-            well.
-          </motion.p>
-
-          {/* Identity strip */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm"
-          >
-            <span className="font-jakarta text-2xl font-bold tracking-tight text-coal">
-              {PERSONAL.name}
-            </span>
-            <span className="text-coal-dim">·</span>
-            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-coal-muted">
-              AI Solutions Architect &nbsp;//&nbsp; Senior Engineer
-            </span>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="mt-8 flex flex-wrap items-center gap-3"
-          >
-            <a
-              href="#portfolio"
-              className="group inline-flex items-center gap-2 rounded-full bg-coal px-5 py-3 text-sm font-semibold text-cream transition hover:bg-mint-700"
+          {/* ── Left: copy ──────────────────────────────────────── */}
+          <div className="flex-1">
+            {/* Available badge */}
+            <motion.span
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="inline-flex items-center gap-2 rounded-full border border-[#b8e8ce] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#2d9961]"
             >
-              See the work
-              <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-            <a
-              href={`mailto:${PERSONAL.email}`}
-              className="inline-flex items-center gap-2 rounded-full border border-cream-line bg-white px-5 py-3 text-sm font-semibold text-coal transition hover:border-mint-300 hover:bg-mint-50"
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3fb578]" />
+              Available · June 2026
+            </motion.span>
+
+            {/* Main headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.08 }}
+              className="mt-7 font-jakarta text-[clamp(3rem,8vw,5.5rem)] font-extrabold leading-[1.0] tracking-[-0.02em] text-[#0e0e0d]"
             >
-              Email me
-            </a>
-            <span className="ml-1 inline-flex items-center gap-1.5 text-xs text-coal-muted">
-              <MapPin className="h-3.5 w-3.5 text-mint-600" />
-              {PERSONAL.location}
-            </span>
-          </motion.div>
-        </div>
+              I architect{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10">AI&nbsp;systems</span>
+                {/* Animated underline */}
+                <svg
+                  aria-hidden
+                  viewBox="0 0 320 16"
+                  preserveAspectRatio="none"
+                  className="absolute -bottom-1 left-0 h-[0.18em] w-full"
+                >
+                  <motion.path
+                    d="M 4 10 Q 80 2, 160 8 T 316 6"
+                    stroke="#3fb578"
+                    strokeWidth="7"
+                    strokeLinecap="round"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1.2, ease: "easeOut", delay: 0.8 }}
+                  />
+                </svg>
+              </span>
+              <br />
+              that ship.
+            </motion.h1>
 
-        {/* Right: square photo with squiggle */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 18 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="order-1 mx-auto w-full max-w-sm lg:order-2 lg:max-w-md"
-        >
-          <div className="relative">
-            {/* The photo container — arched card */}
-            <div className="relative overflow-hidden rounded-[28px] border border-cream-line bg-white shadow-[0_24px_48px_-24px_rgba(14,14,13,0.18)]">
-              {/* Explicit height so next/image fill works correctly */}
-              <div className="relative h-[480px] w-full sm:h-[540px]">
-                <Image
-                  src="/me.png"
-                  alt={`${PERSONAL.name} — portrait`}
-                  fill
-                  priority
-                  sizes="(max-width: 640px) 320px, (max-width: 1024px) 360px, 420px"
-                  className="object-cover object-top"
-                />
-                {/* Soft tint bottom */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white/60 to-transparent" />
-              </div>
+            {/* Sub-copy */}
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.18 }}
+              className="mt-6 max-w-[480px] text-[17px] leading-relaxed text-[#525251]"
+            >
+              15+ years building production software · 3+ years shipping
+              enterprise LLM systems for government. RAG, NL-to-SQL, document
+              intelligence — the kind that runs 24/7, not the kind that demos
+              well.
+            </motion.p>
 
-              {/* Badge overlay */}
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-[rgba(14,14,13,0.82)] px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur">
+            {/* Name + title strip */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.28 }}
+              className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2"
+            >
+              <span className="font-jakarta text-2xl font-bold text-[#0e0e0d]">
+                {PERSONAL.name}
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#9a9a96]">
+                AI Solutions Architect &nbsp;//&nbsp; Senior Engineer
+              </span>
+            </motion.div>
+
+            {/* CTA row */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.38 }}
+              className="mt-7 flex flex-wrap items-center gap-3"
+            >
+              <a
+                href="#portfolio"
+                className="group inline-flex items-center gap-2 rounded-full bg-[#0e0e0d] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#2d9961]"
+              >
+                See the work
+                <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href={`mailto:${PERSONAL.email}`}
+                className="inline-flex items-center gap-2 rounded-full border border-[#e0dfd8] bg-white px-5 py-3 text-sm font-semibold text-[#0e0e0d] transition hover:border-[#9fdfbb] hover:bg-[#f3fbf7]"
+              >
+                Email me
+              </a>
+              <span className="inline-flex items-center gap-1.5 text-xs text-[#9a9a96]">
+                <MapPin className="h-3.5 w-3.5 text-[#3fb578]" />
+                {PERSONAL.location}
+              </span>
+            </motion.div>
+          </div>
+
+          {/* ── Right: photo card ────────────────────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="relative mx-auto w-full max-w-[340px] shrink-0 lg:mx-0 lg:max-w-[380px]"
+          >
+            {/* "Come on · let's talk" circular badge */}
+            <div className="absolute -right-6 -top-8 z-10 hidden h-28 w-28 lg:block">
+              <svg viewBox="0 0 120 120" className="h-full w-full">
+                <defs>
+                  <path
+                    id="hero-circle"
+                    d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"
+                  />
+                </defs>
+                <text
+                  fontSize="9"
+                  fontFamily="monospace"
+                  letterSpacing="2"
+                  fill="#262624"
+                  textAnchor="middle"
+                >
+                  <textPath href="#hero-circle">
+                    come on · let&apos;s talk · come on · let&apos;s talk ·
+                  </textPath>
+                </text>
+              </svg>
+              <a
+                href="#contact"
+                className="absolute inset-[30%] flex items-center justify-center rounded-full border-2 border-[#6dcc99] bg-[#f7f7f3] text-[#2d9961] transition hover:bg-[#e3f6ec]"
+                aria-label="Contact me"
+              >
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
+
+            {/* Photo card — plain <img> for maximum reliability */}
+            <div
+              className="relative overflow-hidden rounded-[24px] bg-white"
+              style={{ boxShadow: "0 20px 60px -20px rgba(14,14,13,0.22)" }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/me.png"
+                alt={`${PERSONAL.name} — portrait`}
+                width={760}
+                height={960}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                  objectFit: "cover",
+                  objectPosition: "top center",
+                }}
+              />
+
+              {/* Gradient fade at bottom */}
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4"
+                style={{ background: "linear-gradient(to top, rgba(247,247,243,0.7), transparent)" }}
+              />
+
+              {/* Badge */}
+              <div
+                className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-medium text-white"
+                style={{ background: "rgba(14,14,13,0.80)", backdropFilter: "blur(8px)" }}
+              >
                 <Sparkles className="h-3 w-3 text-emerald-300" />
                 Production-grade AI · since 2023
               </div>
             </div>
 
-            {/* Decorative "come on, let's talk" curved label */}
-            <CurvedLabel />
+            {/* Hand-drawn squiggle — bottom right */}
+            <svg
+              aria-hidden
+              viewBox="0 0 160 60"
+              fill="none"
+              className="absolute -bottom-8 -right-6 hidden w-40 text-[#6dcc99] lg:block"
+            >
+              <motion.path
+                d="M 4 30 C 20 10, 40 50, 60 30 S 100 10, 120 30 S 148 50, 156 26"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 2, ease: "easeOut", delay: 1 }}
+              />
+            </svg>
 
-            {/* Hand-drawn squiggle accent */}
-            <Squiggle className="pointer-events-none absolute -bottom-10 -left-10 hidden h-40 w-40 text-mint-400 lg:block" />
-
-            {/* Social icons — below the card on mobile, floating left on lg */}
-            <div className="mt-4 flex justify-center gap-3 lg:absolute lg:-left-14 lg:top-12 lg:mt-0 lg:flex-col">
-              <SocialPill href={PERSONAL.linkedin} label="LinkedIn">
+            {/* Social pills */}
+            <div className="mt-5 flex justify-center gap-3 lg:absolute lg:-left-14 lg:top-10 lg:mt-0 lg:flex-col">
+              <a
+                href={PERSONAL.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e0dfd8] bg-white text-[#525251] transition hover:border-[#6dcc99] hover:text-[#2d9961]"
+              >
                 <Linkedin className="h-3.5 w-3.5" />
-              </SocialPill>
-              <SocialPill href="https://github.com/mazhar1790" label="GitHub">
-                <span className="font-jakarta text-xs font-bold">gh</span>
-              </SocialPill>
-              <SocialPill href={`mailto:${PERSONAL.email}`} label="Email">
-                <span className="font-jakarta text-xs font-bold">@</span>
-              </SocialPill>
+              </a>
+              <a
+                href="https://github.com/mazhar1790"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e0dfd8] bg-white font-jakarta text-xs font-bold text-[#525251] transition hover:border-[#6dcc99] hover:text-[#2d9961]"
+              >
+                gh
+              </a>
+              <a
+                href={`mailto:${PERSONAL.email}`}
+                aria-label="Email"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e0dfd8] bg-white font-jakarta text-sm font-bold text-[#525251] transition hover:border-[#6dcc99] hover:text-[#2d9961]"
+              >
+                @
+              </a>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Bottom spacer */}
+        <div className="h-16 sm:h-20" />
       </div>
     </section>
-  );
-}
-
-function Underline() {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 320 24"
-      preserveAspectRatio="none"
-      className="absolute -bottom-1 left-0 h-3 w-full text-mint-400"
-    >
-      <motion.path
-        d="M 4 14 Q 80 4, 160 12 T 316 10"
-        stroke="currentColor"
-        strokeWidth="6"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 1.4, ease: "easeOut", delay: 0.7 }}
-      />
-    </svg>
-  );
-}
-
-function CurvedLabel() {
-  return (
-    <div className="absolute -top-10 -right-8 hidden h-32 w-32 lg:block">
-      <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full">
-        <defs>
-          <path
-            id="v2-circle-path"
-            d="M 60,60 m -46,0 a 46,46 0 1,1 92,0 a 46,46 0 1,1 -92,0"
-          />
-        </defs>
-        <text className="fill-coal font-mono text-[10px] uppercase tracking-[0.22em]">
-          <textPath href="#v2-circle-path" startOffset="0%">
-            come on · let&apos;s talk · come on · let&apos;s talk ·
-          </textPath>
-        </text>
-      </svg>
-      <a
-        href="#contact"
-        aria-label="Get in touch"
-        className="absolute inset-[34%] flex items-center justify-center rounded-full border-2 border-mint-400 bg-cream text-mint-700 transition hover:bg-mint-100"
-      >
-        <ArrowUpRight className="h-4 w-4" />
-      </a>
-    </div>
-  );
-}
-
-function Squiggle({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 200 200" fill="none" className={className} aria-hidden>
-      <motion.path
-        d="M 20 100 C 40 70, 60 130, 80 100 S 120 70, 140 100 S 180 130, 195 95"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 2.2, ease: "easeOut", delay: 0.9 }}
-      />
-      <motion.circle
-        cx="20"
-        cy="100"
-        r="4"
-        fill="currentColor"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1.0 }}
-      />
-    </svg>
-  );
-}
-
-function SocialPill({
-  href,
-  label,
-  children,
-}: {
-  href: string;
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-cream-line bg-white text-coal-muted transition hover:border-mint-400 hover:text-mint-700"
-    >
-      {children}
-    </a>
   );
 }
