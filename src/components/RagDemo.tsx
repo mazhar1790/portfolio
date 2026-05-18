@@ -10,6 +10,7 @@ interface Source {
   title: string;
   category: string;
   score: number;
+  reranked?: boolean;
 }
 
 interface DemoResult {
@@ -147,7 +148,7 @@ export default function RagDemo() {
           <div>
             <p className="text-sm font-medium text-paper">Live RAG Demo</p>
             <p className="font-mono text-[10px] text-paper-dim">
-              Pinecone · text-embedding-3-small · gpt-4o-mini
+              Pinecone · Gemini embed · Cohere rerank · Groq Llama 3.3
             </p>
           </div>
         </div>
@@ -232,7 +233,7 @@ export default function RagDemo() {
                 { label: "Query", done: true },
                 { label: "Embed", done: true },
                 { label: "Retrieve", done: sources.length > 0 },
-                { label: "Rank", done: sources.length > 0 },
+                { label: "Rerank", done: sources.length > 0 },
                 { label: "Generate", done: !streaming },
               ].map((step, i) => (
                 <div key={step.label} className="flex items-center gap-2 shrink-0">
@@ -277,6 +278,11 @@ export default function RagDemo() {
                     <span className="font-mono uppercase tracking-widest">
                       {sources.length} sources retrieved
                     </span>
+                    {sources[0]?.reranked && (
+                      <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-amber-400">
+                        Cohere reranked
+                      </span>
+                    )}
                   </div>
                   {showSources ? (
                     <ChevronUp className="h-4 w-4" />

@@ -38,17 +38,17 @@ export default function RagSection() {
                 {
                   step: "01",
                   title: "Embed query",
-                  desc: "Your question is converted to a 1536-dimension vector using OpenAI text-embedding-3-small.",
+                  desc: "Your question is converted to a 3072-dimension vector using Gemini Embedding 001 (free).",
                 },
                 {
                   step: "02",
-                  title: "Semantic retrieval",
-                  desc: "Top 5 most relevant chunks are fetched from Pinecone via cosine similarity.",
+                  title: "Retrieve + Rerank",
+                  desc: "Top 10 candidates fetched from Pinecone, then Cohere rerank-v3.5 reorders them by relevance.",
                 },
                 {
                   step: "03",
                   title: "Cited generation",
-                  desc: "GPT-4o-mini synthesises an answer using only the retrieved chunks, citing sources by number.",
+                  desc: "Groq Llama 3.3 70B synthesises a cited answer from the top 5 chunks — in ~1 second.",
                 },
               ].map((item) => (
                 <div key={item.step} className="flex gap-4">
@@ -67,8 +67,8 @@ export default function RagSection() {
               <Database className="h-4 w-4 shrink-0 text-signal" />
               <p className="text-xs text-paper-muted">
                 <span className="text-paper">16 knowledge chunks</span> · Pinecone
-                serverless (us-east-1) · Cosine similarity · No hallucination
-                — answers are grounded in source chunks only.
+                serverless · Gemini embed (3072d) · Cohere rerank-v3.5 ·
+                Groq Llama 3.3 70B · All free tier.
               </p>
             </div>
           </motion.div>

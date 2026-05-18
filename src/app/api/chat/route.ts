@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import Groq from "groq-sdk";
 import { CV_CONTEXT } from "@/data/cv";
 
 export const runtime = "nodejs";
@@ -10,9 +10,11 @@ interface ClientMessage {
 }
 
 export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const groqKey = process.env.GROQ_API_KEY;
+
+  if (!groqKey) {
     return new Response(
-      "AI is not configured. Set ANTHROPIC_API_KEY to enable the chat.",
+      "AI is not configured. Set GROQ_API_KEY to enable the chat.",
       { status: 500 },
     );
   }
@@ -38,32 +40,29 @@ export async function POST(req: Request) {
     return new Response("No messages provided.", { status: 400 });
   }
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
+  const groq = new Groq({ apiKey: groqKey });
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const messageStream = client.messages.stream({
-          model: "claude-sonnet-4-20250514",
+        const completion = await groq.chat.completions.create({
+          model: "llama-3.3-70b-versatile",
           max_tokens: 1024,
-          system: CV_CONTEXT,
-          messages,
+          stream: true,
+          messages: [
+            { role: "system", content: CV_CONTEXT },
+            ...messages,
+          ],
         });
 
-        for await (const event of messageStream) {
-          if (
-            event.type === "content_block_delta" &&
-            event.delta.type === "text_delta"
-          ) {
-            controller.enqueue(encoder.encode(event.delta.text));
-          }
+        for await (const chunk of completion) {
+          const text = chunk.choices[0]?.delta?.content ?? "";
+          if (text) controller.enqueue(encoder.encode(text));
         }
         controller.close();
       } catch (err) {
-        const msg =
-          err instanceof Error ? err.message : "Unexpected AI error.";
+        const msg = err instanceof Error ? err.message : "Unexpected AI error.";
         controller.enqueue(encoder.encode(`\n\n[error] ${msg}`));
         controller.close();
       }

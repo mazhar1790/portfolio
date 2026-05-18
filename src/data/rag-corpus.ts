@@ -133,5 +133,5 @@ export const RAG_CORPUS: KnowledgeChunk[] = [
 
 export const CORPUS_NAMESPACE = "cv-knowledge";
 export const PINECONE_INDEX_NAME = "portfolio-cv";
-export const EMBEDDING_MODEL = "text-embedding-3-small";
-export const EMBEDDING_DIMENSIONS = 1536;
+export const EMBEDDING_MODEL = "models/gemini-embedding-001"; // Gemini free tier
+export const EMBEDDING_DIMENSIONS = 3072;

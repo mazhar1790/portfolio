@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import Groq from "groq-sdk";
 import { CV_CONTEXT } from "@/data/cv";
 
 export const runtime = "nodejs";
@@ -10,9 +10,8 @@ interface ClientMessage {
 }
 
 export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ followups: [] });
-  }
+  const groqKey = process.env.GROQ_API_KEY;
+  if (!groqKey) return Response.json({ followups: [] });
 
   let payload: { messages?: ClientMessage[] } = {};
   try {
@@ -33,29 +32,29 @@ export async function POST(req: Request) {
 
   if (messages.length === 0) return Response.json({ followups: [] });
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
   try {
-    const result = await client.messages.create({
-      model: "claude-haiku-4-20250514",
-      max_tokens: 200,
-      system: `${CV_CONTEXT}\n\nYou generate short follow-up questions a visitor might want to ask next. Return ONLY a JSON array of exactly 3 short strings (max 8 words each). No explanation, no markdown, just valid JSON like: ["question 1", "question 2", "question 3"]`,
+    const groq = new Groq({ apiKey: groqKey });
+
+    const result = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      max_tokens: 150,
       messages: [
+        {
+          role: "system",
+          content: `${CV_CONTEXT}\n\nYou generate short follow-up questions a visitor might want to ask next. Return ONLY a JSON array of exactly 3 short strings (max 8 words each). No explanation, no markdown, just valid JSON like: ["question 1", "question 2", "question 3"]`,
+        },
         ...messages,
         {
           role: "user",
           content:
-            "Generate 3 natural follow-up questions I might want to ask next, based on our conversation.",
+            "Generate 3 natural follow-up questions based on our conversation.",
         },
       ],
     });
 
-    const raw =
-      result.content[0]?.type === "text" ? result.content[0].text.trim() : "[]";
-
+    const raw = result.choices[0]?.message?.content?.trim() ?? "[]";
     const match = raw.match(/\[.*\]/s);
     const followups: string[] = match ? JSON.parse(match[0]) : [];
-
     return Response.json({ followups: followups.slice(0, 3) });
   } catch {
     return Response.json({ followups: [] });
